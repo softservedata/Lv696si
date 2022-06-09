@@ -1,10 +1,68 @@
 package com.softserve.edu03;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Person {
+public class Person implements Comparable<Person> {
+
+    public static class ByDescName implements Comparator<Person> {
+        @Override
+        public int compare(Person p1, Person p2) {
+            if ((p1 == null) && (p2 == null)) {
+                return 0;
+            }
+            if (p1 == null) {
+                return -1;
+            }
+            if (p2 == null) {
+                return 1;
+            }
+            return -p1.getName().compareTo(p2.getName());
+        }
+    }
+
+    public class ById implements Comparator<Person> {
+        @Override
+        public int compare(Person p1, Person p2) {
+            if ((p1 == null) && (p2 == null)) {
+                return 0;
+            }
+            if (p1 == null) {
+                return -1;
+            }
+            if (p2 == null) {
+                return 1;
+            }
+            return p1.getId() - p2.getId();
+        }
+    }
+
+    public static class ByNameAndId implements Comparator<Person> {
+        @Override
+        public int compare(Person p1, Person p2) {
+            if ((p1 == null) && (p2 == null)) {
+                return 0;
+            }
+            if (p1 == null) {
+                return -1;
+            }
+            if (p2 == null) {
+                return 1;
+            }
+            int byName = p1.getName().compareTo(p2.getName());
+            return byName == 0 ? p1.getId() - p2.getId() : byName;
+        }
+    }
+
+    // --------------------------------------------------
+
     private int id;
     private String name;
+
+    public Person() {
+        id = -1; //   this.id
+        name = "";
+    }
 
     public Person(int id, String name) {
         this.id = id;
@@ -65,8 +123,14 @@ public class Person {
     }
 
     @Override
+    public int compareTo(Person person) {
+        return getName().compareTo(person.getName());
+        //return getId() - person.getId();
+    }
+
+    @Override
     public String toString() {
-        return "Person [" +
+        return "\n\tPerson [" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 "]";
