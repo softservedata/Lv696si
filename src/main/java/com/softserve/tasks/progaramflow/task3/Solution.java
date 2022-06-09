@@ -6,7 +6,6 @@ class Solution {
         if (((dividend < 0) && (divisor > 0)) || ((dividend > 0) && (divisor < 0))) {
             add = -1;
         }
-
         if (dividend > 0) {
             dividend = -dividend;
         }
@@ -14,7 +13,7 @@ class Solution {
             divisor = -divisor;
         }
         int result = 0;
-        while (dividend < 0) {
+        while ((dividend < 0) && (dividend - divisor) <= 0) {
             result--;
             dividend -= divisor;
         }
@@ -26,8 +25,7 @@ class Solution {
         }
         return result;
     }
-
     public static void main(String[] args) {
-        System.out.println(divide(-2147483648,1));
+        System.out.println(divide(-2147483647,2));
     }
 }
