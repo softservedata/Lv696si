@@ -13,22 +13,21 @@ class Solution {
         if (divisor > 0) {
             divisor = -divisor;
         }
-        int addition = divisor;
         int result = 0;
-        while ((divisor >= dividend) && ((dividend - divisor) <= -divisor)) {
-            result++;
-            if (result == 2147483647) {
-                break;
-            }
-            divisor += addition;
+        while (dividend < 0) {
+            result--;
+            dividend -= divisor;
         }
         if (add > 0) {
-            return result;
+            if (result == -2147483648) {
+                return 2147483647;
+            }
+            return -result;
         }
-        return -result;
+        return result;
     }
 
     public static void main(String[] args) {
-        System.out.println(divide(-2147483648,-1));
+        System.out.println(divide(-2147483648,1));
     }
 }
