@@ -13,9 +13,12 @@ class Solution {
             divisor = -divisor;
         }
         int result = 0;
-        while ((dividend < 0) && (dividend - divisor) <= 0) {
+        while ((dividend - divisor) <= 0) {
             result--;
             dividend -= divisor;
+            if (dividend == 0) {
+                break;
+            }
         }
         if (add > 0) {
             if (result == -2147483648) {
@@ -26,6 +29,6 @@ class Solution {
         return result;
     }
     public static void main(String[] args) {
-        System.out.println(divide(-2147483647,2));
+        System.out.println(divide(-2147483648,1));
     }
 }
