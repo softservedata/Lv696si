@@ -124,6 +124,7 @@ public class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person person) {
+        System.out.println("compareTo()  from " + this + "  with obj = " + person);
         return getName().compareTo(person.getName());
         //return getId() - person.getId();
     }
