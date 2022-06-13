@@ -8,13 +8,13 @@ import java.util.stream.Stream;
 
 public class App1 {
     public static void main(String[] args) {
-        //List<String> list = Arrays.asList("aa", null, "dd", "cc");
-        List<String> list = new ArrayList<>();
+        List<String> list = Arrays.asList("aa", null, "dd", "cc");
+        //List<String> list = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
         map.put("1", "aa");
         map.put("2", "dd");
         map.put("3", "cc");
-        map.put("4", "aa");
+        map.put("4", null);
         System.out.println(listMapCompare(list, map));
     }
 
