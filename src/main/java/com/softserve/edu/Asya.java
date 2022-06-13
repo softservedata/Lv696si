@@ -3,31 +3,42 @@ package com.softserve.edu;
 public class Asya {
 }
 class Solution {
-    public int mySqrt(int x) {
-        if(x <= 1){
-            return x;
+    public int divide(int dividend, int divisor) {
+        boolean dividendNegative = false;
+        boolean divisorNegative = false;
+        long newDividend = dividend;
+        long newDivisor = divisor;
+        if(dividend== Integer.MIN_VALUE && divisor == -1){
+            return Integer.MAX_VALUE;}
+        If (dividend < 0); {
+            newDividend = - newDividend;
+            dividendNegative = true;
         }
-
-        int start = 2, end = x, middle;
-
-        while(start <= end){
-            middle = start + (end - start)/2;
-
-            if(middle == x/middle){
-                return middle;
+        if (divisor <0) {
+            newDivisor = -newDivisor;
+            divisorNegative = true;
+        }
+        if(dividend == divisor){
+            return 1;
+        }
+        long result = 1;
+        long counter = newDivisor;
+        while (counter < newDividend) {
+            counter = counter + counter;
+            result = result +result;
+        }
+        if (counter != newDividend) {
+            while (counter > newDividend){
+                counter -= newDivisor;
+                result--;
             }
-
-            if(middle < x/middle){
-                start = middle + 1;
-            } else {
-                end = middle - 1;
-            }
+        }
+        if(dividendNegative ^ divisorNegative){
+            return (int)-result;
+        }
+        else {
+            return (int)result;
         }
 
-        if(start > x/start){
-            return start - 1;
-        }
 
-        return start;
     }
-};
