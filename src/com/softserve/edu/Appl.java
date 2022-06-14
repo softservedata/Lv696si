@@ -1,5 +1,6 @@
 package com.softserve.edu;
 
+import com.softserve.edu.practice02.Divide;
 import com.softserve.edu.practice02.Palindrome;
 import com.softserve.edu.practice02.Reverse;
 import com.softserve.edu.practice02.SquareRoot;
@@ -20,5 +21,10 @@ public class Appl {
         //
         Reverse rv = new Reverse(-1234);
         System.out.println("Revers of number " + rv.getX() + " is " + rv.reverse());
+        //Divide
+        //
+        Divide div = new Divide(10, 3);
+        System.out.println("Divide for " + div.getDividend() +
+                ", " + div.getDivisor() + " is " + div.divide());
     }
 }
