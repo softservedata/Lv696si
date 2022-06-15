@@ -50,7 +50,7 @@ public class ApplSearch {
         position = Arrays.binarySearch(arr, element);
         System.out.println("Arrays.binarySearch(arr, element) = " + position);
         */
-        /*
+        // /*
         Person[] arr = { new Person(2,"Ivan"),
                 new Person(8,"Petro"),
                 new Person(1,"Ivan"),
@@ -75,8 +75,9 @@ public class ApplSearch {
         //
         position =  Arrays.binarySearch(arr, element);
         System.out.println("\nArrays.binarySearch(arr, element) = " + position);
-        */
+        // */
         //
+        /*
         Sort sort = new Sort();
         //int[] arr = {101, 38, 82, 23, 99, 70, 98, 93, 15, 81};
         //int[] arr = {1, 2, 3, 4};
@@ -84,6 +85,7 @@ public class ApplSearch {
         System.out.println("Original: " + Arrays.toString(arr));
         sort.sortArray(arr);
         System.out.println("Sorted: " + Arrays.toString(arr));
+        */
     }
 
 }
