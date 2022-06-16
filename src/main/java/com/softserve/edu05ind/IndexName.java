@@ -10,6 +10,7 @@ public class IndexName implements Index {
     private int maxLen;
     private Item[] items;
     private Map<Long, Integer> map;
+    Student[] arr = null;
 
     public IndexName(Student[] arr) {
         initItems(arr);
@@ -20,6 +21,7 @@ public class IndexName implements Index {
 
     private void initItems(Student[] arr) {
         maxLen = 0;
+        this.arr = arr;
         items = new Item[arr.length];
     }
 
@@ -60,7 +62,7 @@ public class IndexName implements Index {
 
     public long getCheckSum(String current) {
         long checkSum = 0;
-        current =current.toUpperCase();
+        current = current.toUpperCase();
         //
         for (int j = current.length(); j < maxLen; j++) {
             current = current + "A";
@@ -90,7 +92,7 @@ public class IndexName implements Index {
 
     private void InitMap() {
         map = new TreeMap<>();
-        for (int i = 0; i< items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             map.put(items[i].getCheckSum(), items[i].getIndex());
         }
     }
@@ -101,6 +103,43 @@ public class IndexName implements Index {
 
     public int getIndex(String text) {
         return map.get(getCheckSum(text));
+    }
+
+    public int binarySearch(String name) {
+        int result = -1;
+        int begin = 0;
+        int end = items.length - 1;
+        int avg = -1;
+        int compare;
+        //
+        do {
+            avg = (begin + end) / 2;
+            compare = arr[items[avg].getIndex()].getName().compareTo(name);
+            //
+            System.out.println("avg = " + avg + "  Student = " + arr[items[avg].getIndex()]);
+            //
+            if (compare == 0) {
+                result = avg;
+                break;
+            } else if (compare > 0) {
+                end = avg - 1;
+            } else {
+                begin = avg + 1;
+            }
+        } while (begin <= end);
+        return (result < 0 ? result : items[result].getIndex());
+    }
+
+    public int directSearch(String name) {
+        int result = -1;
+        for (int i = 0; i< arr.length; i++) {
+            System.out.println("i = " + i + "  Student = " + arr[i]);
+            if (arr[i].getName().compareTo(name) == 0) {
+                result = i;
+                break;
+            }
+        }
+        return result;
     }
 
     @Override

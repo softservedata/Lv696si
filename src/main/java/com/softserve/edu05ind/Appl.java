@@ -11,15 +11,22 @@ public class Appl {
                 new Student(11,"Oksana"),
                 new Student(4,"Natalia"),
                 new Student(3,"Ira"),
+                new Student(31,"Andriy"),
+                new Student(23,"Olha"),
         };
-        IndexName indexName = new IndexName(arr);
+        Index indexName = new IndexName(arr);
         Student.setIndex(indexName);
         System.out.println("\nindexName = " + indexName);
         //
         //int position =  Arrays.binarySearch(arr, new Student(-1,"Natalia"));
         //int position =  Arrays.binarySearch(arr, new Student(-1,"Oksana"));
         //int position =  Arrays.binarySearch(arr, new Student(-2,"Ivan"));
-        int position =  Arrays.binarySearch(arr, new Student(-1,"Stepan"));
-        System.out.println("\nArrays.binarySearch(arr, element) = " + position);
+        //
+        //int position =  Arrays.binarySearch(arr, new Student(-1,"Stepan"));
+        //System.out.println("\nArrays.binarySearch(arr, element) = " + position);
+        //
+        int position = indexName.binarySearch("Olha");
+        //int position = indexName.directSearch("Olha");
+        System.out.println("search: " + (position <0 ? position : arr[position]));
     }
 }
