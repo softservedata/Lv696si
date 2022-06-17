@@ -7,56 +7,71 @@ import java.util.stream.Collectors;
 /**
  * Hello world!
  */
-interface DrinkReceipt {
-    String getName();
-    DrinkReceipt addComponent(String componentName, int componentCount);
-}
+class Pizza {
+    private String cheese;
+    private String meat;
+    private String seafood;
+    private String vegetable;
+    private String mushroom;
 
-interface DrinkPreparation {
-    Map<String, Integer> makeDrink();
-}
+    private Pizza() { }
 
-interface Rating {
-    int getRating();
-}
-
-class Caffee implements DrinkReceipt, DrinkPreparation, Rating {
-    String name;
-    int rating;
-    Map<String, Integer> ingredients;
-
-    @Override
-    public String getName() {
-        return null;
+    public String getCheese() {
+        return cheese;
+    }
+    public String getMeat() {
+        return meat;
+    }
+    public String getSeafood() {
+        return seafood;
+    }
+    public String getVegetable() {
+        return vegetable;
+    }
+    public String getMushroom() {
+        return mushroom;
     }
 
-    @Override
-    public DrinkReceipt addComponent(String componentName, int componentCount) {
-        return null;
+    public static PizzaBuilder base() {
+        return new PizzaBuilder();
     }
 
-    @Override
-    public Map<String, Integer> makeDrink() {
-        return null;
+    public static class PizzaBuilder{
+        private Pizza pizza;
+        private PizzaBuilder() {
+            pizza = new Pizza();
+        }
+        public PizzaBuilder addCheese(String cheese) {
+            pizza.cheese = cheese;
+            return this;
+        }
+        public PizzaBuilder addMeat(String meat) {
+            pizza.meat = meat;
+            return this;
+        }
+        public PizzaBuilder addSeafood(String seafood) {
+            pizza.seafood = seafood;
+            return this;
+        }
+        public PizzaBuilder addVegetable(String vegetable) {
+            pizza.vegetable = vegetable;
+            return this;
+        }
+        public PizzaBuilder addMushroom(String mushroom) {
+            pizza.mushroom = mushroom;
+            return this;
+        }
+        public Pizza build() {
+            return pizza;
+        }
     }
 
-    @Override
-    public int getRating() {
-        return 0;
-    }
 }
 
-class Espresso extends Caffee {
-    // Code
-}
+class Oven {
+    public static Pizza cook() {
 
-class Cappuccino extends Caffee {
-    // Code
-}
-
-public class MyUtils {
-    public Map<String, Double> averageRating(List<Caffee> coffees) {
-        Map<String, Double> result = new HashMap<>();
-        return result;
+        // Create and return instance of Pizza class here
+        return Pizza.base().addCheese("rr").addMeat("rr").addMushroom("rr").build();
     }
 }
