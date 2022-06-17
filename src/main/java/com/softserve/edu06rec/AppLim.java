@@ -47,5 +47,22 @@ public class AppLim {
         //
         System.out.println("   getFibon(10) = " + app.getFibon(10));
         System.out.println("getFibonRec(10) = " + app.getFibonRec(10));
+        //
+        int i = 1;
+        switch (i) {
+            default:
+                System.out.println("default");
+            case 1:
+                System.out.println(1);
+            case 0:
+                System.out.println(0);
+            case 2:
+                System.out.println(2);
+                break;
+            case 3:
+                System.out.println(3);
+//            default:
+//                System.out.println("default");
+        }
     }
 }
