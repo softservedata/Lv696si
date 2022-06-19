@@ -1,35 +1,43 @@
 package com.softserve.edu;
 
-import java.util.HashSet;
 import java.util.function.Predicate;
-import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.ArrayList;
+import java.util.List;
+
 
 class MyUtils {
 
-    Predicate<Integer> getPredicateFromSet(Set<Predicate<Integer>> predicates) {
-        if (predicates == null) return null;
-        Predicate<Integer> result = new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer integer) {
-                return true;
+    public static int findMaxByCondition(List<Integer> numbers, Predicate<Integer> pr) {
+        int result = numbers.get(0);
+        for (Integer number : numbers) {
+            if (number > result && pr.test(number)) {
+                result = number;
             }
-        };
-        for (Predicate<Integer> predicate: predicates) {
-            result = result.and(predicate);
+        }
+        return result;
+    }
+}
+
+class User {
+    public final List<Integer> values = new ArrayList<Integer>();
+
+    int getFilterdValue(int maxByCondition, Predicate<Integer> predicate) {
+
+        int result = maxByCondition;
+        for (Integer value: values) {
+            if (value == maxByCondition && predicate.test(value)) {
+                result = value;
+            }
         }
         return result;
     }
 
-    public static void main(String[] args) {
-        Predicate<Integer> predicate1 = (i) -> i > 200;
-        Predicate<Integer> predicate2 = (i) -> i < 400;
-        Predicate<Integer> predicate3 = (i) -> i/80 != 3;
-        Set<Predicate<Integer>> set = new HashSet<>();
-        set.add(predicate1);
-        set.add(predicate2);
-        set.add(predicate3);
-        System.out.println(new MyUtils().getPredicateFromSet(set).test(240));
-        System.out.println(new MyUtils().getPredicateFromSet(null));
+    int getMaxValueByCondition(Predicate<Integer> predicate) {
+
+        // Write your code here
+    return 0;
     }
 }
+
 
