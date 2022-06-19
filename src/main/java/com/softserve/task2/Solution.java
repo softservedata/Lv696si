@@ -1,31 +1,30 @@
 package com.softserve.task2;
 class Solution {
-    public
-    boolean isPalindrome(int x) {
-        if(x < 0 || (x % 10 == 0 && x != 0)) {
+    public boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
             return false;
         }
         int revertedNumber = 0;
-        while(x > revertedNumber) {
+        while (x > revertedNumber) {
             revertedNumber = revertedNumber * 10 + x % 10;
             x /= 10;
         }
-        return x == revertedNumber || x == revertedNumber/10;
+        return x == revertedNumber || x == revertedNumber / 10;
     }
-    public
-    int reverse(int x) {
+
+    public int reverse(int x) {
         int rev = 0;
         while (x != 0) {
             int pop = x % 10;
             x /= 10;
-            if (rev > INT_MAX/10 || (rev == INT_MAX / 10 && pop > 7)) return 0;
-            if (rev < INT_MIN/10 || (rev == INT_MIN / 10 && pop < -8)) return 0;
+            if (rev > Integer.INT_MAX / 10 || (rev == Integer.INT_MAX / 10 && pop > 7)) return 0;
+            if (rev < Integer.INT_MIN / 10 || (rev == Integer.INT_MIN / 10 && pop < -8)) return 0;
             rev = rev * 10 + pop;
         }
         return rev;
     }
-    static int divide(int dividend, int divisor)
-    {
+
+    static int divide(int dividend, int divisor) {
         int sign
                 = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
         dividend = Math.abs(dividend);
@@ -41,13 +40,14 @@ class Solution {
 
         return quotient;
     }
-    public static void main(String[] args)
-    {
+
+    public static void main(String[] args) {
         int a = 10;
         int b = 3;
 
         System.out.println(divide(a, b));
     }
+
     public int mySqrt(int x) {
         long low = 0, high = x, res = 0;
 
@@ -66,5 +66,6 @@ class Solution {
         }
         return ((int) res);
     }
+}
 
 

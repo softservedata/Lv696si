@@ -12,6 +12,13 @@ public class App
     }
 
 
+    public static void main(String[] args) throws Exception {
+        int i = 2, j = 11;
+        do {
+            if (i++ > --j) continue;
+        } while (i < 5);
+        System.out.println("i=" + i + " j=" + j);
+    }
 }
 
 public class MyTestClass{
@@ -23,10 +30,3 @@ public class MyTestClass{
                 System.out.println("True True");
     }
 }
-    public static void main(String[ ] args) throws Exception {
-        int i = 2, j = 11;
-        do {
-            if (i++ > --j) continue;
-        } while (i < 5);
-        System.out.println("i=" + i + " j=" + j);
-    }
