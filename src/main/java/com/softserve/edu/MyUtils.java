@@ -6,38 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class MyUtils {
-
+public class MyUtils {
     public static int findMaxByCondition(List<Integer> numbers, Predicate<Integer> pr) {
-        int result = numbers.get(0);
-        for (Integer number : numbers) {
-            if (number > result && pr.test(number)) {
-                result = number;
-            }
+        if (numbers == null) {
+            return 0;
         }
-        return result;
+        return numbers.stream().filter(pr).max((a,b)->a-b).orElse(0);
     }
 }
 
 class User {
     public final List<Integer> values = new ArrayList<Integer>();
 
-    int getFilterdValue(int maxByCondition, Predicate<Integer> predicate) {
-
-        int result = maxByCondition;
-        for (Integer value: values) {
-            if (value == maxByCondition && predicate.test(value)) {
-                result = value;
-            }
-        }
-        return result;
+    int getFilterdValue(BiFunction<List<Integer>, Predicate<Integer>, Integer> findMax,
+                        Predicate<Integer> predicate) {
+        return findMax.apply(values, predicate);
     }
 
     int getMaxValueByCondition(Predicate<Integer> predicate) {
-
-        // Write your code here
-    return 0;
+        return getFilterdValue(MyUtils::findMaxByCondition,predicate);
     }
 }
-
-
