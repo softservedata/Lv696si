@@ -1,5 +1,7 @@
 package com.softserve.edu;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.BiFunction;
 import java.util.ArrayList;
@@ -7,23 +9,45 @@ import java.util.List;
 
 
 public class MyUtils {
-    public static int findMaxByCondition(List<Integer> numbers, Predicate<Integer> pr) {
-        if (numbers == null) {
-            return 0;
+    public boolean verifyBrackets(String text) {
+        String openBracket = "";
+        String temp = "";
+        for (int i = 0; i < text.length(); i++) {
+            if (i > 1) {
+                temp = text.substring(i - 2, i);
+            }
+
+            if ((text.charAt(i) == '(' || text.charAt(i) == '{' || text.charAt(i) == '[')
+                    && !temp.equals("\\\\")) {
+                openBracket = openBracket + text.charAt(i);
+                continue;
+            }
+            if (text.charAt(i) == ')' && !temp.equals("\\\\")) {
+                if (openBracket.endsWith("(") ) {
+                    openBracket = openBracket.substring(0, openBracket.length() - 1);
+                    continue;
+                } else return false;
+            }
+            if (text.charAt(i) == '}' && !temp.equals("\\\\")) {
+                if (openBracket.endsWith("{")) {
+                    openBracket = openBracket.substring(0, openBracket.length() - 1);
+                    continue;
+                } else return false;
+            }
+            if (text.charAt(i) == ']' && !temp.equals("\\\\")) {
+                if (openBracket.endsWith("[") ) {
+                    openBracket = openBracket.substring(0, openBracket.length() - 1);
+                    continue;
+                } else return false;
+            }
         }
-        return numbers.stream().filter(pr).max((a,b)->a-b).orElse(0);
-    }
-}
-
-class User {
-    public final List<Integer> values = new ArrayList<Integer>();
-
-    int getFilterdValue(BiFunction<List<Integer>, Predicate<Integer>, Integer> findMax,
-                        Predicate<Integer> predicate) {
-        return findMax.apply(values, predicate);
+        System.out.println(openBracket);
+        return openBracket.equals("");
     }
 
-    int getMaxValueByCondition(Predicate<Integer> predicate) {
-        return getFilterdValue(MyUtils::findMaxByCondition,predicate);
+    public static void main(String[] args) {
+        MyUtils myUtils = new MyUtils();
+        System.out.println("\\\\[\\\\{\\\\(");
+        System.out.println(myUtils.verifyBrackets("\\\\[]\\\\{}\\\\()"));
     }
 }
