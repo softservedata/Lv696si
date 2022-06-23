@@ -31,24 +31,31 @@ public class MyUtils {
                 String temp2 = openBracket.get(j);
                 if (temp2.length() == 1) {
                     if (temp2.equals("{") && temp1.equals("}")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
+                        for (int k = j; k <= i; k++)
+                        {
+                            openBracket.set(k, "");
+                        }
                         break;
                     }
                     if (temp2.equals("[") && temp1.equals("]")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
+                        for (int k = j; k <= i; k++)
+                        {
+                            openBracket.set(k, "");
+                        }
                         break;
                     }
                     if (temp2.equals("(") && temp1.equals(")")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
+                        for (int k = j; k <= i; k++)
+                        {
+                            openBracket.set(k, "");
+                        }
                         break;
                     }
                     break;
                 }
             }
         }
+        System.out.println(openBracket.toString());
         for (int i = 0; i < openBracket.size(); i++) {
             if (openBracket.get(i).length() != 1) {
                 continue;
@@ -78,10 +85,10 @@ public class MyUtils {
                         }
                         break;
                     }
-                    break;
                 }
             }
         }
+        System.out.println(openBracket.toString());
         for (int i = 0; i < openBracket.size(); i++) {
             if (openBracket.get(i).length() != 1) {
                 continue;
@@ -111,10 +118,10 @@ public class MyUtils {
                         }
                         break;
                     }
-                    break;
                 }
             }
         }
+        System.out.println(openBracket.toString());
         for (int i = 0; i < openBracket.size(); i++) {
             if (openBracket.get(i).length() != 1) {
                 continue;
@@ -154,6 +161,8 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        System.out.println(myUtils.verifyBrackets("[(){\\\\]}"));
+        String text = "\\\\[]";
+        System.out.println(text);
+        System.out.println(myUtils.verifyBrackets(text));
     }
 }
