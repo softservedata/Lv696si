@@ -161,7 +161,7 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text = "\\\\[]";
+        String text = "{[\\\\[]]}";
         System.out.println(text);
         System.out.println(myUtils.verifyBrackets(text));
     }
