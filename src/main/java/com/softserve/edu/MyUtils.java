@@ -92,21 +92,21 @@ public class MyUtils {
                 if (temp2.length() == 3) {
                     if (temp2.equals("\\\\}") && temp1.equals("{")) {
                         for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == j)
+                            if (openBracket.get(k).length() != 1 || k == i)
                                 openBracket.set(k, "");
                         }
                         break;
                     }
                     if (temp2.equals("\\\\]") && temp1.equals("[")) {
                         for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == j)
+                            if (openBracket.get(k).length() != 1 || k == i)
                                 openBracket.set(k, "");
                         }
                         break;
                     }
                     if (temp2.equals("\\\\)") && temp1.equals("(")) {
                         for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == j)
+                            if (openBracket.get(k).length() != 1 || k == i)
                                 openBracket.set(k, "");
                         }
                         break;
@@ -154,6 +154,6 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        System.out.println(myUtils.verifyBrackets("[\\\\]"));
+        System.out.println(myUtils.verifyBrackets("[(){\\\\]}"));
     }
 }
