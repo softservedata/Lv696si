@@ -7,161 +7,88 @@ import java.util.function.BiFunction;
 
 public class MyUtils {
     public boolean verifyBrackets(String text) {
-        List<String> openBracket = new LinkedList<>();
-        String temp = "";
+        String openBracket = "";
+        String t = "";
         for (int i = 0; i < text.length(); i++) {
+            String temp = "";
             if (i > 1) {
                 temp = text.substring(i - 2, i);
             }
             if (text.charAt(i) == '(' || text.charAt(i) == ')' || text.charAt(i) == '{'
                     || text.charAt(i) == '}' || text.charAt(i) == ']' || text.charAt(i) == '[') {
                 if (temp.equals("\\\\")) {
-                    openBracket.add(temp + text.charAt(i));
+                    if (text.charAt(i) == '(')
+                        openBracket += 'A';
+                    if (text.charAt(i) == '[')
+                        openBracket += 'B';
+                    if (text.charAt(i) == '{')
+                        openBracket += 'C';
+                    if (text.charAt(i) == ')')
+                        openBracket += 'D';
+                    if (text.charAt(i) == ']')
+                        openBracket += 'E';
+                    if (text.charAt(i) == '}')
+                        openBracket += 'F';
                 } else {
-                    openBracket.add(text.charAt(i) + "");
+                    openBracket+=text.charAt(i);
                 }
             }
         }
-        for (int i = 0; i < openBracket.size(); i++) {
-            if (openBracket.get(i).length() != 1) {
-                continue;
-            }
-            String temp1 = openBracket.get(i);
-            for (int j = i - 1; j >= 0; j--) {
-                String temp2 = openBracket.get(j);
-                if (temp2.length() == 1) {
-                    if (temp2.equals("{") && temp1.equals("}")) {
-                        for (int k = j; k <= i; k++)
-                        {
-                            openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("[") && temp1.equals("]")) {
-                        for (int k = j; k <= i; k++)
-                        {
-                            openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("(") && temp1.equals(")")) {
-                        for (int k = j; k <= i; k++)
-                        {
-                            openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    break;
-                }
-            }
+        System.out.println(openBracket);
+        do {
+            t = openBracket.toString();
+            openBracket = replaceSimpleBracket(openBracket);
+            //openBracket = replaceClosedBracket(openBracket);
+            //openBracket = replaceOpenBracket(openBracket);
         }
-        System.out.println(openBracket.toString());
-        for (int i = 0; i < openBracket.size(); i++) {
-            if (openBracket.get(i).length() != 1) {
-                continue;
-            }
-            String temp1 = openBracket.get(i);
-            for (int j = i - 1; j >= 0; j--) {
-                String temp2 = openBracket.get(j);
-                if (temp2.length() == 3) {
-                    if (temp2.equals("\\\\{") && temp1.equals("}")) {
-                        for (int k = i; k >= j; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("\\\\[") && temp1.equals("]")) {
-                        for (int k = i; k >= j; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("\\\\(") && temp1.equals(")")) {
-                        for (int k = i; k >= j; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                }
-            }
+        while (!t.equals(openBracket));
+        openBracket = openBracket.replaceAll("[A-F]", "");
+        System.out.println(openBracket);
+        return openBracket.length() == 0;
+    }
+    public static String replaceSimpleBracket(String text) {
+        String result = text;
+        String temp = text;
+        do {
+            temp = result.toString();
+            result = result.replaceAll("\\([^\\(\\)\\[\\]\\{\\}\\]]*\\)", "");
+            result = result.replaceAll("\\[[^\\(\\)\\[\\]\\{\\}\\]]*\\]", "");
+            result = result.replaceAll("\\{[^\\(\\)\\[\\]\\{\\}\\]]*\\}", "");
         }
-        System.out.println(openBracket.toString());
-        for (int i = 0; i < openBracket.size(); i++) {
-            if (openBracket.get(i).length() != 1) {
-                continue;
-            }
-            String temp1 = openBracket.get(i);
-            for (int j = i + 1; j < openBracket.size(); j++) {
-                String temp2 = openBracket.get(j);
-                if (temp2.length() == 3) {
-                    if (temp2.equals("\\\\}") && temp1.equals("{")) {
-                        for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("\\\\]") && temp1.equals("[")) {
-                        for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                    if (temp2.equals("\\\\)") && temp1.equals("(")) {
-                        for (int k = j; k >= i; k--) {
-                            if (openBracket.get(k).length() != 1 || k == i)
-                                openBracket.set(k, "");
-                        }
-                        break;
-                    }
-                }
-            }
+        while (!temp.equals(result));
+
+        return result;
+    }
+
+    public static String replaceClosedBracket(String text) {
+        String result = text;
+        String temp = text;
+        do {
+            temp = result.toString();
+            result = result.replaceAll("A[^\\(\\)\\[\\]\\{\\}\\]]*\\)", "");
+            result = result.replaceAll("B[^\\(\\)\\[\\]\\{\\}\\]]*\\]", "");
+            result = result.replaceAll("C[^\\(\\)\\[\\]\\{\\}\\]]*\\}", "");
         }
-        System.out.println(openBracket.toString());
-        for (int i = 0; i < openBracket.size(); i++) {
-            if (openBracket.get(i).length() != 1) {
-                continue;
-            }
-            String temp1 = openBracket.get(i);
-            for (int j = i - 1; j >= 0; j--) {
-                String temp2 = openBracket.get(j);
-                if (temp2.length() == 1) {
-                    if (temp2.equals("{") && temp1.equals("}")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
-                        break;
-                    }
-                    if (temp2.equals("[") && temp1.equals("]")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
-                        break;
-                    }
-                    if (temp2.equals("(") && temp1.equals(")")) {
-                        openBracket.set(j, "");
-                        openBracket.set(i, "");
-                        break;
-                    }
-                    break;
-                }
-            }
+        while (!temp.equals(result));
+        return result;
+    }
+
+    public static String replaceOpenBracket(String text) {
+        String result = text;
+        String temp = text;
+        do {
+            temp = result.toString();
+            result = result.replaceAll("\\([^\\(\\)\\[\\]\\{\\}\\]]*D", "");
+            result = result.replaceAll("\\[[^\\(\\)\\[\\]\\{\\}\\]]*E", "");
+            result = result.replaceAll("\\{[^\\(\\)\\[\\]\\{\\}\\]]*F", "");
         }
-        System.out.println(openBracket.toString());
-        boolean result = true;
-        for (String str : openBracket) {
-            if (str.length() == 1) {
-                result = false;
-            }
-        }
+        while (!temp.equals(result));
         return result;
     }
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text = "{[\\\\[]]}";
+        String text = "\\\\]\\\\]\\\\[]";
         System.out.println(text);
         System.out.println(myUtils.verifyBrackets(text));
     }
