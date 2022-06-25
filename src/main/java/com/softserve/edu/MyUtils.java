@@ -1,72 +1,48 @@
 package com.softserve.edu;
 
-
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.function.BiFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MyUtils {
-    public boolean verifyBrackets(String text) {
-        String openBracket = "";
+    public String differentWords(String originalText, String modifyText) {
 
-        for (int i = 0; i < text.length(); i++) {
-            String temp = "";
-            if (i > 1) {
-                temp = text.substring(i - 2, i);
-            }
-            if (text.charAt(i) == '(' || text.charAt(i) == ')' || text.charAt(i) == '{'
-                    || text.charAt(i) == '}' || text.charAt(i) == ']' || text.charAt(i) == '[') {
-                if (!temp.equals("\\\\")) {
-                    openBracket += text.charAt(i);
+
+        String pattern = "\\b[a-zA-Z0-9]+\\b";
+        Pattern p = Pattern.compile(pattern);
+        Matcher matcher = p.matcher(originalText);
+        Matcher matcher2 = p.matcher(modifyText);
+        String modified = "";
+        while (matcher.find()) {
+            String original = originalText.substring(matcher.start(), matcher.end());
+            do {
+                matcher2.find();
+                modified = modifyText.substring(matcher2.start(), matcher2.end());
+                if (!original.equals(modified)) {
+                    String newWord = modified.toUpperCase();
+                    modifyText.replaceFirst(modified, newWord);
                 }
             }
+            while (original.equals(modified));
         }
-        openBracket = replaceSimpleBracket(openBracket);
-        System.out.println(openBracket);
-        return openBracket.length() == 0;
+
+        return modifyText;
     }
 
-    public static String replaceSimpleBracket(String text) {
-        String result = text;
-        String temp = text;
-        do {
-            temp = result;
-            result = result.replaceAll("\\([^\\(\\)\\[\\]\\{\\}]*\\)", "");
-            result = result.replaceAll("\\[[^\\(\\)\\[\\]\\{\\}]*\\]", "");
-            result = result.replaceAll("\\{[^\\(\\)\\[\\]\\{\\}]*\\}", "");
-        }
-        while (!temp.equals(result));
-        return result;
-    }
-
-   /* public static String replaceClosedBracket(String text) {
-        String result = text;
-        String temp = text;
-        do {
-            temp = result;
-            result = result.replaceAll("A[^\\(\\)\\[\\]\\{\\}\\]]*\\)", "");
-            result = result.replaceAll("B[^\\(\\)\\[\\]\\{\\}\\]]*\\]", "");
-            result = result.replaceAll("C[^\\(\\)\\[\\]\\{\\}\\]]*\\}", "");
-        }
-        while (!temp.equals(result));
-        return result;
-    }
-
-    public static String replaceOpenBracket(String text) {
-        String result = text;
-        String temp = text;
-        do {
-            temp = result;
-            result = result.replaceAll("\\([^\\(\\)\\[\\]\\{\\}\\]]*D", "");
-            result = result.replaceAll("\\[[^\\(\\)\\[\\]\\{\\}\\]]*E", "");
-            result = result.replaceAll("\\{[^\\(\\)\\[\\]\\{\\}\\]]*F", "");
-        }
-        while (!temp.equals(result));
-        return result;
-    }*/
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text = "{[][dfgd({dfgdgd}dfg()dfgddfgd[])]}";
-        System.out.println(text);
-        System.out.println(myUtils.verifyBrackets(text));
+        String text2 = "Java is a general-purpose programming  " +
+                " language that is class-based object-oriented and designed to have as " +
+                "few implementation dependencies as possible.";
+
+        String text1 = "Java is a programming language that is " +
+                "class-based and designed to have as few implementation dependencies as possible.";
+        System.out.println(myUtils.differentWords(text1, text2));
+
+
     }
 }
