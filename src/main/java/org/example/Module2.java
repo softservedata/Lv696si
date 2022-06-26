@@ -1,4 +1,4 @@
-package com.softserve.edu;
+package org.example;
 
 public class Module2 {
 
