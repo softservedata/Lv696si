@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 
 public class MyUtils {
     public String differentWords(String originalText, String modifyText) {
-
-
         String pattern = "\\b[a-zA-Z0-9]+\\b";
         Pattern p = Pattern.compile(pattern);
         Matcher matcher = p.matcher(originalText);
@@ -23,10 +21,10 @@ public class MyUtils {
                 modified = modifyText.substring(matcher2.start(), matcher2.end());
                 if (!original.equals(modified)) {
                     String newWord = modified.toUpperCase();
-                    modifyText.replaceFirst(modified, newWord);
+                    modifyText = modifyText.replaceFirst(modified, newWord);
                 }
             }
-            while (original.equals(modified));
+            while (!original.equals(modified));
         }
 
         return modifyText;
