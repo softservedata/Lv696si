@@ -19,7 +19,7 @@ public class MyUtils {
             do {
                 if (matcher2.find()) {
                     modified = modifyText.substring(matcher2.start(), matcher2.end());
-                    if (!original.equals(modified)) {
+                    if (!original.equalsIgnoreCase(modified)) {
                         String newWord = modified.toUpperCase();
                         modifyText = modifyText.replaceFirst(modified, newWord);
                     }
@@ -28,7 +28,7 @@ public class MyUtils {
                     break;
                 }
             }
-            while (!original.equals(modified));
+            while (!original.equalsIgnoreCase(modified));
         }
         while (matcher2.find()) {
             modified = modifyText.substring(matcher2.start(), matcher2.end());
@@ -42,13 +42,10 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text2 = "Java java java is a general-purpose programming  " +
-                " language that is class-based object-oriented and designed to have as " +
-                "few implementation dependencies as possible dfdgdgd.";
+        String text2 = "Fggg java fgffh java";
 
         /*String text2 = "";*/
-        String text1 = "Java is a programming language that is " +
-                "class-based and designed to have as few implementation dependencies as possible.";
+        String text1 = "Java sfdfsffsf";
         System.out.println(myUtils.differentWords(text1, text2));
 
 
