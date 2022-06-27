@@ -17,11 +17,15 @@ public class MyUtils {
         while (matcher.find()) {
             String original = originalText.substring(matcher.start(), matcher.end());
             do {
-                matcher2.find();
-                modified = modifyText.substring(matcher2.start(), matcher2.end());
-                if (!original.equals(modified)) {
-                    String newWord = modified.toUpperCase();
-                    modifyText = modifyText.replaceFirst(modified, newWord);
+                if (matcher2.find()) {
+                    modified = modifyText.substring(matcher2.start(), matcher2.end());
+                    if (!original.equals(modified)) {
+                        String newWord = modified.toUpperCase();
+                        modifyText = modifyText.replaceFirst(modified, newWord);
+                    }
+                }
+                else {
+                    break;
                 }
             }
             while (!original.equals(modified));
@@ -38,10 +42,11 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text2 = "Java is a general-purpose programming  " +
+        String text2 = "Java java java is a general-purpose programming  " +
                 " language that is class-based object-oriented and designed to have as " +
                 "few implementation dependencies as possible dfdgdgd.";
 
+        /*String text2 = "";*/
         String text1 = "Java is a programming language that is " +
                 "class-based and designed to have as few implementation dependencies as possible.";
         System.out.println(myUtils.differentWords(text1, text2));
