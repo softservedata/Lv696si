@@ -26,6 +26,11 @@ public class MyUtils {
             }
             while (!original.equals(modified));
         }
+        while (matcher2.find()) {
+            modified = modifyText.substring(matcher2.start(), matcher2.end());
+            String newWord = modified.toUpperCase();
+            modifyText = modifyText.replaceFirst(modified, newWord);
+        }
 
         return modifyText;
     }
@@ -35,7 +40,7 @@ public class MyUtils {
         MyUtils myUtils = new MyUtils();
         String text2 = "Java is a general-purpose programming  " +
                 " language that is class-based object-oriented and designed to have as " +
-                "few implementation dependencies as possible.";
+                "few implementation dependencies as possible dfdgdgd.";
 
         String text1 = "Java is a programming language that is " +
                 "class-based and designed to have as few implementation dependencies as possible.";
