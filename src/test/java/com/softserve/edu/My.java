@@ -37,4 +37,11 @@ public class My {
         //
         throw new RuntimeException("ha-ha-ha");
     }
+
+    @Test(expected = ArithmeticException.class)//(expectedExceptions = ArithmeticException.class)
+    public void divisionWithException() {
+        System.out.println("\t\t\t@Test divisionWithException()");
+        int i = 1 / 0;
+    }
+
 }
