@@ -12,7 +12,7 @@ public class MyUtils {
                 text.startsWith("\\x0B") ||
                 text.startsWith("\f") ||
                 text.startsWith("\r")) {
-            text = text.substring(1, text.length());
+            text = text.substring(1);
         }
         text = text.replaceAll("[\\t\\n\\x0B\\f\\r]", " ");
         text = text.replaceAll("[ ]{2,}", " ");
@@ -40,9 +40,6 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text2 = "hhhh java llll java java java hhhh";
-
-        /*String text2 = "";*/
         String text1 = " \n \tJava    was      originally developed\n" +
                 "   by    James   Gosling at Sun Microsystems (which\n" +
                 " has since been\n" +
