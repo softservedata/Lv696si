@@ -1,0 +1,26 @@
+[
+  {
+    "accountID": 5039,
+    "country": "United States",
+    "street": "77 Geary Street",
+    "state": "California",
+    "name": "Maxine Mule",
+    "city": "San Francisco",
+    "postal": "94108",
+    "type": "business",
+    "miles": 56565,
+    "creationDate": "2017-01-15T01:42:10.020Z"	
+  },
+  {
+    "accountID": 5043,
+    "country": "United States",
+    "street": "77 Geary Street",
+    "state": "California",
+    "name": "Max Mule",
+    "city": "San Francisco",
+    "postal": "94108",
+    "type": "business",
+    "miles": 65,
+    "creationDate": "2014-01-15T01:42:10.020Z"
+  }
+]
