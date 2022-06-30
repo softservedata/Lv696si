@@ -1,53 +1,55 @@
 package com.softserve.edu;
 
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.function.BiFunction;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class MyUtils {
-    public String differentWords(String originalText, String modifyText) {
-        String pattern = "\\b[a-zA-Z0-9]+\\b";
+    public String reformatLines(String text) {
+        while (text.startsWith("\t") ||
+                text.startsWith("\n") ||
+                text.startsWith("\\x0B") ||
+                text.startsWith("\f") ||
+                text.startsWith("\r")) {
+            text = text.substring(1, text.length());
+        }
+        text = text.replaceAll("[\\t\\n\\x0B\\f\\r]", " ");
+        text = text.replaceAll("[ ]{2,}", " ");
+        if (!text.endsWith(" ")) {
+            text = text + " ";
+        }
+        String pattern = " ";
         Pattern p = Pattern.compile(pattern);
-        Matcher matcher = p.matcher(originalText);
-        Matcher matcher2 = p.matcher(modifyText);
-        String modified = "";
-        while (matcher.find()) {
-            String original = originalText.substring(matcher.start(), matcher.end());
-            do {
-                if (matcher2.find()) {
-                    modified = modifyText.substring(matcher2.start(), matcher2.end());
-                    if (!original.equalsIgnoreCase(modified)) {
-                        String newWord = modified.toUpperCase();
-                        modifyText = modifyText.replaceFirst(modified, newWord);
-                    }
-                }
-                else {
-                    break;
-                }
+        Matcher m = p.matcher(text);
+        StringBuilder result = new StringBuilder(text);
+        int startIndex = 0;
+        int previous = 0;
+        while (m.find()) {
+            if (m.start() - startIndex > 60) {
+                startIndex = previous;
+                result = result.replace(previous, previous + 1, "\n");
             }
-            while (!original.equalsIgnoreCase(modified));
+            previous = m.start();
         }
-        while (matcher2.find()) {
-            modified = modifyText.substring(matcher2.start(), matcher2.end());
-            String newWord = modified.toUpperCase();
-            modifyText = modifyText.replaceFirst(modified, newWord);
-        }
-
-        return modifyText;
+        result = new StringBuilder(result.substring(0, result.length() - 1));
+        String result1 = result.toString();
+        return result.toString();
     }
 
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text2 = "Fggg java fgffh java";
+        String text2 = "hhhh java llll java java java hhhh";
 
         /*String text2 = "";*/
-        String text1 = "Java sfdfsffsf";
-        System.out.println(myUtils.differentWords(text1, text2));
-
+        String text1 = " \n \tJava    was      originally developed\n" +
+                "   by    James   Gosling at Sun Microsystems (which\n" +
+                " has since been\n" +
+                "acquired by Oracle) and released in 1995\n" +
+                " as a core component of Sun Microsystems' Java platform.    ";
+        System.out.println(text1);
+        System.out.println(myUtils.reformatLines(text1));
 
     }
 }
