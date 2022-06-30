@@ -40,7 +40,7 @@ public class MyUtils {
 
     public static void main(String[] args) {
         MyUtils myUtils = new MyUtils();
-        String text1 = " \n \tJava    was      originally developed\n" +
+        String text1 = " Java    was      originally developed\n" +
                 "   by    James   Gosling at Sun Microsystems (which\n" +
                 " has since been\n" +
                 "acquired by Oracle) and released in 1995\n" +
