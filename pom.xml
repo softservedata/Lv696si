@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.softserve.edu</groupId>
-    <artifactId>lv696mv</artifactId>
+    <artifactId>lv696testng</artifactId>
     <version>1.0</version>
 
     <packaging>jar</packaging>
@@ -28,23 +28,38 @@
 
         <!-- - - - - - Test - - - - - -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+<!--            <version>7.6.1</version>-->
+            <version>7.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- - - - Mock Object - - - -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.mockito</groupId> -->
+        <!-- <artifactId>mockito-all</artifactId> -->
+        <!-- <version>${org.mockito.version}</version> -->
+        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-core</artifactId>
+            <version>2.0.9</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>2.0.9</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.8.2</version>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-testng</artifactId>
+            <version>2.0.9</version>
             <scope>test</scope>
         </dependency>
 
@@ -117,7 +132,7 @@
                 <configuration>
                     <includes>
                         <include>**/*.java</include>
-<!--                        <include>**/edu09/*.java</include>-->
+                        <!--                        <include>**/edu09/*.java</include>-->
                     </includes>
                     <systemPropertyVariables>
                         <surefire.application.password>
