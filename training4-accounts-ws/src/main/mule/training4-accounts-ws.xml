@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<db:my-sql-connection host="mudb.learn.mulesoft.com" port="3306" user="mule" password="mule" database="training" />
 	</db:config>
 	<flow name="accountsGet" doc:id="6529d604-4f01-42b0-b51d-72bda549f2b5" >
-		<db:select doc:name="Select" doc:id="2c7cefdb-2c7a-4919-90aa-c4293e789dff" config-ref="Database_Config">
+		<db:select doc:name="SelectAllAccounts" doc:id="2c7cefdb-2c7a-4919-90aa-c4293e789dff" config-ref="Database_Config">
 			<db:sql ><![CDATA[SELECT *
 FROM
 flights_customers
@@ -40,14 +40,14 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 		</ee:transform>
 	</flow>
 	<flow name="accountsGetByID" doc:id="4b87728a-18a2-444f-83d1-b59e86bf13e2" >
-		<db:select doc:name="Copy_of_Select" doc:id="2e0520a5-59c6-499d-80ff-abcb2dea019f" config-ref="Database_Config" >
+		<db:select doc:name="SelectById" doc:id="2e0520a5-59c6-499d-80ff-abcb2dea019f" config-ref="Database_Config" >
 			<db:sql ><![CDATA[SELECT *
 FROM
 flights_customers
 WHERE accountID = :accountID]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{'accountID' : attributes.uriParams.requesterID}]]]></db:input-parameters>
 		</db:select>
-		<ee:transform doc:name="Copy_of_Transform Message" doc:id="3ac896de-5c46-4714-9b6a-18e4e47d3b74" >
+		<ee:transform doc:name="Transform Message" doc:id="3ac896de-5c46-4714-9b6a-18e4e47d3b74" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
