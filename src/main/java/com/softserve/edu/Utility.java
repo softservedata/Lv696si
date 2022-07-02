@@ -15,15 +15,7 @@ class EmployeeComparator<Type extends Person> extends PersonComparator<Type> imp
     @Override
     public int compare(Type o1, Type o2) {
         if (super.compare(o1, o2)==0) {
-            if (((Employee)o1).getSalary() < ((Employee)o2).getSalary()) {
-                return 1;
-            }
-            else {
-                if (((Employee)o1).getSalary() > ((Employee)o2).getSalary()) {
-                   return -1;
-                }
-                else return 0;
-            }
+            return Double.compare(((Employee) o2).getSalary(), ((Employee) o1).getSalary());
         }
         else return super.compare(o1, o2);
     }
@@ -48,8 +40,8 @@ public class Utility {
         new Developer("Third", 32, 240.0, Level.MIDDLE),
                 new Developer("AThird", 32, 240.0, Level.JUNIOR),
                 new Developer("AThird", 32, 240.0, Level.SENIOR)};
-        int [] arr = {1, 2};
-        sortPeople(persons, new DeveloperComparator());
+
+        sortPeople(persons, new DeveloperComparator<Person>());
         System.out.println(Arrays.toString(persons));
     }
 }
