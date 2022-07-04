@@ -30,7 +30,7 @@ class DeveloperComparator implements Comparator<Developer> {
     }
 }
 public class Utility {
-    public static <T extends Person> void sortPeople(T[] persons, Comparator comparator){
+    public static <T extends Person> void sortPeople(T [] persons, Comparator<? super T> comparator){
        Arrays.sort(persons, comparator);
     }
 
