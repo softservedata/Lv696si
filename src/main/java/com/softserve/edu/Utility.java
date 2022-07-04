@@ -2,36 +2,36 @@ package com.softserve.edu;
 import java.util.Arrays;
 import java.util.Comparator;
 
-class PersonComparator<Type extends Person> implements Comparator<Type>{
+class PersonComparator implements Comparator<Person>{
     @Override
-    public int compare(Type o1, Type o2) {
-         if (o1.getName().compareTo(o2.getName()) == 0) {
-             return o1.getAge() - o2.getAge();
-         }
-         else return o1.getName().compareTo(o2.getName());
+    public int compare(Person o1, Person o2) {
+        if (o1.getName().compareTo(o2.getName()) == 0) {
+            return o1.getAge() - o2.getAge();
+        }
+        else return o1.getName().compareTo(o2.getName());
     }
 }
-class EmployeeComparator<Type extends Person> extends PersonComparator<Type> implements Comparator<Type> {
+class EmployeeComparator implements Comparator<Employee> {
     @Override
-    public int compare(Type o1, Type o2) {
-        if (super.compare(o1, o2)==0) {
-            return Double.compare(((Employee) o2).getSalary(), ((Employee) o1).getSalary());
+    public int compare(Employee o1, Employee o2) {
+        if (new PersonComparator().compare(o1, o2)==0) {
+            return Double.compare(o1.getSalary(), o2.getSalary());
         }
-        else return super.compare(o1, o2);
+        else return new PersonComparator().compare(o1, o2);
     }
 }
-class DeveloperComparator<Type extends Person> extends EmployeeComparator<Type> implements Comparator<Type> {
+class DeveloperComparator implements Comparator<Developer> {
     @Override
-    public int compare(Type o1, Type o2) {
-        if (super.compare(o1, o2)==0) {
-            return ((Developer)o1).getLevel().toString().compareTo(((Developer)o2).getLevel().toString());
+    public int compare(Developer o1, Developer o2) {
+        if (new EmployeeComparator().compare(o1, o2)==0) {
+            return o1.getLevel().toString().compareTo(o2.getLevel().toString());
         }
-        else return super.compare(o1, o2);
+        else return new EmployeeComparator().compare(o1, o2);
     }
 }
 public class Utility {
-    public static void sortPeople(Person[] persons, Comparator comparator){
-        Arrays.sort(persons, comparator);
+    public static <T extends Person> void sortPeople(T[] persons, Comparator comparator){
+       Arrays.sort(persons, comparator);
     }
 
     public static void main(String[] args) {
@@ -41,7 +41,7 @@ public class Utility {
                 new Developer("AThird", 32, 240.0, Level.JUNIOR),
                 new Developer("AThird", 32, 240.0, Level.SENIOR)};
 
-        sortPeople(persons, new DeveloperComparator<Person>());
+        sortPeople(persons, new PersonComparator());
         System.out.println(Arrays.toString(persons));
     }
 }
