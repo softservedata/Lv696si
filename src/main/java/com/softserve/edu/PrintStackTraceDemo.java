@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 public class PrintStackTraceDemo{
     public static void x(){
         try{
-            t();
+            throw new IOException();
         }
         catch (IOException ioe){ //this way of stack trace output is workaround for moodle
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
