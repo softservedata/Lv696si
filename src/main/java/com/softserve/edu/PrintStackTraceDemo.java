@@ -1,35 +1,40 @@
 package com.softserve.edu;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.ByteArrayOutputStream;
 
-public class PrintStackTraceDemo{
-    public static void x(){
-        try{
-            throw new IOException();
+
+class CheckingAccount {
+    private double balance;
+    private int number;
+
+    public CheckingAccount(int number) {
+        this.number = number;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) throws InsufficientAmountException {
+        if(amount <= balance) {
+            balance -= amount;
+        }else {
+            double needs = amount - balance;
+            throw new InsufficientAmountException(needs);
         }
-        catch (IOException ioe){ //this way of stack trace output is workaround for moodle
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(byteArrayOutputStream);
-            ioe.printStackTrace(ps);
-            System.out.println(byteArrayOutputStream);
+    }
+    // some other code
+}
+class BankDemo {
+    public static void doOperations() {
+        CheckingAccount c = new CheckingAccount(101);
+        c.deposit(500.00);
+        try {
+            c.withdraw(100.00);
+            c.withdraw(600.00);
+        } catch (InsufficientAmountException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Please, deposit at least $" + e.getAmount());
+            e.printStackTrace();
         }
-    }
-
-    public static void t() throws IOException{
-        throw new IOException();
-    }
-
-    static void a() throws IOException   {
-        throw new IOException();
-    }
-
-    static void m() throws IOException   {
-        throw new IOException();
-    }
-
-    public static void main(String[] args) {
-        x();
     }
 }
