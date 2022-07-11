@@ -17,7 +17,7 @@ import java.sql.Statement;
  *    SELECT user,plugin from mysql.user;
  *    ALTER USER 'pmp312'@'%' IDENTIFIED WITH mysql_native_password BY 'Pmp-312_Pa$$word';
  */
-public class ApplDB {
+public final class ApplDB {
 	private static Connection con = null;
 	/*
 	private static String username = "lv696";

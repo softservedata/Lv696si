@@ -16,10 +16,10 @@ abstract class ADaoRead<TEntity extends IModel> implements IDaoRead<TEntity> {
     protected final String EMPTY_RESULTSET = "Empty ResultSet by Query %s";
     protected final String DATABASE_READING_ERROR = "Database Reading Error";
     //
-    protected final Map<Enum<?>, Enum<?>> sqlQueries;
+    protected final Map<SqlQueries, Enum<?>> sqlQueries;
 
     protected ADaoRead() {
-        this.sqlQueries = new HashMap<Enum<?>, Enum<?>>();
+        this.sqlQueries = new HashMap<SqlQueries, Enum<?>>();
         // TODO Call init();
     }
 
