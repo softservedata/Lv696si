@@ -9,7 +9,9 @@ public class MyUtils {
     public static String getDateAfterToday(int years, int months, int days) {
         LocalDate localDate = LocalDate.now();
         localDate = localDate.plusDays(days).plusMonths(months).plusYears(years);
-        return localDate.toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        String result = localDate.format(formatter);
+        return result;
     }
 
     public static void main(String[] args) {
