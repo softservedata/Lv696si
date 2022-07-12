@@ -1,34 +1,95 @@
 package org.example;
 
-class Person{
-    int age;
-    String healthInfo;
-    String name;
-    String getHealthStatus(){ return name + " " + healthInfo; }
+import java.util.*;
 
-    public Person(int age, String healthInfo, String name) {
-        this.age = age;
-        this.healthInfo = healthInfo;
+public class Person {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public Person(String name) {
         this.name = name;
     }
-}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(name, person.name);
+    }
 
-class Child extends Person {
-    String childIDNumber;
-
-    public Child(int age, String healthInfo, String name, String childIDNumber) {
-        super(age, healthInfo, name);
-        this.childIDNumber = childIDNumber;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
 
+class Student extends Person {
+    private String studyPlace;
+    private int studyYears;
 
-class Adult extends Person {
-    String passportNumber;
+    public String getStudyPlace() {
+        return studyPlace;
+    }
 
-    public Adult(int age, String healthInfo, String name, String passportNumber) {
-        super(age, healthInfo, name);
-        this.passportNumber = passportNumber;
+    public int getStudyYears() {
+        return studyYears;
+    }
+
+    public Student(String name, String studyPlace, int studyYears) {
+        super(name);
+        this.studyPlace = studyPlace;
+        this.studyYears = studyYears;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Student student = (Student) o;
+        return studyYears == student.studyYears && Objects.equals(studyPlace, student.studyPlace);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), studyPlace, studyYears);
     }
 }
+
+class Worker extends Person {
+    private String workPosition;
+    private int experienceYears;
+
+    public String getWorkPosition() {
+        return workPosition;
+    }
+
+    public int getExperienceYears() {
+        return experienceYears;
+    }
+
+    public Worker(String name, String workPosition, int experienceYears) {
+        super(name);
+        this.workPosition = workPosition;
+        this.experienceYears = experienceYears;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Worker worker = (Worker) o;
+        return experienceYears == worker.experienceYears && Objects.equals(workPosition, worker.workPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), workPosition, experienceYears);
+    }
+}
+

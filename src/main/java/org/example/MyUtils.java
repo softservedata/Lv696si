@@ -1,4 +1,5 @@
 package org.example;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class MyUtils {
@@ -26,7 +27,7 @@ public class MyUtils {
             if(newMap.containsKey(entry.getValue()))  // There is already a name present as a Key
                 newMap.get(entry.getValue()).add(entry.getKey());
             else    // There is no name as Key present
-                newMap.put(entry.getValue(), new ArrayList<String>(Collections.singletonList(entry.getKey())));
+                newMap.put(entry.getValue(), new ArrayList<>(Collections.singletonList(entry.getKey())));
         }
         return newMap;
     }
@@ -44,56 +45,131 @@ public class MyUtils {
         return true;
     }
 
-    public static class Student {
-        private int id;
-        private String name;
-
-        public Student(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Student student = (Student) o;
-            return id == student.id && Objects.equals(name, student.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(id, name);
-        }
-    }
-
     public Set<Student> commonStudents(List<Student> list1, List<Student> list2) {
 
         Set<Student> newSet = new HashSet<>();
 
-        for(Student student : list1) {
-            if(list2.contains(student))
+        for (Student student : list1) {
+            if (list2.contains(student))
                 newSet.add(student);
         }
 
         return newSet;
     }
+
+    public List<Employee> largestEmployees(List<Employee> workers) {
+
+        int maxExp = 0;
+        BigDecimal maxSal = BigDecimal.valueOf(0);
+        List<Employee> maxWorkers = new ArrayList<>();
+
+        for (Employee worker : workers) {
+            if (worker == null)
+                break;
+            if (worker.getExperience() > maxExp)
+                maxExp = worker.getExperience();
+            if (worker.getPayment().compareTo(maxSal) > 0)
+                maxSal = worker.getPayment();
+        }
+
+        for (Employee worker : workers) {
+            if (worker == null)
+                break;
+            if (worker.getExperience() == maxExp) {
+                if (!maxWorkers.contains(worker))
+                    maxWorkers.add(worker);
+            }
+            if (worker.getPayment().compareTo(maxSal) == 0) {
+                if (!maxWorkers.contains(worker))
+                    maxWorkers.add(worker);
+            }
+        }
+        return maxWorkers;
+    }
+
+    public List<Person> maxDuration(List<Person> persons) {
+
+        int maxStudyYears = 0;
+        int maxWorkYears = 0;
+        List<Person> maxYearPeople = new ArrayList<>();
+
+        for (Person person : persons) {
+            if (person == null)
+                break;
+            if (person.getClass().equals(Worker.class)) {
+                if (maxWorkYears < ((Worker) person).getExperienceYears())
+                    maxWorkYears = ((Worker) person).getExperienceYears();
+            } else if (person.getClass().equals(org.example.Student.class)) {
+                if (maxStudyYears < ((org.example.Student) person).getStudyYears())
+                    maxStudyYears = ((org.example.Student) person).getStudyYears();
+            }
+        }
+
+        for (Person person : persons) {
+            if (person == null)
+                break;
+            if (person.getClass().equals(Worker.class)) {
+                if (((Worker) person).getExperienceYears() == maxWorkYears) {
+                    if (!maxYearPeople.contains(person))
+                        maxYearPeople.add(person);
+                }
+            } else if (person.getClass().equals(org.example.Student.class)) {
+                if (((org.example.Student) person).getStudyYears() == maxStudyYears) {
+                    if (!maxYearPeople.contains(person))
+                        maxYearPeople.add(person);
+                }
+            }
+        }
+
+        return maxYearPeople;
+    }
+
+    public double sumPerimeter(List<?> figures) {
+        double sumPer = 0;
+
+        for (Object figure : figures) {
+            if (figure == null)
+                break;
+            if (figure instanceof Square)
+                sumPer += ((Square) figure).getPerimeter();
+        }
+        return sumPer;
+    }
+
+    public List<Shape> maxAreas(List<Shape> shapes) {
+
+        List<Shape> maxAreaList = new ArrayList<>();
+        double maxCircleArea = 0;
+        double maxRectArea = 0;
+
+        for (Shape figure : shapes) {
+            if (figure instanceof Circle) {
+                if (figure.getArea() > maxCircleArea)
+                    maxCircleArea = figure.getArea();
+            }
+            if (figure instanceof Rectangle) {
+                if (figure.getArea() > maxRectArea)
+                    maxRectArea = figure.getArea();
+            }
+        }
+
+        for (Shape figure: shapes) {
+            if (figure instanceof Circle) {
+                if (figure.getArea() == maxCircleArea) {
+                    if (!maxAreaList.contains(figure))
+                        maxAreaList.add(figure);
+                }
+            }
+            if (figure instanceof Rectangle) {
+                if (figure.getArea() == maxRectArea) {
+                    if (!maxAreaList.contains(figure))
+                        maxAreaList.add(figure);
+                }
+            }
+        }
+        return maxAreaList;
+    }
+
 }
 
 class StringCompare implements Comparator<String> {

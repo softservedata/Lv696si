@@ -25,20 +25,3 @@ class User {
         this.surname = surname;
     }
 }
-
-class Student extends User {
-    protected int year;
-
-    public Student(int year, String name, String surname) {
-        super(name, surname);
-        this.year = year;
-    }
-
-    public int getCourseNumber() {
-        int courseNum;
-        courseNum = Calendar.getInstance().get(Calendar.YEAR) - year + 1;
-        if(courseNum <= 0 || courseNum >= 7)
-            return -1;
-        return courseNum;
-    }
-}
