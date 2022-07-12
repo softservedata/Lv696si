@@ -17,12 +17,13 @@ class Manager extends Employee {
 
     @Override
     public BigDecimal getPayment() {
-        return super.getPayment();
+        //return super.getPayment();
         //return super.getPayment() * coefficient;
+        return super.getPayment().multiply(BigDecimal.valueOf(getCoefficient())).setScale(2);
     }
 
     @Override
-    public boolean equals(Object o) { // TODO Employee
+    public boolean equals(Object o) { // TODO Employee ****UPDATE
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
