@@ -1,36 +1,43 @@
 package com.softserve.edu;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 
 public class App {
     public static void main(String[] args) {
-        System.out.println(readFile("1.txt"));
+        LocalDateTime date = LocalDateTime.of(2017, 11, 26, 15, 38);
+        Period period = Period.ofYears(1).ofMonths(2).ofDays(3);
+        date = date.minus(period);
+        System.out.println(date);
+
 
     }
 
-    public static String readFile(String filename) {
+
+
+
+
+    public static void writeFile(String filename, String text) {
         String result = "";
-        String text = "";
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            while (reader.ready()) {
-                text += reader.readLine();
+        for (int i = 0; i < text.length(); i++) {
+            String txt = Integer.toBinaryString(text.charAt(i));
+            for (int j = txt.length(); j < 7; j++) {
+                txt = "0" + txt;
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            result += txt;
+        }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(result);
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < text.length() - 7; i+=7) {
-            int charCode = Integer.parseInt(text.substring(i, i + 7));
-            result += new Character((char)charCode).toString();
-        }
-        return result;
     }
 }
-//10001011111000110000111011011110000110110011001010100000110111111001100100000111010011001011111000111010001000001100110110111111100100100000111010011001011110011111010001000001100011110000111100111100101010000001000110110001
-
-//0100010101111000011000010110110101110000011011000110010100100000011011110110011000100000011101000110010101111000011101000010000001100110011011110111001000100000011101000110010101110011011101000010000001100011011000010111001101100101001000000010001100110001
-//
-//
+//1001000110010111011001101100
