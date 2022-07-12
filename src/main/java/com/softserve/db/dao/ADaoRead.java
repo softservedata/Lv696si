@@ -2,8 +2,10 @@ package com.softserve.db.dao;
 
 import com.softserve.db.entity.IModel;
 import com.softserve.db.entity.SqlQueries;
+import com.softserve.db.tools.ConnectionManager;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,14 +15,15 @@ import java.util.Map;
 abstract class ADaoRead<TEntity extends IModel> implements IDaoRead<TEntity> {
 
     protected final String QUERY_NOT_FOUND = "Query not found %s";
-    protected final String EMPTY_RESULTSET = "Empty ResultSet by Query %s";
-    protected final String DATABASE_READING_ERROR = "Database Reading Error";
+    protected final String DATABASE_INPUT_ERROR = "Database Input Error";
+    //protected final String EMPTY_RESULTSET = "Empty ResultSet by Query %s";
+    //protected final String DATABASE_READING_ERROR = "Database Reading Error";
     //
     protected final Map<SqlQueries, Enum<?>> sqlQueries;
 
     protected ADaoRead() {
         this.sqlQueries = new HashMap<SqlQueries, Enum<?>>();
-        // TODO Call init();
+        init();
     }
 
     // TODO Use Builder
@@ -30,66 +33,46 @@ abstract class ADaoRead<TEntity extends IModel> implements IDaoRead<TEntity> {
     // TODO Create abstract method init
     protected abstract void init();
 
-/*
-    // Read
-    private List<TEntity> getQueryResult(String query, SqlQueries sqlQueries) {
-        List<TEntity> all = new ArrayList<TEntity>();
-        Statement statement = null;
-        ResultSet resultSet = null;
-        String[] queryResult;
+    protected List<TEntity> executeQuery(String query, SqlQueries sqlQueries) {
+        List<TEntity> entities = null;
         if (query == null) {
+            // TODO Develop Custom Exceptions
             throw new RuntimeException(String.format(QUERY_NOT_FOUND, sqlQueries.name()));
         }
-        try {
-            statement = ConnectionManager.getInstance().getConnection().createStatement();
-            resultSet = statement.executeQuery(query);
-            queryResult = new String[resultSet.getMetaData().getColumnCount()];
-            while (resultSet.next()) {
-                for (int i = 0; i < queryResult.length; i++) {
-                    queryResult[i] = resultSet.getString(i + 1);
+        try (Statement statement = ConnectionManager.getInstance().getConnection().createStatement()) {
+            boolean isSelect = statement.execute(query);
+            if (isSelect) {
+                ResultSet resultSet = statement.getResultSet();
+                entities = new ArrayList<TEntity>();
+                String[] queryResult = new String[resultSet.getMetaData().getColumnCount()];
+                while (resultSet.next()) {
+                    for (int i = 0; i < queryResult.length; i++) {
+                        queryResult[i] = resultSet.getString(i + 1);
+                    }
+                    entities.add(createInstance(queryResult));
                 }
-                all.add(createInstance(queryResult));
+                resultSet.close();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(DATABASE_READING_ERROR, e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (Exception ex) {
-                    // TODO Warning
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (Exception ex) {
-                    // TODO Warning
-                }
-            }
+            // TODO Develop Custom Exceptions
+            throw new RuntimeException(DATABASE_INPUT_ERROR, e);
         }
-        if (all.isEmpty()) {
-            throw new RuntimeException(String.format(EMPTY_RESULTSET, query));
-        }
-        return all;
+        return entities;
     }
 
-    public TEntity getById(Long id) {
-        return getQueryResult(String.format(
-                        sqlQueries.get(SqlQueries.GET_BY_ID).toString(), id),
-                SqlQueries.GET_BY_ID).get(0);
+    public TEntity getById(int id) {
+        return executeQuery(String.format(sqlQueries.get(SqlQueries.GET_BY_ID).toString(), id),
+                SqlQueries.GET_BY_ID).get(0); // TODO throw Exception if size == 0
     }
 
     public List<TEntity> getByFieldName(String fieldName, String text) {
-        return getQueryResult(String.format(
-                        sqlQueries.get(SqlQueries.GET_BY_FIELD).toString(), fieldName, text),
+        return executeQuery(String.format(sqlQueries.get(SqlQueries.GET_BY_FIELD).toString(), fieldName, text),
                 SqlQueries.GET_BY_FIELD);
     }
 
     public List<TEntity> getAll() {
-        return getQueryResult(
-                sqlQueries.get(SqlQueries.GET_ALL).toString(),
-                SqlQueries.GET_ALL);
+        return executeQuery(
+                sqlQueries.get(SqlQueries.GET_ALL).toString(), SqlQueries.GET_ALL);
     }
-*/
+
 }

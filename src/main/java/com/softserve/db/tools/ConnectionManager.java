@@ -123,6 +123,7 @@ public final class ConnectionManager {
                     try {
                         instance.getAllConnections().get(key).close();
                     } catch (SQLException e) {
+                        // TODO Develop Custom Exceptions
                         throw new RuntimeException(FAILED_CLOSE_CONNECTION, e);
                     }
                     instance.getAllConnections().put(key, null);
