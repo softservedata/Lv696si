@@ -15,14 +15,11 @@ public class RoleDao extends ADaoCrud<Role> {
     }
 
     protected Role createInstance(String[] args) {
-        return null; // TODO
+        return Role.createInstance(args);
     }
 
     protected String[] getFields(Role entity) {
-        return null; // TODO
+        return Role.getFields(entity);
     }
 
-    protected String[] getUpdateFields(Role entity) {
-        return null; // TODO
-    }
 }

@@ -15,7 +15,15 @@ abstract class ADaoCrud<TEntity extends IModel> extends ADaoRead<TEntity> implem
     protected abstract String[] getFields(TEntity entity);
 
     // TODO Use List<String>
-    protected abstract String[] getUpdateFields(TEntity entity);
+    protected String[] getUpdateFields(TEntity entity) {
+        String[] fields = getFields(entity);
+        String id = fields[0];
+        for (int i = 0; i < fields.length - 1; i++) {
+            fields[i] = fields[i + 1];
+        }
+        fields[fields.length - 1] = id;
+        return fields;
+    }
 
     // Insert
     public void insertByEntity(TEntity entity) {

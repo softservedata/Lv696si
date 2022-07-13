@@ -55,6 +55,21 @@ public class Role implements IModel {
         this.description = description;
     }
 
+    public static Role createInstance(String[] args) {
+        return new Role()
+                .setId(args[0] == null ? 0 : Integer.parseInt(args[0]))
+                .setName(args[1] == null ? "" : args[1])
+                .setDescription(args[2] == null ? "" : args[2]);
+    }
+
+    public static String[] getFields(Role entity) {
+        String[] result = new String[3];
+        result[0] = String.valueOf(entity.getId());
+        result[1] = entity.getName();
+        result[2] = entity.getDescription();
+        return result;
+    }
+
     public int getId() {
         return id;
     }

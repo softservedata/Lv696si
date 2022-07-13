@@ -64,6 +64,25 @@ public class User implements IModel {
         this.idRole = idRole;
     }
 
+    public static User createInstance(String[] args) {
+        return new User()
+                .setId(args[0] == null ? 0 : Integer.parseInt(args[0]))
+                .setName(args[1] == null ? "" : args[1])
+                .setEmail(args[2] == null ? "" : args[2])
+                .setPassword(args[3] == null ? "" : args[2])
+                .setIdRole(args[4] == null ? 0 : Integer.parseInt(args[0]));
+    }
+
+    public static String[] getFields(User entity) {
+        String[] result = new String[5];
+        result[0] = String.valueOf(entity.getId());
+        result[1] = entity.getName();
+        result[2] = entity.getEmail();
+        result[3] = entity.getPassword();
+        result[4] = String.valueOf(entity.getIdRole());
+        return result;
+    }
+
     public int getId() {
         return id;
     }

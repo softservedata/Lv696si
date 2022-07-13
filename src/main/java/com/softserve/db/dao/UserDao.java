@@ -15,15 +15,11 @@ public class UserDao extends ADaoCrud<User> {
     }
 
     protected User createInstance(String[] args) {
-        return null; // TODO
+        return User.createInstance(args);
     }
 
     protected String[] getFields(User entity) {
-        return null; // TODO
-    }
-
-    protected String[] getUpdateFields(User entity) {
-        return null; // TODO
+        return User.getFields(entity);
     }
 
 }
