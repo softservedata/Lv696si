@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="925b50ec-e20d-4d7b-a9f1-e787865a3321" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cf2cb73c-8fb9-455c-bbca-dc139b6d077f" >
+		<http:request-connection host="diy-accounts-api.us-w2.cloudhub.io" port="80" />
+	</http:request-config>
+	<flow name="AccountsFlow" doc:id="919274c7-2dab-4db0-9452-3f873563076f" >
+		<http:listener doc:name="GET /accounts" doc:id="c1fad561-f7f1-4705-aa4e-d86df7292679" config-ref="HTTP_Listener_config" path="/service" allowedMethods="GET">
+		</http:listener>
+		<http:request method="OPTIONS" doc:name="Request" doc:id="4ed4fae5-ef21-4535-8e5a-491850ec55d0" config-ref="HTTP_Request_configuration" path="/accounts">
+			<http:headers ><![CDATA[#[{
+	user_id : "123",
+	client_id: "6d9e329147164bf08a2cc4eeb075252e",
+	client_secret: "B20a21B05dBb4287a7C49076D6E0d377"
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="5ab476a6-bb1f-4f70-a733-fb1d47bca13b" />
+	</flow>
+</mule>
