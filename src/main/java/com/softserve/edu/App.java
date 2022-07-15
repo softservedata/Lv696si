@@ -10,10 +10,7 @@ import java.time.temporal.ChronoUnit;
 
 public class App {
     public static void main(String[] args) {
-        LocalDateTime date = LocalDateTime.of(2017, 11, 26, 15, 38);
-        Period period = Period.ofYears(1).ofMonths(2).ofDays(3);
-        date = date.minus(period);
-        System.out.println(date);
+
 
 
     }

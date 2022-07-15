@@ -1,20 +1,20 @@
 package com.softserve.edu;
 
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class MyUtils {
-    public static String getDateAfterToday(int years, int months, int days) {
-        LocalDate localDate = LocalDate.now();
-        localDate = localDate.plusDays(days).plusMonths(months).plusYears(years);
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-        String result = localDate.format(formatter);
+    public Stream<String> nameList(Map<String, Stream<String>> map) {
+        Stream<String> result = null;
+        for (Map.Entry<String, Stream<String>> entry : map.entrySet()) {
+
+        }
         return result;
+        // Code
     }
 
     public static void main(String[] args) {
-        System.out.println(getDateAfterToday(2, 1, 1));
+        System.out.println();
     }
 }
