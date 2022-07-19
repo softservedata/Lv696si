@@ -6,6 +6,7 @@ import java.util.Objects;
 public class User implements IModel {
 
     public static enum Queries {
+        CREATE_TABLE(SqlQueries.CREATE_TABLE, "CREATE TABLE roles ( id int not null primary key, name varchar(20), email varchar(100), email varchar(100), password varchar(100), id_role int not null);"),
         INSERT(SqlQueries.INSERT, "INSERT INTO users (name, email, password, id_role) VALUES ('%s', '%s', '%s', %s);"),
         GET_BY_ID(SqlQueries.GET_BY_ID, "SELECT id, name, email, password, id_role FROM users WHERE id = %s;"),
         GET_BY_FIELD(SqlQueries.GET_BY_FIELD, "SELECT id, name, email, password, id_role FROM users WHERE %s = '%s';"),
