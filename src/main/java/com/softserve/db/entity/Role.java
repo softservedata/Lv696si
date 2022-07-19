@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Role implements IModel {
 
     public static enum Queries {
-        CREATE_TABLE(SqlQueries.CREATE_TABLE, "CREATE TABLE roles ( id int not null primary key, name varchar(20), description varchar(100));"),
+        CREATE(SqlQueries.CREATE, "CREATE TABLE roles ( id int not null primary key, name varchar(20), description varchar(100));"),
         INSERT(SqlQueries.INSERT, "INSERT INTO roles (name, description) VALUES ('%s', '%s');"),
         GET_BY_ID(SqlQueries.GET_BY_ID, "SELECT id, name, description FROM roles WHERE id = %s;"),
         GET_BY_FIELD(SqlQueries.GET_BY_FIELD, "SELECT id, name, description FROM roles WHERE %s = '%s';"),

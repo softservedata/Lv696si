@@ -12,46 +12,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-abstract class ADaoRead<TEntity extends IModel> implements IDaoRead<TEntity> {
-
-    protected final String QUERY_NOT_FOUND = "Query not found %s";
-    protected final String DATABASE_INPUT_ERROR = "Database Input Error";
-    //protected final String EMPTY_RESULTSET = "Empty ResultSet by Query %s";
-    //protected final String DATABASE_READING_ERROR = "Database Reading Error";
-    //
-    protected final Map<SqlQueries, Enum<?>> sqlQueries;
+abstract class ADaoRead<TEntity extends IModel> extends ADDLCreate<TEntity> implements IDaoRead<TEntity> {
 
     protected ADaoRead() {
-        this.sqlQueries = new HashMap<SqlQueries, Enum<?>>();
-        init();
+        super();
     }
 
     // TODO Use Builder
     // TODO Use List<String>
     protected abstract TEntity createInstance(String[] args);
 
-    // TODO Create abstract method init
-    protected abstract void init();
-
-    protected List<TEntity> executeQuery(String query, SqlQueries sqlQueries) {
-        List<TEntity> entities = null;
-        if (query == null) {
-            // TODO Develop Custom Exceptions
-            throw new RuntimeException(String.format(QUERY_NOT_FOUND, sqlQueries.name()));
-        }
-        try (Statement statement = ConnectionManager.getInstance().getConnection().createStatement()) {
-            boolean isSelect = statement.execute(query);
-            if (isSelect) {
-                ResultSet resultSet = statement.getResultSet();
-                entities = new ArrayList<TEntity>();
-                String[] queryResult = new String[resultSet.getMetaData().getColumnCount()];
-                while (resultSet.next()) {
-                    for (int i = 0; i < queryResult.length; i++) {
-                        queryResult[i] = resultSet.getString(i + 1);
-                    }
-                    entities.add(createInstance(queryResult));
+    @Override
+    protected List<TEntity> getEntities(Statement statement) {
+        List<TEntity> entities = new ArrayList<TEntity>();
+        try (ResultSet resultSet = statement.getResultSet()) {
+            String[] queryResult = new String[resultSet.getMetaData().getColumnCount()];
+            while (resultSet.next()) {
+                for (int i = 0; i < queryResult.length; i++) {
+                    queryResult[i] = resultSet.getString(i + 1);
                 }
-                resultSet.close();
+                entities.add(createInstance(queryResult));
             }
         } catch (SQLException e) {
             // TODO Develop Custom Exceptions
