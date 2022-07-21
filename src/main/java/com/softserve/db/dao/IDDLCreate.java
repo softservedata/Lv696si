@@ -8,9 +8,11 @@ import java.util.List;
 public interface IDDLCreate<TEntity> {
 
     // Create database, Create table
-    void create();
+    void updateTable();
+
+    void create(String name);
 
     // Verify if database, table exist
-    boolean isExist();
+    //boolean isExist();
 
 }

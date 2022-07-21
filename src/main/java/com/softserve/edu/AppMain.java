@@ -20,5 +20,9 @@ public class AppMain {
         StringBuilder sb1 = new StringBuilder("Java");
         String s = sb1.substring(1);
         System.out.println("s = " + s + "   sb1 = " + sb1);
+        //
+        s = "abc ";
+        s = String.format(s, "1");
+        System.out.printf("s = " + s);
     }
 }

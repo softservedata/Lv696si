@@ -41,8 +41,12 @@ public final class ConnectionManager {
         return instance;
     }
 
-    private DataSource getDataSource() {
+    public DataSource getDataSource() {
         return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     private void registerDriver() {
@@ -72,6 +76,7 @@ public final class ConnectionManager {
                         getDataSource().getUsername(),
                         getDataSource().getPassword());
             } catch (SQLException e) {
+                System.out.println("getDataSource() = " + getDataSource());
                 // TODO Develop Custom Exceptions
                 throw new RuntimeException(FAILED_CREATE_CONNECTION, e);
             }

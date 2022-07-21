@@ -49,6 +49,7 @@ public abstract class ADDLCreate<TEntity> implements IDDLCreate<TEntity>{
                 entities = getEntities(statement);
             }
         } catch (SQLException e) {
+            System.out.println("query = " + query);
             // TODO Develop Custom Exceptions
             throw new RuntimeException(DATABASE_INPUT_ERROR, e);
         }
@@ -56,15 +57,14 @@ public abstract class ADDLCreate<TEntity> implements IDDLCreate<TEntity>{
     }
 
 
-
+    public void updateTable() {
+        create("");
+    }
 
     // Create database, Create table
-    public void create() {
-
+    public void create(String name) {
+        String query = String.format(sqlQueries.get(SqlQueries.CREATE).toString(), name);
+        executeQuery(query, SqlQueries.CREATE);
     }
 
-    // Verify if database, table exist
-    public boolean isExist() {
-        return true;
-    }
 }

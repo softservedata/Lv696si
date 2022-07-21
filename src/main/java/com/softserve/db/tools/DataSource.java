@@ -7,8 +7,17 @@ public class DataSource {
 
     private Driver jdbcDriver;
     private String connectionUrl;
+    private String connectionDb;
+    private String dbname;
     private String username;
     private String password;
+
+    public DataSource() {
+        jdbcDriver = null;
+        connectionUrl = "";
+        username = "";
+        password = "";
+    }
 
     public DataSource(Driver jdbcDriver, String connectionUrl,
                       String username, String password) {
@@ -16,9 +25,24 @@ public class DataSource {
         this.connectionUrl = connectionUrl;
         this.username = username;
         this.password = password;
+        initConnectionDb(connectionUrl);
     }
 
     // setters
+
+    private void initConnectionDb(String connectionUrl) {
+        int slashPosition = connectionUrl.lastIndexOf("/");
+        int questionPosition = connectionUrl.lastIndexOf("?");
+        connectionDb = connectionUrl.substring(0, slashPosition + 1);
+//        if (questionPosition > 0) {
+//            connectionDb = connectionDb + connectionUrl.substring(questionPosition);
+//        }
+        dbname = connectionUrl.substring(slashPosition + 1);
+        questionPosition = dbname.lastIndexOf("?");
+        if (questionPosition > 0) {
+            dbname = dbname.substring(0, questionPosition);
+        }
+    }
 
     public DataSource setJdbcDriver(Driver jdbcDriver) {
         this.jdbcDriver = jdbcDriver;
@@ -27,6 +51,7 @@ public class DataSource {
 
     public DataSource setConnectionUrl(String connectionUrl) {
         this.connectionUrl = connectionUrl;
+        initConnectionDb(connectionUrl);
         return this;
     }
 
@@ -56,6 +81,14 @@ public class DataSource {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getConnectionDb() {
+        return connectionDb;
+    }
+
+    public String getDbname() {
+        return dbname;
     }
 
     /*

@@ -37,4 +37,22 @@ public final class DataSourceRepository {
                 "postgres",
                 "root");
     }
+
+    public static DataSource getMySqlProperties() {
+        return getMySqlProperties("db.properties");
+    }
+    public static DataSource getMySqlProperties(String filename) {
+        Driver sqlDriver;
+        try {
+            sqlDriver = new com.mysql.jdbc.Driver();
+            //sqlDriver = new com.mysql.cj.jdbc.Driver();
+        } catch (SQLException e) {
+            // TODO Develop Custom Exceptions
+            throw new RuntimeException(FAILED_JDBC_DRIVER);
+        }
+        return new ExternalProperties(filename)
+                .readProperties()
+                .setJdbcDriver(sqlDriver);
+    }
+
 }

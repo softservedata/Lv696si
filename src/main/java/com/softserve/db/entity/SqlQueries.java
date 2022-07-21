@@ -2,7 +2,6 @@ package com.softserve.db.entity;
 
 public enum SqlQueries {
 	CREATE,
-	SHOW,
 	INSERT,
 	GET_BY_ID,
 	GET_BY_FIELD,
