@@ -12,7 +12,7 @@ public class MyUtils {
             if (entry.getValue() == null) {
                 continue;
             }
-            List<String> temp = new ArrayList<>();
+            List<String> temp;
             temp = entry.getValue().collect(Collectors.toList());
             for (String name: temp) {
                 if (name == null) {
@@ -27,12 +27,7 @@ public class MyUtils {
                 result.add(name);
             }
         }
-        return result.stream().distinct().sorted(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        return result.stream().distinct().sorted(String::compareTo);
     }
 
     public static void main(String[] args) {
