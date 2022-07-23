@@ -2,7 +2,6 @@ package com.softserve.edu;
 
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,14 +9,17 @@ public class MyUtils {
     public Stream<String> nameList(Map<String, Stream<String>> map) {
         List<String> result = new ArrayList<>();
         for (Map.Entry<String, Stream<String>> entry : map.entrySet()) {
-            if (entry == null) {
+            if (entry.getValue() == null) {
                 continue;
             }
             List<String> temp = new ArrayList<>();
             temp = entry.getValue().collect(Collectors.toList());
             for (String name: temp) {
+                if (name == null) {
+                    continue;
+                }
                 name = name.replaceAll(" ", "").toLowerCase();
-                if (name == null || name.isEmpty()) {
+                if (name.isEmpty()) {
                     continue;
                 }
 
@@ -37,7 +39,7 @@ public class MyUtils {
         MyUtils myUtils = new MyUtils();
         List<String> list1 = Arrays.asList(" iVan", "PeTro ", " Ira ");
         List<String> list2 = Arrays.asList("STepan", "ira ", " Andriy ", "an na");
-        List<String> list3 = Arrays.asList("Ivan", "Anna");
+        List<String> list3 = Arrays.asList(null, "Anna");
         Map<String , Stream<String>> map = new HashMap<>();
         map.put("1", list1.stream());
         map.put("2", list2.stream());
