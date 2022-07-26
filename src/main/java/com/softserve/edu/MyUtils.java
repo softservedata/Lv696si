@@ -10,9 +10,18 @@ public class MyUtils {
         Map<String, Stream<String>> result = new HashMap<>();
         Map<String, List<String>> previousResult = new HashMap<>();
         for (Stream<String> str: list) {
+            if (str == null) {
+                continue;
+            }
             List<String> temp = str.collect(Collectors.toList());
             for (String number: temp) {
+                if (number == null) {
+                    continue;
+                }
                 number = number.replaceAll("[()\\- ]", "");
+                if (number.isEmpty()) {
+                    continue;
+                }
                 if (number.length() == 10) {
                     if (previousResult.containsKey(number.substring(0,3))) {
                         List<String> list1 = previousResult.get(number.substring(0,3));
@@ -26,7 +35,7 @@ public class MyUtils {
                 }
                 if (number.length() == 7) {
                     if (previousResult.containsKey("loc")) {
-                        List<String> list1 = previousResult.get(number.substring(0,3));
+                        List<String> list1 = previousResult.get("loc");
                         list1.add(number);
                     }
                     else {
@@ -35,9 +44,9 @@ public class MyUtils {
                         previousResult.put("loc", list1);
                     }
                 }
-                if (number.length() != 7 && number.length() != 7) {
+                if (number.length() != 7 && number.length() != 10) {
                     if (previousResult.containsKey("err")) {
-                        List<String> list1 = previousResult.get(number.substring(0,3));
+                        List<String> list1 = previousResult.get("err");
                         list1.add(number);
                     }
                     else {
@@ -50,7 +59,7 @@ public class MyUtils {
             }
         }
         for (Map.Entry<String, List<String>> entry : previousResult.entrySet()) {
-            result.put(entry.getKey(), entry.getValue().stream());
+            result.put(entry.getKey(), entry.getValue().stream().sorted().distinct());
         }
         return result;
     }
@@ -59,7 +68,8 @@ public class MyUtils {
         MyUtils myUtils = new MyUtils();
         List<String> list1 = Arrays.asList("093 987 65 43", "(050)1234567", "12-345");
         List<String> list2 = Arrays.asList("067-21-436-57", "050-2345678", "0939182736", "224-19-28");
-        List<String> list3 = Arrays.asList("(093)-11-22-334", "044 435-62-18", "721-73-45");
+        List<String> list3 = Arrays.asList("(093)-11-22-334", "044 435-62-18", "721-73-45", "");
+        List<String> list4 = Arrays.asList("  ");
         List<Stream<String>> list = new LinkedList<>();
         list.add(list1.stream());
         list.add(list2.stream());
