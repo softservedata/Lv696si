@@ -6,6 +6,7 @@ import java.sql.Driver;
 import java.util.Properties;
 
 public class ExternalProperties {
+    private final String PATH_EMPTY = "Path is empty";
     protected final String PATH_SEPARATOR = "/";
     private String filename;
     private String path;
@@ -16,6 +17,10 @@ public class ExternalProperties {
     }
 
     public DataSource readProperties() {
+        if (path == null) {
+            // TODO Develop Custom Exceptions
+            throw new RuntimeException(PATH_EMPTY);
+        }
         return readProperties(path);
     }
 

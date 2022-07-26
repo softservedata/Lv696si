@@ -10,12 +10,8 @@ public final class DataSourceRepository {
     private DataSourceRepository() {
     }
 
-    public static DataSource getDefault() {
-        return getMySqlVM();
-    }
-
-    public static DataSource getMySqlVM() {
-        Driver sqlDriver;
+    private static Driver getMySqlDriver() {
+        Driver sqlDriver = null;
         try {
             sqlDriver = new com.mysql.jdbc.Driver();
             //sqlDriver = new com.mysql.cj.jdbc.Driver();
@@ -23,7 +19,26 @@ public final class DataSourceRepository {
             // TODO Develop Custom Exceptions
             throw new RuntimeException(FAILED_JDBC_DRIVER);
         }
-        return new DataSource(sqlDriver,
+        return sqlDriver;
+    }
+
+    private static Driver getPostgreSqlDriver() {
+        Driver sqlDriver = null;
+        try {
+            sqlDriver = new org.postgresql.Driver();
+        } catch (Exception e) {
+            // TODO Develop Custom Exceptions
+            throw new RuntimeException(FAILED_JDBC_DRIVER);
+        }
+        return sqlDriver;
+    }
+
+    public static DataSource getDefault() {
+        return getMySqlVM();
+    }
+
+    public static DataSource getMySqlVM() {
+        return new DataSource(getMySqlDriver(),
                 "jdbc:mysql://192.168.198.128:3306/lv696?useSSL=false",
                 "lv696",
                 "Lv-696.Si");
@@ -41,18 +56,21 @@ public final class DataSourceRepository {
     public static DataSource getMySqlProperties() {
         return getMySqlProperties("db.properties");
     }
+
     public static DataSource getMySqlProperties(String filename) {
-        Driver sqlDriver;
-        try {
-            sqlDriver = new com.mysql.jdbc.Driver();
-            //sqlDriver = new com.mysql.cj.jdbc.Driver();
-        } catch (SQLException e) {
-            // TODO Develop Custom Exceptions
-            throw new RuntimeException(FAILED_JDBC_DRIVER);
-        }
         return new ExternalProperties(filename)
                 .readProperties()
-                .setJdbcDriver(sqlDriver);
+                .setJdbcDriver(getMySqlDriver());
+    }
+
+    public static DataSource getPostgreSqlProperties() {
+        return getMySqlProperties("db.properties");
+    }
+
+    public static DataSource getPostgreSqlProperties(String filename) {
+        return new ExternalProperties(filename)
+                .readProperties()
+                .setJdbcDriver(getPostgreSqlDriver());
     }
 
 }

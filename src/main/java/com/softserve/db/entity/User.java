@@ -1,16 +1,20 @@
 package com.softserve.db.entity;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 // id, name, email, password, id_role
 public class User implements IModel {
 
     public static enum Queries {
-        CREATE(SqlQueries.CREATE, "CREATE TABLE IF NOT EXISTS roles ( id int not null primary key, name varchar(20), email varchar(100), email varchar(100), password varchar(100), id_role int not null);"),
-        INSERT(SqlQueries.INSERT, "INSERT INTO users (name, email, password, id_role) VALUES ('%s', '%s', '%s', %s);"),
+        CREATE(SqlQueries.CREATE, "CREATE TABLE IF NOT EXISTS users (id int not null primary key, name varchar(20), email varchar(100), password varchar(100), id_role int not null);"),
+        //CREATE(SqlQueries.CREATE, "CREATE TABLE public.users (id integer not null, name character varying(20), email character varying(100), password character varying(100), id_role integer not null);"),
+        INSERT(SqlQueries.INSERT, "INSERT INTO users (id, name, email, password, id_role) VALUES (%s, '%s', '%s', '%s', %s);"),
         GET_BY_ID(SqlQueries.GET_BY_ID, "SELECT id, name, email, password, id_role FROM users WHERE id = %s;"),
         GET_BY_FIELD(SqlQueries.GET_BY_FIELD, "SELECT id, name, email, password, id_role FROM users WHERE %s = '%s';"),
         GET_ALL(SqlQueries.GET_ALL, "SELECT id, name, email, password, id_role FROM users;"),
+        //GET_MAX_ID(SqlQueries.GET_MAX_ID, "SELECT max(id) FROM users;"),
+        GET_MAX_ID(SqlQueries.GET_MAX_ID, " SELECT  * FROM users ORDER BY id DESC LIMIT 1;"),
         UPDATE_BY_ID(SqlQueries.UPDATE_BY_ID, "UPDATE users SET name = '%s', email = '%s', password = '%s', id_role = %s WHERE id = %s;"),
         UPDATE_BY_FIELD(SqlQueries.UPDATE_BY_FIELD, "UPDATE users SET %s = '%s' WHERE %s = '%s';"),
         DELETE_BY_ID(SqlQueries.DELETE_BY_ID, "DELETE FROM users WHERE id = %s;"),
@@ -70,8 +74,8 @@ public class User implements IModel {
                 .setId(args[0] == null ? 0 : Integer.parseInt(args[0]))
                 .setName(args[1] == null ? "" : args[1])
                 .setEmail(args[2] == null ? "" : args[2])
-                .setPassword(args[3] == null ? "" : args[2])
-                .setIdRole(args[4] == null ? 0 : Integer.parseInt(args[0]));
+                .setPassword(args[3] == null ? "" : args[3])
+                .setIdRole(args[4] == null ? 0 : Integer.parseInt(args[4]));
     }
 
     public static String[] getFields(User entity) {

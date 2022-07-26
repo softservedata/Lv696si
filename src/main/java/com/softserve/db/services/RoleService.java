@@ -4,20 +4,27 @@ import com.softserve.db.dao.IDaoCrud;
 import com.softserve.db.dao.RoleDao;
 import com.softserve.db.dto.RoleRequest;
 import com.softserve.db.entity.Role;
+import com.softserve.db.entity.User;
 import com.softserve.db.services.converter.ConverterService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoleService {
+public class RoleService implements IRoleService {
     private IDaoCrud<Role> roleDao;
 
-    RoleService() {
+    public RoleService() {
         roleDao = new RoleDao();
     }
 
     public void addRole(RoleRequest roleRequest) {
         Role role = ConverterService.get().convertToEntity(roleRequest);
+        List<Role> userMaxId = roleDao.getMaxId();
+        if (userMaxId.size() == 0) {
+            role.setId(1);
+        } else {
+            role.setId(userMaxId.get(0).getId() + 1);
+        }
         roleDao.insertByEntity(role);
     }
 

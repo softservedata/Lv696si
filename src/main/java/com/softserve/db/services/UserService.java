@@ -14,7 +14,7 @@ import com.softserve.db.services.converter.ConverterService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService {
+public class UserService implements IUserService {
     private IDaoCrud<User>  userDao;
     private IDaoRead<UserRole> userRoleDao;
     //private RoleService roleSrvice;
@@ -26,6 +26,12 @@ public class UserService {
 
     public void addUser(UserRequest userRequest) {
         User user = ConverterService.get().convertToEntity(userRequest);
+        List<User> userMaxId = userDao.getMaxId();
+        if (userMaxId.size() == 0) {
+            user.setId(1);
+        } else {
+            user.setId(userMaxId.get(0).getId() + 1);
+        }
         userDao.insertByEntity(user);
     }
 

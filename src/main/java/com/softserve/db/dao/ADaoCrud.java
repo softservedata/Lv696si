@@ -27,8 +27,8 @@ abstract class ADaoCrud<TEntity extends IModel> extends ADaoRead<TEntity> implem
 
     // Insert
     public void insertByEntity(TEntity entity) {
-        String query = String.format(sqlQueries.get(SqlQueries.INSERT).toString(),
-                (Object[]) Arrays.copyOfRange(getFields(entity), 1, getFields(entity).length));
+        String query = String.format(sqlQueries.get(SqlQueries.INSERT).toString(), getFields(entity));
+        //        (Object[]) Arrays.copyOfRange(getFields(entity), 1, getFields(entity).length));
         //System.out.println("query = " + query);
         executeQuery(query, SqlQueries.INSERT);
     }

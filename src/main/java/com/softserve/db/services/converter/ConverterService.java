@@ -43,7 +43,7 @@ public final class ConverterService {
     }
 
     public UserRequest convertToDto(UserRole userRole) {
-        return new UserRequest(userRole.getUser().getName(), userRole.getUser().getName(),
+        return new UserRequest(userRole.getUser().getName(), userRole.getUser().getEmail(),
                 userRole.getUser().getPassword(), userRole.getRole().getName());
     }
 

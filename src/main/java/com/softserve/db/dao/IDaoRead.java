@@ -14,4 +14,6 @@ public interface IDaoRead<TEntity extends IModel> extends IDDLCreate<TEntity> {
 
     List<TEntity> getAll();
 
+    List<TEntity> getMaxId();
+
 }

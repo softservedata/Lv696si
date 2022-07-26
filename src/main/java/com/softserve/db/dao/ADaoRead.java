@@ -55,4 +55,8 @@ abstract class ADaoRead<TEntity extends IModel> extends ADDLCreate<TEntity> impl
                 sqlQueries.get(SqlQueries.GET_ALL).toString(), SqlQueries.GET_ALL);
     }
 
+    public List<TEntity> getMaxId() {
+        return executeQuery(
+                sqlQueries.get(SqlQueries.GET_MAX_ID).toString(), SqlQueries.GET_MAX_ID);
+    }
 }

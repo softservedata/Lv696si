@@ -19,12 +19,16 @@ public class AppDDL extends ADDLCreate<App> {
 
     public void updateDatabase() {
         ConnectionManager.closeAllConnections();
+        //
         DataSource dbDataSource = ConnectionManager.getInstance().getDataSource();
         String connectionUrl = dbDataSource.getConnectionUrl();
+        String dbname = dbDataSource.getDbname();
+        //
         dbDataSource.setConnectionUrl(dbDataSource.getConnectionDb());
         ConnectionManager.getInstance().setDataSource(dbDataSource);
-        create(dbDataSource.getDbname());
+        create(dbname);
         ConnectionManager.closeAllConnections();
+        //
         dbDataSource.setConnectionUrl(connectionUrl);
         ConnectionManager.getInstance().setDataSource(dbDataSource);
     }
