@@ -19,7 +19,7 @@ Employee [name=Ihor, experience=5, basePayment=4500.00]].*/
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Employee {
+public class EmployeeOld2 {
 
     private String name;
     private int experience;
@@ -53,8 +53,8 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return experience == employee.experience && Objects.equals(name, employee.name) && Objects.equals(basePayment, employee.basePayment);
+        EmployeeOld2 employeeOld2 = (EmployeeOld2) o;
+        return experience == employeeOld2.experience && Objects.equals(name, employeeOld2.name) && Objects.equals(basePayment, employeeOld2.basePayment);
     }
 
     @Override
@@ -71,13 +71,13 @@ public class Employee {
                 '}';
     }
 
-    public Employee(String name, int experience, BigDecimal basePayment) {
+    public EmployeeOld2(String name, int experience, BigDecimal basePayment) {
         this.name = name;
         this.experience = experience;
         this.basePayment = basePayment;
     }
 }
-class Manager extends Employee {
+class Manager extends EmployeeOld2 {
 
     private double coefficient;
 

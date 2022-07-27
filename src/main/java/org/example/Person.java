@@ -1,95 +1,58 @@
 package org.example;
 
-import java.util.*;
+class Person {
+    protected String name;
+    protected int age;
 
-public class Person {
-    private String name;
-
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
     public String getName() {
         return name;
     }
-
-    public Person(String name) {
-        this.name = name;
+    public int getAge () {
+            return age;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(name, person.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
+    public String toString () {
+            return "Name: " + name + ", Age: " + age;
     }
 }
 
-class Student extends Person {
-    private String studyPlace;
-    private int studyYears;
+class Employee extends Person {
+    private double salary;
 
-    public String getStudyPlace() {
-        return studyPlace;
+    public Employee(String name, int age, double salary) {
+        super(name, age);
+        this.salary = salary;
     }
 
-    public int getStudyYears() {
-        return studyYears;
+    public double getSalary() {
+        return salary;
     }
 
-    public Student(String name, String studyPlace, int studyYears) {
-        super(name);
-        this.studyPlace = studyPlace;
-        this.studyYears = studyYears;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Student student = (Student) o;
-        return studyYears == student.studyYears && Objects.equals(studyPlace, student.studyPlace);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), studyPlace, studyYears);
+    public String toString() {
+        return super.toString() + ", Salary: " + salary;
     }
 }
 
-class Worker extends Person {
-    private String workPosition;
-    private int experienceYears;
+class Developer extends Employee {
+    private Level level;
 
-    public String getWorkPosition() {
-        return workPosition;
+    public Developer(String name, int age, double salary, Level level) {
+        super(name, age, salary);
+        this.level = level;
     }
 
-    public int getExperienceYears() {
-        return experienceYears;
+    public Level getLevel() {
+        return level;
     }
 
-    public Worker(String name, String workPosition, int experienceYears) {
-        super(name);
-        this.workPosition = workPosition;
-        this.experienceYears = experienceYears;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Worker worker = (Worker) o;
-        return experienceYears == worker.experienceYears && Objects.equals(workPosition, worker.workPosition);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), workPosition, experienceYears);
+    public String toString() {
+        return super.toString() + ", Level: " + level.name();
     }
 }
 
+enum Level {
+    JUNIOR, MIDDLE, SENIOR
+}

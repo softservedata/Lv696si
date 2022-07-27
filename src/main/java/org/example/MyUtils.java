@@ -57,13 +57,13 @@ public class MyUtils {
         return newSet;
     }
 
-    public List<Employee> largestEmployees(List<Employee> workers) {
+    public List<EmployeeOld2> largestEmployees(List<EmployeeOld2> workers) {
 
         int maxExp = 0;
         BigDecimal maxSal = BigDecimal.valueOf(0);
-        List<Employee> maxWorkers = new ArrayList<>();
+        List<EmployeeOld2> maxWorkers = new ArrayList<>();
 
-        for (Employee worker : workers) {
+        for (EmployeeOld2 worker : workers) {
             if (worker == null)
                 break;
             if (worker.getExperience() > maxExp)
@@ -72,7 +72,7 @@ public class MyUtils {
                 maxSal = worker.getPayment();
         }
 
-        for (Employee worker : workers) {
+        for (EmployeeOld2 worker : workers) {
             if (worker == null)
                 break;
             if (worker.getExperience() == maxExp) {
@@ -87,36 +87,36 @@ public class MyUtils {
         return maxWorkers;
     }
 
-    public List<Person> maxDuration(List<Person> persons) {
+    public List<PersonOld> maxDuration(List<PersonOld> personOlds) {
 
         int maxStudyYears = 0;
         int maxWorkYears = 0;
-        List<Person> maxYearPeople = new ArrayList<>();
+        List<PersonOld> maxYearPeople = new ArrayList<>();
 
-        for (Person person : persons) {
-            if (person == null)
+        for (PersonOld personOld : personOlds) {
+            if (personOld == null)
                 break;
-            if (person.getClass().equals(Worker.class)) {
-                if (maxWorkYears < ((Worker) person).getExperienceYears())
-                    maxWorkYears = ((Worker) person).getExperienceYears();
-            } else if (person.getClass().equals(org.example.Student.class)) {
-                if (maxStudyYears < ((org.example.Student) person).getStudyYears())
-                    maxStudyYears = ((org.example.Student) person).getStudyYears();
+            if (personOld.getClass().equals(Worker.class)) {
+                if (maxWorkYears < ((Worker) personOld).getExperienceYears())
+                    maxWorkYears = ((Worker) personOld).getExperienceYears();
+            } else if (personOld.getClass().equals(org.example.Student.class)) {
+                if (maxStudyYears < ((org.example.Student) personOld).getStudyYears())
+                    maxStudyYears = ((org.example.Student) personOld).getStudyYears();
             }
         }
 
-        for (Person person : persons) {
-            if (person == null)
+        for (PersonOld personOld : personOlds) {
+            if (personOld == null)
                 break;
-            if (person.getClass().equals(Worker.class)) {
-                if (((Worker) person).getExperienceYears() == maxWorkYears) {
-                    if (!maxYearPeople.contains(person))
-                        maxYearPeople.add(person);
+            if (personOld.getClass().equals(Worker.class)) {
+                if (((Worker) personOld).getExperienceYears() == maxWorkYears) {
+                    if (!maxYearPeople.contains(personOld))
+                        maxYearPeople.add(personOld);
                 }
-            } else if (person.getClass().equals(org.example.Student.class)) {
-                if (((org.example.Student) person).getStudyYears() == maxStudyYears) {
-                    if (!maxYearPeople.contains(person))
-                        maxYearPeople.add(person);
+            } else if (personOld.getClass().equals(org.example.Student.class)) {
+                if (((org.example.Student) personOld).getStudyYears() == maxStudyYears) {
+                    if (!maxYearPeople.contains(personOld))
+                        maxYearPeople.add(personOld);
                 }
             }
         }
