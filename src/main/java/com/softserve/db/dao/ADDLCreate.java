@@ -4,6 +4,7 @@ import com.softserve.db.entity.IModel;
 import com.softserve.db.entity.SqlQueries;
 import com.softserve.db.tools.ConnectionManager;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,6 +44,21 @@ public abstract class ADDLCreate<TEntity> implements IDDLCreate<TEntity>{
             // TODO Develop Custom Exceptions
             throw new RuntimeException(String.format(QUERY_NOT_FOUND, sqlQueries.name()));
         }
+        //
+        Connection con = ConnectionManager.getInstance().getConnection();
+        Statement statement2 = null;
+        try {
+             statement2 = con.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                statement2.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        //
         try (Statement statement = ConnectionManager.getInstance().getConnection().createStatement()) {
             boolean isSelect = statement.execute(query);
             if (isSelect) {

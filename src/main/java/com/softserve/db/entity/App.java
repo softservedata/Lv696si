@@ -3,8 +3,8 @@ package com.softserve.db.entity;
 public class App {
 
     public static enum Queries {
-        CREATE(SqlQueries.CREATE, "CREATE DATABASE IF NOT EXISTS %s character set utf8 collate utf8_bin;");
-        //CREATE(SqlQueries.CREATE, "CREATE DATABASE %s");
+        //CREATE(SqlQueries.CREATE, "CREATE DATABASE IF NOT EXISTS %s character set utf8 collate utf8_bin;");
+        CREATE(SqlQueries.CREATE, "CREATE DATABASE %s");
         //
         private SqlQueries sqlQuery;
         private String query;

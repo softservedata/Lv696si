@@ -15,14 +15,15 @@ public class MainDB {
         appService.checkDatabase();
         //
         /*
-        //RoleRequest roleRequest = new RoleRequest("admin", "description admin");
-        RoleRequest roleRequest = new RoleRequest("customer", "description customer");
+        // RoleRequest roleRequest = new RoleRequest("admin", "description admin");
+        //RoleRequest roleRequest = new RoleRequest("customer", "description customer");
+        RoleRequest roleRequest = new RoleRequest("user", "description user");
         IRoleService roleService = new RoleService();
         roleService.addRole(roleRequest);
         */
         /*
-        //UserRequest userRequest = new UserRequest("Ivan", "a@com.com", "qwerty", "customer");
-        UserRequest userRequest = new UserRequest("Petro", "pet@com.com", "qwerty", "user");
+        UserRequest userRequest = new UserRequest("Ivan", "a@com.com", "qwerty", "customer");
+        // UserRequest userRequest = new UserRequest("Petro", "pet@com.com", "qwerty", "user");
         IUserService userService = new UserService();
         userService.addUser(userRequest);
         */
