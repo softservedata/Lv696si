@@ -1,25 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="925b50ec-e20d-4d7b-a9f1-e787865a3321" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
-	</http:listener-config>
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cf2cb73c-8fb9-455c-bbca-dc139b6d077f" >
-		<http:request-connection host="diy-accounts-api.us-w2.cloudhub.io" port="80" />
-	</http:request-config>
-	<flow name="AccountsFlow" doc:id="919274c7-2dab-4db0-9452-3f873563076f" >
-		<http:listener doc:name="GET /accounts" doc:id="c1fad561-f7f1-4705-aa4e-d86df7292679" config-ref="HTTP_Listener_config" path="/service" allowedMethods="GET">
-		</http:listener>
-		<http:request method="OPTIONS" doc:name="Request" doc:id="4ed4fae5-ef21-4535-8e5a-491850ec55d0" config-ref="HTTP_Request_configuration" path="/accounts">
-			<http:headers ><![CDATA[#[{
-	user_id : "123",
-	client_id: "6d9e329147164bf08a2cc4eeb075252e",
-	client_secret: "B20a21B05dBb4287a7C49076D6E0d377"
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:accounts-api="http://www.mulesoft.org/schema/mule/accounts-api"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/accounts-api http://www.mulesoft.org/schema/mule/accounts-api/current/mule-accounts-api.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="StartLogging" doc:id="7e3d4b42-97e2-4d51-a516-375e1c8e14a6">
+		<logger level="INFO" doc:name="Start Logger" doc:id="3029a7db-5c68-4bcd-b70a-b31c00f93d74" message="#[attributes.headers.request_id]" />
+		<set-variable value="#[attributes.headers.request_id]" doc:name="ID Request" doc:id="43399176-76ec-4744-b98d-f441f6b71992" variableName="request_id" />
+	</sub-flow>
+	<sub-flow name="validation" doc:id="53a757bc-3c8f-41e4-b34d-26e409021450" >
+		<set-variable value='#[attributes.queryParams.condition default "AND"]' doc:name="Condition" doc:id="fe653350-bd9a-4a0e-be8f-a0657930c8c9" variableName="cond" />
+		<validation:is-true doc:name="Condition Validator" doc:id="288f8d49-a76c-4f61-8645-e08d531f996c" expression="#[['AND','OR'] contains vars.cond ]" message="Wrong Condition"/>
+		<set-variable value="#[attributes.queryParams.name]" doc:name="Account Name" doc:id="d4e50059-bd61-41ef-b9df-693f1fd01108" variableName="accountname" />
+		<set-variable value="#[attributes.queryParams.account_type]" doc:name="Account Type" doc:id="aae3eafe-a110-486d-bc4a-0a23def89e14" variableName="accounttype" />
+		<validation:is-true doc:name="Account Type Validator" doc:id="20b3a6c0-81af-4b17-a2cf-58ae9dda06e5" expression="#[['business','personal'] contains vars.accounttype ]" message="Wrong Type" />
+	</sub-flow>
+	<flow name="AccountsFlow" doc:id="13f76daf-826e-4b07-843e-d3b2ded01481" >
+		<http:listener doc:name="GET /accounts" doc:id="b57d87ac-d57a-433b-8296-86a6d0b5a65c" config-ref="HTTP_Listener_config" path="/accounts"/>
+		<flow-ref doc:name="Start Logging" doc:id="635dd65e-74d0-4c44-8575-38bf29149d8a" name="StartLogging" />
+		<flow-ref doc:name="Validation" doc:id="0e7f994f-e974-4491-a117-0bd21155db1e" name="validation"/>
+		<choice doc:name="Choice" doc:id="56b29046-0b69-4955-9309-7df3ac2382d1" >
+			<when expression='#[vars.cond == "AND"]'>
+				<accounts-api:get-accounts doc:name="Get All Accounts" doc:id="79eb31cf-12ee-43fc-8d96-f41d8fab97c0" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-type="#[vars.accounttype]" account-name="#[vars.accountname]"/>
+			</when>
+			<otherwise>
+				<scatter-gather doc:name="Scatter-Gather" doc:id="f66ecc8d-6572-4ef7-8c36-bbb3b312f798" >
+					<route >
+						<accounts-api:get-accounts doc:name="Get Accounts by Name" doc:id="404b3dc7-892b-430f-adb9-d8bbd3583a7a" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-name="#[vars.accountname]" />
+					</route>
+					<route >
+						<accounts-api:get-accounts doc:name="Get Accounts by Type" doc:id="733043e7-4c2e-4e5a-890e-065948773ae2" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-type="#[vars.accounttype]"/>
+					</route>
+				</scatter-gather>
+				<ee:transform doc:name="Transform Message" doc:id="4858062d-21af-47f6-80b4-57f32c5c4c10">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..*payload)]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Finish Logger" doc:id="2bfa4934-7ee2-47cf-8aa8-f00f5cdc5b44" message="#[payload]" />
+	</flow>
+	<flow name="AccountsByNameFlow" doc:id="919274c7-2dab-4db0-9452-3f873563076f" >
+		<http:listener doc:name="GET /servicename" doc:id="c1fad561-f7f1-4705-aa4e-d86df7292679" path="/servicename" allowedMethods="GET" config-ref="HTTP_Listener_config">
+			<http:response>
+				<http:headers><![CDATA[#[{
+	number_of_accounts: sizeOf(payload as Array)	
 }]]]></http:headers>
-		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="5ab476a6-bb1f-4f70-a733-fb1d47bca13b" />
+			</http:response>
+		</http:listener>
+		<flow-ref doc:name="Start Logging" doc:id="ab9f5f2f-541a-4160-b1ad-f7a283908475" name="StartLogging" />
+		<set-variable value="#[attributes.queryParams.name]" doc:name="Account Name" doc:id="1c1985d7-b170-47b0-88d1-cbd468b7e475" variableName="accountname" />
+		<accounts-api:get-accounts doc:name="Get Accounts by Name " doc:id="7c51efec-aaa1-44f5-9f8e-82aa06853042" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-name="#[vars.accountname]" config-ref="Accounts_API_Config"/>
+		<logger level="INFO" doc:name="Fiish Name Logger" doc:id="5ab476a6-bb1f-4f70-a733-fb1d47bca13b" message="#[sizeOf(payload as Array)]"/>
+	</flow>
+	<flow name="AccountsByTypeFlow" doc:id="f5dabec5-0ed1-411d-9d1d-23d827678356" >
+		<http:listener doc:name="GET /servicetype" doc:id="c87ab2c5-0b06-4bc3-af7f-9cbd76412398" path="/servicetype" allowedMethods="GET" config-ref="HTTP_Listener_config">
+			<http:response >
+				<http:headers ><![CDATA[#[{
+	number_of_accounts: sizeOf(payload as Array)	
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
+		<flow-ref doc:name="Start Logging" doc:id="534636f0-b448-4837-87d2-cd34cd541c1a" name="StartLogging"/>
+		<set-variable doc:name="Account Type" doc:id="99b7cb26-adf8-4754-bd59-c3454de19a1a" variableName="accounttype" value='#[attributes.queryParams.account_type]' />
+		<accounts-api:get-accounts doc:name="Get Accounts by Type" doc:id="8caf53d9-4d7c-43f9-9869-e080d0c7f1fe" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-type="#[vars.accounttype]"/>
+		<logger level="INFO" doc:name="Finish Type Logger" doc:id="2845d39a-a68d-4f20-978b-ebf04d93db85" message="#[sizeOf(payload as Array)]"/>
+	</flow>
+	<flow name="CreateAccount" doc:id="36ecdecb-9c69-42e2-8c66-51e4a2b330e5" >
+		<http:listener doc:name="POST /accounts" doc:id="cfb1249b-d1f8-402a-83c1-339a1e81caa7" path="/accounts" allowedMethods="POST" config-ref="HTTP_Listener_config">
+			<http:response >
+				<http:headers ><![CDATA[#[{
+		
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
+		<flow-ref doc:name="Start Logging" doc:id="5cbdc6b9-83e6-4da0-91a1-ae9f059db5ec" name="StartLogging" />
+		<vm:publish queueName="postAccount" doc:name="Create Account" doc:id="4438b456-bd41-4f54-8ae8-7580c94fca63" config-ref="VM_Config">
+			<vm:content ><![CDATA[#[output application/json
+---
+{
+	user_id: vars.request_id,
+	accounts: payload
+}]]]></vm:content>
+		</vm:publish>
+		<ee:transform doc:name="Simple text" doc:id="daaa7a46-721e-4c7d-8456-5a44465c89e9">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Accounts submitted"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Finish Creation Logger" doc:id="53569ec9-6ca7-4264-924b-39a97c83a5ca" message="#[payload]" />
+	</flow>
+	<flow name="putAccountFlow" doc:id="2fe71c12-10e8-4dc2-b01f-754315f6a240" >
+		<vm:listener queueName="postAccount" doc:name="POST /accounts" doc:id="08c54ece-077f-4de1-9ec1-e8e7f427d632" config-ref="VM_Config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="90fd0cd6-3fa0-4185-9fde-87799c08f474" message="#[payload]"/>
+		<accounts-api:create-account doc:name="Create account" doc:id="2b234a85-a8b7-4a92-9627-2350bba6c377" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}">
+			<accounts-api:create-account-request-data ><![CDATA[#[payload.accounts]]]></accounts-api:create-account-request-data>
+		</accounts-api:create-account>
+		<logger level="INFO" doc:name="Finish Post Logger" doc:id="138ea5c3-b78d-41cd-bb66-ff1fb1a5dcd9" />
 	</flow>
 </mule>

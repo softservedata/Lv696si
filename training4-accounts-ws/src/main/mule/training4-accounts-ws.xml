@@ -13,12 +13,49 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<db:my-sql-connection host="mudb.learn.mulesoft.com" port="3306" user="mule" password="mule" database="training" />
 	</db:config>
 	<flow name="accountsGet" doc:id="6529d604-4f01-42b0-b51d-72bda549f2b5" >
-		<db:select doc:name="SelectAllAccounts" doc:id="2c7cefdb-2c7a-4919-90aa-c4293e789dff" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT *
+		<set-variable value="#[attributes.queryParams.Name]" doc:name="Account Name" doc:id="fe571fa2-8b17-4caf-aebd-9a92060bdb6e" variableName="accountname" />
+		<set-variable value="#[attributes.queryParams.Type]" doc:name="Account Type" doc:id="7c69bade-1d79-4a41-b682-b1ef99411314" variableName="accounttype" />
+		<choice doc:name="Choice" doc:id="76e805e8-b29d-4bbc-b395-67fbb73f91c8" >
+			<when expression="#[isEmpty(vars.accountname) and isEmpty(vars.accounttype)]">
+				<db:select doc:name="Select ALL" doc:id="268e84a6-915f-413f-9ec3-3b16e4001bce" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
 FROM
-flights_customers
+flights_customers]]></db:sql>
+				</db:select>
+			</when>
+			<when expression="#[(not isEmpty(vars.accountname)) and isEmpty(vars.accounttype)]">
+				<db:select doc:name="Select by Name" doc:id="c0b738c5-c392-446f-90bf-ec6f18af52f0" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
+FROM flights_customers
+WHERE name = :acname
 ]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	acname: vars.accountName
+}]]]></db:input-parameters>
+				</db:select>
+			</when>
+			<when expression="#[isEmpty(vars.accountname) and (not isEmpty(vars.accounttype))]">
+				<db:select doc:name="Select by Type" doc:id="289abe72-98f5-4ada-9e51-4b3442834012" config-ref="Database_Config">
+					<db:sql ><![CDATA[SELECT *
+FROM flights_customers
+WHERE accountType = :actype]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	actype: vars.accounttype
+}]]]></db:input-parameters>
+				</db:select>
+			</when>
+			<otherwise >
+				<db:select doc:name="Select by Name and Type" doc:id="2c7cefdb-2c7a-4919-90aa-c4293e789dff" config-ref="Database_Config">
+			<db:sql><![CDATA[SELECT *
+FROM flights_customers
+WHERE accountType = :actype AND name = :acname]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	actype: vars.accounttype,
+	acname: vars.accountname
+}]]]></db:input-parameters>
 		</db:select>
+			</otherwise>
+		</choice>
 		<ee:transform doc:name="Transform Message" doc:id="d45afc4f-958f-43fa-841b-78294a36a873" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

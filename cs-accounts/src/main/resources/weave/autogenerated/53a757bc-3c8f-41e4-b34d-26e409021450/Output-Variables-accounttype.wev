@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_53a757bc_3c8f_41e4_b34d_26e409021450_Output_Variables_accounttype = "business" | "personal"
+

@@ -3,17 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>cs-accounts</artifactId>
+	<artifactId>apdev-flights-ws</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>cs-accounts</name>
+	<name>apdev-flights-ws</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<app.runtime>4.4.0-20220221</app.runtime>
+		<app.runtime>4.4.0-20220420</app.runtime>
 		<mule.maven.plugin.version>3.5.4</mule.maven.plugin.version>
 	</properties>
 
@@ -35,21 +35,15 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.mule.connectors</groupId>
-			<artifactId>mule-vm-connector</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-apikit-module</artifactId>
+			<version>1.5.12</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.mule.connectors</groupId>
-			<artifactId>mule-db-connector</artifactId>
-			<version>1.12.1</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>7ed789f6-63ee-4199-9ea3-fd8d71387e1a</groupId>
-			<artifactId>mule-plugin-accaunts-api</artifactId>
-			<version>1.0.0</version>
+			<groupId>3165cec6-6efd-4cea-8271-f2ea42def157</groupId>
+			<artifactId>mule-plugin-american-flights-api</artifactId>
+			<version>1.0.4</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
@@ -73,7 +67,7 @@
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-validation-module</artifactId>
-			<version>2.0.1</version>
+			<version>1.4.5</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
