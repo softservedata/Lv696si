@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.softserve.edu</groupId>
-    <artifactId>lv696mv</artifactId>
+    <artifactId>lv696rest</artifactId>
     <version>1.0</version>
 
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>${project.artifactId}</name>
     <url>http://maven.apache.org</url>
@@ -27,12 +27,12 @@
     <dependencies>
 
         <!-- - - - - - Test - - - - - -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>junit</groupId>-->
+        <!--            <artifactId>junit</artifactId>-->
+        <!--            <version>4.13.2</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -83,6 +83,21 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- - - - - - Serialization - - - - - -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+
+        <!-- - - - - - Web - - - - - -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -117,7 +132,7 @@
                 <configuration>
                     <includes>
                         <include>**/*.java</include>
-<!--                        <include>**/edu09/*.java</include>-->
+                        <!--                        <include>**/edu09/*.java</include>-->
                     </includes>
                     <systemPropertyVariables>
                         <surefire.application.password>
@@ -131,6 +146,15 @@
                     <!-- <suiteXmlFile>testng.xml</suiteXmlFile> -->
                     <!--            <suiteXmlFile>testng03par.xml</suiteXmlFile>-->
                     <!--          </suiteXmlFiles>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 

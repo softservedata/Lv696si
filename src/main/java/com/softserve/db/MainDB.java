@@ -39,6 +39,7 @@ public class MainDB {
             System.out.println("roleRequest = " + roleRequest);
         }
         */
+        ConnectionManager.closeAllConnections();
         System.out.println("done");
     }
 }
