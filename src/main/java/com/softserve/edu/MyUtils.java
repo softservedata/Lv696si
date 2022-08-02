@@ -12,6 +12,7 @@ public class MyUtils {
     private String schemaName;
     private PreparedStatement preparedStatement;
 
+
     public Connection createConnection() throws SQLException {
         DriverManager.registerDriver(new org.h2.Driver());
         connection = DriverManager.getConnection("jdbc:h2:mem:test", "", "");
@@ -23,7 +24,8 @@ public class MyUtils {
     }
 
     public Statement createStatement() throws SQLException {
-        return connection.createStatement();
+        statement = connection.createStatement();
+        return statement;
     }
 
     public void closeStatement() throws SQLException {
@@ -31,15 +33,16 @@ public class MyUtils {
     }
 
     public void createSchema(String schemaName) throws SQLException {
-        statement.execute("CREATE SCHEMA " + schemaName);
+        this.schemaName = schemaName;
+        statement.execute("CREATE SCHEMA " + schemaName + ";");
     }
 
     public void dropSchema() throws SQLException {
-        statement.execute("DROP SCHEMA " + schemaName);
+        statement.execute("DROP SCHEMA " + schemaName + ";");
     }
 
     public void useSchema() throws SQLException {
-        statement.execute("USE SCHEMA " + schemaName);
+        statement.execute("USE " + schemaName + ";");
     }
 
     public void createTableRoles() throws SQLException {
@@ -182,5 +185,15 @@ public class MyUtils {
         return null;
     }
 
+    public static void main(String[] args) throws SQLException {
+        MyUtils myUtils = new MyUtils();
+        myUtils.createConnection();
+        myUtils.createStatement();
+        myUtils.createSchema("ferf");
+        myUtils.useSchema();
+        myUtils.closeStatement();
+        myUtils.closeConnection();
+        System.out.println("done");
+    }
 }
 
