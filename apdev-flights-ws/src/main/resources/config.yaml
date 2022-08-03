@@ -13,6 +13,6 @@ training:
   basepath: "/"
   protocol: "HTTP"
 delta:
-  wsdl: "http://mu.learn.mulesoft.com/deltas?wsdl"
+  wsdl: "http://mu.learn.mulesoft.com/delta?wsdl"
   service: "TicketServiceService"
   port: "TicketServicePort"
