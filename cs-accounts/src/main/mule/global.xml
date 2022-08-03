@@ -29,6 +29,50 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
+	<error-handler name="validation_Handler" doc:id="31317712-0344-4660-b6be-ed9b189f2e4f" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="368d177b-cd45-4744-801b-25b7924de12a" type="APP:CONDITION">
+			<ee:transform doc:name="invalid condition" doc:id="1678555f-9592-49b1-9eac-4d49d88c2727" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: error.description,
+condition: vars.cond
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="1ce8d50e-db3c-4a00-9376-5ea74d8a4e9f" variableName="httpStatus"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="24bdcbdf-c58a-422c-a0da-7cf9671b92f6" type="APP:ACCOUNTTYPE" >
+			<ee:transform doc:name="invalid account type" doc:id="cc2c19cc-d343-455d-9780-915b0a37ac6f" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: error.description,
+account_type: vars.accounttype
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="11a6f2fa-3028-4d3a-bc72-7a8d9b123366" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="other_Handler" doc:id="e7ce8bb0-255a-4132-91a4-86b79fda13c8" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8b531d93-ca95-40aa-9ef5-d3df95c33fdd" >
+			<ee:transform doc:name="contact admin" doc:id="8f7fa8c7-b941-42af-9da8-b72b7c105b11" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Please contact the application's admin/owner."
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
 	
 	
 	

@@ -14,10 +14,14 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	</sub-flow>
 	<sub-flow name="validation" doc:id="53a757bc-3c8f-41e4-b34d-26e409021450" >
 		<set-variable value='#[attributes.queryParams.condition default "AND"]' doc:name="Condition" doc:id="fe653350-bd9a-4a0e-be8f-a0657930c8c9" variableName="cond" />
-		<validation:is-true doc:name="Condition Validator" doc:id="288f8d49-a76c-4f61-8645-e08d531f996c" expression="#[['AND','OR'] contains vars.cond ]" message="Wrong Condition"/>
+		<validation:is-true doc:name="Condition Validator" doc:id="288f8d49-a76c-4f61-8645-e08d531f996c" expression="#[['AND','OR'] contains vars.cond ]" message="Wrong Condition">
+				<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:CONDITION" />
+			</validation:is-true>
 		<set-variable value="#[attributes.queryParams.name]" doc:name="Account Name" doc:id="d4e50059-bd61-41ef-b9df-693f1fd01108" variableName="accountname" />
 		<set-variable value="#[attributes.queryParams.account_type]" doc:name="Account Type" doc:id="aae3eafe-a110-486d-bc4a-0a23def89e14" variableName="accounttype" />
-		<validation:is-true doc:name="Account Type Validator" doc:id="20b3a6c0-81af-4b17-a2cf-58ae9dda06e5" expression="#[['business','personal'] contains vars.accounttype ]" message="Wrong Type" />
+		<validation:is-true doc:name="Account Type Validator" doc:id="20b3a6c0-81af-4b17-a2cf-58ae9dda06e5" expression="#[['business','personal'] contains vars.accounttype ]" message="Wrong Type" >
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ACCOUNTTYPE" />
+		</validation:is-true>
 	</sub-flow>
 	<flow name="AccountsFlow" doc:id="13f76daf-826e-4b07-843e-d3b2ded01481" >
 		<http:listener doc:name="GET /accounts" doc:id="b57d87ac-d57a-433b-8296-86a6d0b5a65c" config-ref="HTTP_Listener_config" path="/accounts"/>
@@ -47,6 +51,7 @@ flatten(payload..*payload)]]></ee:set-payload>
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Finish Logger" doc:id="2bfa4934-7ee2-47cf-8aa8-f00f5cdc5b44" message="#[payload]" />
+		<error-handler ref="other_Handler" />
 	</flow>
 	<flow name="AccountsByNameFlow" doc:id="919274c7-2dab-4db0-9452-3f873563076f" >
 		<http:listener doc:name="GET /servicename" doc:id="c1fad561-f7f1-4705-aa4e-d86df7292679" path="/servicename" allowedMethods="GET" config-ref="HTTP_Listener_config">
@@ -60,6 +65,7 @@ flatten(payload..*payload)]]></ee:set-payload>
 		<set-variable value="#[attributes.queryParams.name]" doc:name="Account Name" doc:id="1c1985d7-b170-47b0-88d1-cbd468b7e475" variableName="accountname" />
 		<accounts-api:get-accounts doc:name="Get Accounts by Name " doc:id="7c51efec-aaa1-44f5-9f8e-82aa06853042" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-name="#[vars.accountname]" config-ref="Accounts_API_Config"/>
 		<logger level="INFO" doc:name="Fiish Name Logger" doc:id="5ab476a6-bb1f-4f70-a733-fb1d47bca13b" message="#[sizeOf(payload as Array)]"/>
+		<error-handler ref="other_Handler" />
 	</flow>
 	<flow name="AccountsByTypeFlow" doc:id="f5dabec5-0ed1-411d-9d1d-23d827678356" >
 		<http:listener doc:name="GET /servicetype" doc:id="c87ab2c5-0b06-4bc3-af7f-9cbd76412398" path="/servicetype" allowedMethods="GET" config-ref="HTTP_Listener_config">
@@ -73,6 +79,7 @@ flatten(payload..*payload)]]></ee:set-payload>
 		<set-variable doc:name="Account Type" doc:id="99b7cb26-adf8-4754-bd59-c3454de19a1a" variableName="accounttype" value='#[attributes.queryParams.account_type]' />
 		<accounts-api:get-accounts doc:name="Get Accounts by Type" doc:id="8caf53d9-4d7c-43f9-9869-e080d0c7f1fe" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}" account-type="#[vars.accounttype]"/>
 		<logger level="INFO" doc:name="Finish Type Logger" doc:id="2845d39a-a68d-4f20-978b-ebf04d93db85" message="#[sizeOf(payload as Array)]"/>
+		<error-handler ref="other_Handler" />
 	</flow>
 	<flow name="CreateAccount" doc:id="36ecdecb-9c69-42e2-8c66-51e4a2b330e5" >
 		<http:listener doc:name="POST /accounts" doc:id="cfb1249b-d1f8-402a-83c1-339a1e81caa7" path="/accounts" allowedMethods="POST" config-ref="HTTP_Listener_config">
@@ -102,6 +109,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Finish Creation Logger" doc:id="53569ec9-6ca7-4264-924b-39a97c83a5ca" message="#[payload]" />
+		<error-handler ref="other_Handler" />
 	</flow>
 	<flow name="putAccountFlow" doc:id="2fe71c12-10e8-4dc2-b01f-754315f6a240" >
 		<vm:listener queueName="postAccount" doc:name="POST /accounts" doc:id="08c54ece-077f-4de1-9ec1-e8e7f427d632" config-ref="VM_Config"/>
@@ -110,5 +118,6 @@ output application/json
 			<accounts-api:create-account-request-data ><![CDATA[#[payload.accounts]]]></accounts-api:create-account-request-data>
 		</accounts-api:create-account>
 		<logger level="INFO" doc:name="Finish Post Logger" doc:id="138ea5c3-b78d-41cd-bb66-ff1fb1a5dcd9" />
+		<error-handler ref="other_Handler" />
 	</flow>
 </mule>
