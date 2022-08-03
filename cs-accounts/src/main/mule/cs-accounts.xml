@@ -105,7 +105,7 @@ output application/json
 	</flow>
 	<flow name="putAccountFlow" doc:id="2fe71c12-10e8-4dc2-b01f-754315f6a240" >
 		<vm:listener queueName="postAccount" doc:name="POST /accounts" doc:id="08c54ece-077f-4de1-9ec1-e8e7f427d632" config-ref="VM_Config"/>
-		<logger level="INFO" doc:name="Logger" doc:id="90fd0cd6-3fa0-4185-9fde-87799c08f474" message="#[payload]"/>
+		<logger level="INFO" doc:name="Start Logger" doc:id="90fd0cd6-3fa0-4185-9fde-87799c08f474" message="#[payload]"/>
 		<accounts-api:create-account doc:name="Create account" doc:id="2b234a85-a8b7-4a92-9627-2350bba6c377" config-ref="Accounts_API_Config" user-id="#[vars.request_id]" client-id="${sfdc.client_id}" client-secret="${sfdc.client_secret}">
 			<accounts-api:create-account-request-data ><![CDATA[#[payload.accounts]]]></accounts-api:create-account-request-data>
 		</accounts-api:create-account>
