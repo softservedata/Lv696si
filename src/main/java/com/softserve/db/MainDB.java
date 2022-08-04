@@ -17,7 +17,7 @@ public class MainDB {
         /*
         // RoleRequest roleRequest = new RoleRequest("admin", "description admin");
         //RoleRequest roleRequest = new RoleRequest("customer", "description customer");
-        RoleRequest roleRequest = new RoleRequest("user", "description user");
+        RoleRequest roleRequest = new RoleRequest("user2", "description user2");
         IRoleService roleService = new RoleService();
         roleService.addRole(roleRequest);
         */
@@ -33,12 +33,12 @@ public class MainDB {
             System.out.println("userRequest = " + userRequest);
         }
         */
-        /*
+        // /*
         IRoleService roleService = new RoleService();
         for (RoleRequest roleRequest : roleService.getAllRoles()) {
             System.out.println("roleRequest = " + roleRequest);
         }
-        */
+        // */
         ConnectionManager.closeAllConnections();
         System.out.println("done");
     }
