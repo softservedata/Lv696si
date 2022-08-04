@@ -1,0 +1,11 @@
+{
+  "sampleData": {
+    "4750f882-187e-4ada-9833-f8c2b0ffa866": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "1d50c632-8403-4cba-91c0-cf69e53a2539": {
+      "payload": "sample_data/listener.xml"
+    },
+    "0ad11948-2641-4c05-9958-ddc371fc28c0": {}
+  }
+}

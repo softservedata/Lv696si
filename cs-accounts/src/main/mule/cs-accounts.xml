@@ -25,8 +25,14 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	</sub-flow>
 	<flow name="AccountsFlow" doc:id="13f76daf-826e-4b07-843e-d3b2ded01481" >
 		<http:listener doc:name="GET /accounts" doc:id="b57d87ac-d57a-433b-8296-86a6d0b5a65c" config-ref="HTTP_Listener_config" path="/accounts">
-			<http:response statusCode="#[vars.httpStatus default 500]" />
-			<http:error-response statusCode="#[vars.httpStatus]" >
+			<http:response statusCode="#[vars.httpStatus default 200]" >
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"NumberOfAccaunts" : vars.numberOfAccaunts
+}]]]></http:headers>
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
 				<http:body ><![CDATA[#[payload]]]></http:body>
 			</http:error-response>
 		</http:listener>
@@ -55,6 +61,26 @@ flatten(payload..*payload)]]></ee:set-payload>
 						</ee:transform>
 			</otherwise>
 		</choice>
+		<set-variable value="#[sizeOf(payload)]" doc:name="numberOfAccaunts" doc:id="658bada0-ef45-4836-ac09-8d3d28380b70" variableName="numberOfAccaunts"/>
+		<ee:transform doc:name="Transform Message" doc:id="4750f882-187e-4ada-9833-f8c2b0ffa866" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+
+fun sumMiles(acName) = do {
+	var accPayload = payload filter(acName == $.name)
+	---
+	sum(accPayload.*air_miles)	
+}
+
+---
+accounts: {(payload map (object, index) -> {
+		'account$index' @(id: object.id,
+		sumAirMiles: sumMiles(object.name)): object 
+	}	
+)} orderBy($.air_miles) ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<logger level="INFO" doc:name="Finish Logger" doc:id="2bfa4934-7ee2-47cf-8aa8-f00f5cdc5b44" message="#[payload]" />
 		<error-handler ref="validation_Handler" />
 	</flow>

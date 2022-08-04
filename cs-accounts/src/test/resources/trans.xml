@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns2:GetTransactionsforCustomersResponse
+  xmlns:ns2="http://training.mulesoft.com/">
+  <transaction>
+    <amount>2969.0</amount>
+    <customerRef>4893</customerRef>
+    <flightID>DELTAA1B3D42015-02-12</flightID>
+    <region>EU</region>
+    <transactionID>181948441</transactionID>
+  </transaction>
+  <transaction>
+    <amount>5361.0</amount>
+    <customerRef>4893</customerRef>
+    <flightID>AMERICANFFEE11122016-01-20</flightID>
+    <region>EU</region>
+    <transactionID>181948556</transactionID>
+  </transaction>
+  <transaction>
+    <amount>3022.0</amount>
+    <customerRef>4893</customerRef>
+    <flightID>AMERICANEEFD19942016-01-01</flightID>
+    <region>EU</region>
+    <transactionID>181948688</transactionID>
+  </transaction>
+  <transaction>
+    <amount>6063.0</amount>
+    <customerRef>4893</customerRef>
+    <flightID>UNITEDER9FJE2015-07-11</flightID>
+    <region>US</region>
+    <transactionID>181948728</transactionID>
+  </transaction>
+</ns2:GetTransactionsforCustomersResponse>

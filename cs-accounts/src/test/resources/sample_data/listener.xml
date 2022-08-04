@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsdhttp://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsdhttp://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsdhttp://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <flow doc:id="7d4152c7-353f-4d7d-b71f-503bcabbdb1b" name="transactionsFlow">
+        <http:listener allowedMethods="GET" config-ref="HTTP_Listener_config" doc:id="236bfd0b-233d-44f2-8feb-d2712e08d235" doc:name="GET /accaunts/{id}/Transactions" path="/accounts/{id}/transactions"/>
+        <set-variable doc:id="4869f83f-8a2d-4f54-b8aa-da685798f817" doc:name="userID" value="#[attributes.headers.request_id]" variableName="userID"/>
+        <set-variable doc:id="5cb4429f-7aa0-443e-853d-86a372d1be30" doc:name="accountID" value="#[attributes.uriParams.id]" variableName="accountID"/>
+        <ee:transform doc:id="249766b3-9076-4f99-a495-f62dcabb7ed6" doc:name="Transform ID to XML">
+            <ee:message>
+                <ee:set-payload>
+                    <![CDATA[%dw 2.0output application/xmlns ns0 http://training.mulesoft.com/---{	ns0#GetTransactionsforCustomers: {		customerID: vars.accountID	}}]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <wsc:consume config-ref="Web_Service_Consumer_Config" doc:id="c47d9f95-b6df-46ac-82be-7d8cc84e4e07" doc:name="Consume Get Transactions" operation="GetTransactionsforCustomers"/>
+        <set-variable doc:id="0c029414-5bfa-43dc-bf9f-d16f0dcd1750" doc:name="Number of Transaction" value="#[sizeOf(payload..*transaction)]" variableName="numberOfTransactions"/>
+        <ee:transform doc:id="082ddf55-c66a-4cdb-a2f9-283530a01a4b" doc:name="Transform to XML">
+            <ee:message>
+                <ee:set-payload>
+                    <![CDATA[%dw 2.0output application/xml---payload.body ]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <ee:transform doc:id="1d50c632-8403-4cba-91c0-cf69e53a2539" doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload>
+                    <![CDATA[%dw 2.0var transactions = output application/json---{	"total amount": sum(payload..*transaction default [])}]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger doc:id="3360e062-fb61-479e-b092-cda0fd2123fe" doc:name="Logger number of transactions" level="INFO" message="#[vars.numberOfTransactions]"/>
+    </flow>
+    <flow doc:id="c2b2a9a1-9a36-4a6b-9501-df580608fbd7" name="GetAllTransactions">
+        <http:listener allowedMethods="GET" config-ref="HTTP_Listener_config" doc:id="a0f3ed6d-e7c8-42e2-b89e-9b2561f767fd" doc:name="GET /getall Transactions" path="/getall"/>
+        <wsc:consume config-ref="Web_Service_Consumer_Config" doc:id="9371872a-33fa-4a6c-9124-07a78df9a1e1" doc:name="Get All Transactions" operation="GetAllTransactions"/>
+        <ee:transform doc:id="2763198c-1be4-4552-8d7f-c3f936580561" doc:name="Transform to XML">
+            <ee:message>
+                <ee:set-payload>
+                    <![CDATA[%dw 2.0output application/xml---payload.body ]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger doc:id="0172bc14-5d3b-4ca1-9ffb-5b9202d5b14a" doc:name="Logger just for breakpoint" level="INFO"/>
+    </flow>
+</mule>
