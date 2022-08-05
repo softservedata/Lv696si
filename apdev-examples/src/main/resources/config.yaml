@@ -4,4 +4,7 @@ http:
 sfdc:
   username: "username"
   password: "password"
-  token: "token"  
+  token:    "token"  
+  
+file:
+  accountsDir: "d:/AnypointStudio/APDevFundamentals4.4_studentFiles_SP_06may2022/APDevFundamentals4.4_studentFiles_SP_06may2022/resources"

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 	<flow name="getSFDCaccounts" doc:id="60a04a22-7f92-41d4-87d7-291107bbdebd" >
 		<http:listener doc:name="GET /sfdc" doc:id="f49a519e-1f71-4834-8aa3-9597b02e56d8" config-ref="HTTP_Listener_config" path="/sfdc "/>
 		<salesforce:query doc:name="Account" doc:id="b0e7f51a-5627-4539-aafe-bc6324adb47e" config-ref="Salesforce_Config">
@@ -20,5 +21,14 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+	</flow>
+	<flow name="accountsFlow" doc:id="957a5f4d-4c37-4ac8-b3e5-88a3d17846a2" >
+		<file:listener doc:name="accounts.csv" doc:id="4a30af0b-5e0e-47c3-9a8f-e0a3dc36ee48" directory="input" moveToDirectory="output" config-ref="File_Config">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+			<file:matcher notUpdatedInTheLast="10000" updatedInTheLast="10000" filenamePattern="*.csv"/>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="78ebc234-f4b0-448f-84f1-75eef5afc90f" message="#[payload]"/>
 	</flow>
 </mule>
