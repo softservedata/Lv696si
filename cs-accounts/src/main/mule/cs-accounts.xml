@@ -62,7 +62,7 @@ flatten(payload..*payload)]]></ee:set-payload>
 			</otherwise>
 		</choice>
 		<set-variable value="#[sizeOf(payload)]" doc:name="numberOfAccaunts" doc:id="658bada0-ef45-4836-ac09-8d3d28380b70" variableName="numberOfAccaunts"/>
-		<ee:transform doc:name="Transform Message" doc:id="4750f882-187e-4ada-9833-f8c2b0ffa866" >
+		<ee:transform doc:name="to XML" doc:id="4750f882-187e-4ada-9833-f8c2b0ffa866" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
