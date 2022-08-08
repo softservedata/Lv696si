@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="csv-filesFlow" doc:id="243b58fc-5831-4d4c-864e-bb01158ada15" >
+		<db:listener table="flights_customers" doc:name="On Table Row flights_customers" doc:id="cd746295-b280-45b5-8df6-fd43559cb6e1" config-ref="Database_Config" watermarkColumn="accountID">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</db:listener>
+		<set-variable value="#['d:/AnypointStudio/temp/out/' ++ 'customer-accounts-'++ dw::core::Strings::dasherize(payload.country as String) ++ '-'++&#10;now() as String {format: &quot;yyyyMMdd&quot;} ++ '.csv']" doc:name="fileName" doc:id="d56d8431-ff6c-4f23-b884-8c41cd863849" variableName="fileName"/>
+		<file:write doc:name="Write accounts" doc:id="d2cbb594-2b5e-48e7-9fa8-620c280e3e44" path="#[vars.fileName]" mode="APPEND">
+			<file:content ><![CDATA[#[output application/csv header=false
+---
+payload]]]></file:content>
+		</file:write>
+		<logger level="INFO" doc:name="Payload" doc:id="38f52821-eb47-451e-b0ba-695e32c84a9e" message="#[payload]"/>
+	</flow>
+</mule>
