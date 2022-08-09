@@ -1,0 +1,22 @@
+curl -i -X GET "http://localhost:8080/lv696rest/role?key1=value1&key2=value21,value22"
+curl -i -X POST -d "name=admin&description=admin" http://localhost:8080/lv696rest/role
+curl -i -X POST -H "Content-Type: application/json"  -d "{\"email\":\"admin@gmail.com\",\"password\":\"admin\" }" http://localhost:8080/lv696rest/role
+
+
+curl -i -X GET -H "Content-Type: application/json" http://localhost:8080/lv696rest/role
+curl -i -X POST -H "Content-Type: application/json"  -d "{\"name\":\"proba\",\"description\":\"description proba\" }" http://localhost:8080/lv696rest/role
+curl -i -X POST -H "Content-Type: application/json"  -d "{\"name\":\"admin\",\"description\":\"description admin\" }" http://localhost:8080/lv696rest/role
+
+curl -i -X PUT -H "Content-Type: application/json"  -d "{\"name\":\"admin2\",\"description\":\"new description admin\" }" http://localhost:8080/lv696rest/role
+curl -i -X DELETE -H "Content-Type: application/json"  -d "{\"name\":\"admin2\",\"description\":\"...\" }" http://localhost:8080/lv696rest/role
+
+
+curl -i -X POST -H "Content-Type: application/json"  -d "{\"name\":\"Ivan\",\"email\":\"ivan@gmail.com\", \"password\":\"qwerty\", \"role\":\"admin\" }" http://localhost:8080/lv696rest/user
+
+curl -i -X POST -H "Content-Type: application/json"  -d "{\"name\":\"Petro\",\"email\":\"petro@gmail.com\", \"password\":\"qwerty\", \"role\":\"proba\" }" http://localhost:8080/lv696rest/user
+
+curl -i -X PUT -H "Content-Type: application/json"  -d "{\"name\":\"Petro\",\"email\":\"petro@gmail.com\", \"password\":\"qwerty2\", \"role\":\"admin\" }" http://localhost:8080/lv696rest/user
+
+curl -i -X DELETE -H "Content-Type: application/json"  -d "{\"name\":\"Petro\",\"email\":\"petro@gmail.com\", \"password\":\"qwerty2\", \"role\":\"admin\" }" http://localhost:8080/lv696rest/user
+
+

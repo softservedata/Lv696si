@@ -1,32 +1,34 @@
 package com.softserve.web.services;
 
 import com.softserve.db.services.RoleService;
+import com.softserve.db.services.UserService;
 import com.softserve.web.dto.ResponceDto;
 import com.softserve.web.dto.RoleProfile;
+import com.softserve.web.dto.UserProfile;
 import com.softserve.web.services.converter.ConverterWebService;
 
-public class RoleWebService {
-    private RoleService roleService;
+public class UserWebService {
+    private UserService userService;
 
-    public RoleWebService() {
-        roleService = new RoleService();
+    public UserWebService() {
+        userService = new UserService();
     }
 
-    public ResponceDto getAllRoles() {
+    public ResponceDto getAllUsers() {
         ResponceDto responceDto = null;
         try {
-            responceDto = new ResponceDto("Roles");
-            responceDto.setData(roleService.getAllRoles()); // TODO Convert DTO
+            responceDto = new ResponceDto("Users");
+            responceDto.setData(userService.getAllUser()); // TODO Convert DTO
         } catch (Exception e) {
             responceDto = new ResponceDto("ERROR: " + e.getMessage());
         }
         return responceDto;
     }
 
-    public ResponceDto addRole(RoleProfile roleProfile) {
+    public ResponceDto addUser(UserProfile userProfile) {
         ResponceDto responceDto = null;
         try {
-            roleService.addRole(ConverterWebService.convertToDto(roleProfile));
+            userService.addUser(ConverterWebService.convertToDto(userProfile));
             responceDto = new ResponceDto("Successful");
         } catch (Exception e) {
             responceDto = new ResponceDto("ERROR: " + e.getMessage());
@@ -34,22 +36,22 @@ public class RoleWebService {
         return responceDto;
     }
 
-    public ResponceDto updateRole(RoleProfile roleProfile) {
+    public ResponceDto updateUser(UserProfile userProfile) {
         ResponceDto responceDto = null;
         try {
-            roleService.updateRole(ConverterWebService.convertToDto(roleProfile));
-            responceDto = new ResponceDto("Role updated");
+            userService.updateUser(ConverterWebService.convertToDto(userProfile));
+            responceDto = new ResponceDto("User updated");
         } catch (Exception e) {
             responceDto = new ResponceDto("ERROR: " + e.getMessage());
         }
         return responceDto;
     }
 
-    public ResponceDto deleteRole(RoleProfile roleProfile) {
+    public ResponceDto deleteUser(UserProfile userProfile) {
         ResponceDto responceDto = null;
         try {
-            roleService.deleteRole(ConverterWebService.convertToDto(roleProfile));
-            responceDto = new ResponceDto("Role deleted");
+            userService.deleteUser(ConverterWebService.convertToDto(userProfile));
+            responceDto = new ResponceDto("User deleted");
         } catch (Exception e) {
             responceDto = new ResponceDto("ERROR: " + e.getMessage());
         }

@@ -40,7 +40,7 @@ public class UserService implements IUserService {
         List<User> users =  userDao.getByFieldName("email", user.getEmail());
         if (users.size() == 0) {
             // Develop Custom Exception
-            throw new RuntimeException("user not foung, emeol = " + user.getEmail());  // TODO use Const
+            throw new RuntimeException("user not found, email = " + user.getEmail());  // TODO use Const
         }
         return users.get(0);
     }
@@ -60,4 +60,5 @@ public class UserService implements IUserService {
         }
         return result;
     }
+
 }

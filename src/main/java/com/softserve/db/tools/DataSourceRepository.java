@@ -39,7 +39,7 @@ public final class DataSourceRepository {
 
     public static DataSource getMySqlVM() {
         return new DataSource(getMySqlDriver(),
-                "jdbc:mysql://192.168.198.128:3306/lv696?useSSL=false",
+                "jdbc:mysql://192.168.198.128:3306/lv696b?useSSL=false",
                 "lv696",
                 "Lv-696.Si");
         // System.getenv().get("MY_SQL_PASSWORD"));
@@ -64,7 +64,7 @@ public final class DataSourceRepository {
     }
 
     public static DataSource getPostgreSqlProperties() {
-        return getMySqlProperties("db.properties");
+        return getPostgreSqlProperties("db.properties");
     }
 
     public static DataSource getPostgreSqlProperties(String filename) {

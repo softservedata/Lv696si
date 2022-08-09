@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RoleController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Gson gson;
-	private AppService appService;
+	//private AppService appService;
 	private RoleWebService roleWebService;
 
     /**
@@ -38,29 +38,28 @@ public class RoleController extends HttpServlet {
 		System.out.println("\tConstructor public RoleController() done");
         // TODO Auto-generated constructor stub
 		gson = new Gson();
-		appService = new AppService();
+		//appService = new AppService();
 		roleWebService = new RoleWebService();
     }
 
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
+	/*
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
 		super.init(config);
-		//ConnectionManager.getInstance(DataSourceRepository.getMySqlProperties());
-		ConnectionManager.getInstance(DataSourceRepository.getPostgreSqlProperties());
-		//appService.checkDatabase();
+		//ConnectionManager.getInstance(DataSourceRepository.getMySqlVM());
+		ConnectionManager.getInstance(DataSourceRepository.getMySqlProperties());
+		//ConnectionManager.getInstance(DataSourceRepository.getPostgreSqlProperties());
+		appService.checkDatabase();
 		System.out.println("\tpublic void init(ServletConfig config) done");
 	}
+	*/
 
-	/**
-	 * @see Servlet#destroy()
-	 */
+	/*
 	public void destroy() {
 		// TODO Auto-generated method stub
 		System.out.println("\tpublic void destroy() done");
 	}
+	*/
 
 	private RoleProfile fromJson(HttpServletRequest request) {
 		String json = null;
@@ -72,6 +71,7 @@ public class RoleController extends HttpServlet {
 		RoleProfile roleProfile = gson.fromJson(json, RoleProfile.class);
 		return roleProfile;
 	}
+
 	private void sendJson(ResponceDto responceDto, HttpServletResponse response) throws IOException {
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -86,17 +86,23 @@ public class RoleController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		//
+		/*
 		System.out.println("***Method GET");
 		Map<String, String[]> requestParams = request.getParameterMap();
 		for (Map.Entry<String, String[]> param : requestParams.entrySet()) {
 			System.out.println("key = " + param.getKey() + " value =  " + Arrays.toString(param.getValue()));
 		}
+		*/
 		//
+		ResponceDto responceDto = roleWebService.getAllRoles();
+		sendJson(responceDto, response);
+		//
+		/*
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("{\"key\":\"value doGet\"}");
 		out.close();
+		*/
 	}
 
 	/**
@@ -141,10 +147,17 @@ public class RoleController extends HttpServlet {
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//
+		RoleProfile roleProfile = fromJson(request);
+		ResponceDto responceDto = roleWebService.updateRole(roleProfile);
+		sendJson(responceDto, response);
+		//
+		/*
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("{\"key\":\"value doPut\"}");
 		out.close();
+		*/
 	}
 
 	/**
@@ -153,10 +166,17 @@ public class RoleController extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//
+		RoleProfile roleProfile = fromJson(request);
+		ResponceDto responceDto = roleWebService.deleteRole(roleProfile);
+		sendJson(responceDto, response);
+		//
+		/*
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("{\"key\":\"value doDelete\"}");
 		out.close();
+		*/
 	}
 
 	//@Override
