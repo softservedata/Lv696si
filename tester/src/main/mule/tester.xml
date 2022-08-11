@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5b24a14e-e872-4918-827e-de3e21a86e2a" basePath="/api/v1">
+		<http:request-connection host="www.balldontlie.io" />
+	</http:request-config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a6cce433-a7df-4f4b-9384-c1d311e02ee7" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="testerFlow" doc:id="5bc38be0-9ea7-4858-b610-18fec900f72f" >
+		<scheduler doc:name="Scheduler" doc:id="cbf2ef9f-cb7a-4985-8414-6e81ea80dde3" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<http:request method="GET" doc:name="Request" doc:id="5a8df88f-49ec-4215-85bb-b79c185aa672" config-ref="HTTP_Request_configuration" path="/season_averages">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"player_ids[]" : "2931",
+	"season" : "1996"
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="245a41b9-8d1f-4e96-a7eb-ac219b989add" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="db95b810-5d8f-45ff-9d2b-e0bff0bafac4" message="payload"/>
+	</flow>
+</mule>

@@ -4,3 +4,5 @@ db:
   user: "mule"
   password: "mule"
   database: "training"
+folder:
+  in: "d:/AnypointStudio/temp/in"

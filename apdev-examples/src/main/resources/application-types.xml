@@ -100,6 +100,13 @@ type auto_55d5e54a_8193_4caf_8ffc_e23e333c20b9_Input_Payload = Any
 
 ]]></types:shape>
     </types:type>
+    <types:type name="accounts_json" format="json">
+      <types:shape format="weave" example="examples/accounts-1.json"><![CDATA[%dw 2.0
+
+type accounts_json = Array<{|  accountID: Number {"typeId": "int"},   country: String,   street: String,   state: String,   name: String,   city: String,   postal: String|}> {"example": "[{\\\"accountID\\\":5039,\\\"country\\\":\\\"United States\\\",\\\"street\\\":\\\"77 Geary Street\\\",\\\"state\\\":\\\"California\\\",\\\"name\\\":\\\"Maxine Mule\\\",\\\"city\\\":\\\"San Francisco\\\",\\\"postal\\\":\\\"94108\\\"},{\\\"accountID\\\":5043,\\\"country\\\":\\\"United States\\\",\\\"street\\\":\\\"77 Geary Street\\\",\\\"state\\\":\\\"California\\\",\\\"name\\\":\\\"Max Mule\\\",\\\"city\\\":\\\"San Francisco\\\",\\\"postal\\\":\\\"94108\\\"}]"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#55d5e54a-8193-4caf-8ffc-e23e333c20b9">
     <types:processor-declaration>
@@ -118,6 +125,15 @@ type auto_55d5e54a_8193_4caf_8ffc_e23e333c20b9_Input_Payload = Any
           <types:variable name="firstName" type="auto_55d5e54a-8193-4caf-8ffc-e23e333c20b9_Output-Variables-firstName"/>
         </types:variables>
       </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#419f4ee6-357f-4e76-9ae4-d711e5536552">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="accounts_json"/>
+        </types:message>
+      </types:input-event>
     </types:processor-declaration>
   </types:enrichment>
 </types:mule>
