@@ -46,27 +46,31 @@ public class MyUtils {
     }
 
     public void createTableRoles() throws SQLException {
-        statement.execute("CREATE TABLE Roles(id int not NULL primary key, roleName varchar )");
+        statement.execute("CREATE TABLE Roles(id int not NULL primary key roleName varchar );");
     }
 
     public void createTableDirections() throws SQLException {
-        statement.execute("CREATE TABLE Directions(id int not NULL primary key, directionName varchar )");
+        statement.execute("CREATE TABLE Directions(id int not NULL primary key, directionName varchar );");
     }
 
     public void createTableProjects() throws SQLException {
-        statement.execute("CREATE TABLE Projects(id int not NULL primary key, projectName varchar, directionId int foreign key )");
+        statement.execute("CREATE TABLE Projects(id int not NULL primary key, projectName varchar, " +
+                "directionId int);");
+        statement.execute("ALTER TABLE Directions ADD FOREIGN KEY (Id) references Directions(Id);");
     }
 
     public void createTableEmployee() throws SQLException {
-        statement.execute("CREATE TABLE Employee(id int not NULL primary key, firstName varchar, roleId int foreign key, projectId int foreign key )");
+        statement.execute("CREATE TABLE Employee(id int not NULL primary key, firstName varchar, roleId int, projectId int);");
+        statement.execute("ALTER TABLE Employee ADD FOREIGN KEY (Id) references Roles(Id);");
+        statement.execute("ALTER TABLE Employee ADD FOREIGN KEY (Id) references Projects(Id);");
     }
 
     public void dropTable(String tableName) throws SQLException {
-        statement.execute("DROP TABLE " + tableName);
+        statement.execute("DROP TABLE " + tableName + ";");
     }
 
     public void insertTableRoles(String roleName) throws SQLException {
-        String sql = "INSERT INTO Roles(roleName) VALUES (?)";
+        String sql = "INSERT INTO Roles(roleName) VALUES (?);";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, roleName);
         preparedStatement.executeUpdate();
@@ -74,14 +78,14 @@ public class MyUtils {
     }
 
     public void insertTableDirections(String directionName) throws SQLException {
-        String sql = "INSERT INTO Directions(directionName) VALUES (?)";
+        String sql = "INSERT INTO Directions(directionName) VALUES (?);";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, directionName);
         preparedStatement.executeUpdate();
     }
 
     public void insertTableProjects(String projectName, String directionName) throws SQLException {
-        String sql = "INSERT INTO Projects(projectName, directionId) VALUES (?, ?)";
+        String sql = "INSERT INTO Projects(projectName, directionId) VALUES (?, ?);";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, projectName);
         preparedStatement.setString(2, directionName);
@@ -89,7 +93,7 @@ public class MyUtils {
     }
 
     public void insertTableEmployee(String firstName, String roleName, String projectName) throws SQLException {
-        String sql = "INSERT INTO Employees(firstName, roleName, projectName) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Employees(firstName, roleName, projectName) VALUES (?, ?, ?);";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, firstName);
         preparedStatement.setString(2, roleName);
@@ -98,7 +102,7 @@ public class MyUtils {
     }
 
     public int getRoleId(String roleName) throws SQLException {
-        String sql = "SELECT id FROM ROLES WHERE roleName VALUES ?";
+        String sql = "SELECT id FROM ROLES WHERE roleName VALUES ?;";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, roleName);
         int result = preparedStatement.executeUpdate();
@@ -106,7 +110,7 @@ public class MyUtils {
     }
 
     public int getDirectionId(String directionName) throws SQLException {
-        String sql = "SELECT id FROM DIRECTIONS WHERE directionName VALUES ?";
+        String sql = "SELECT id FROM DIRECTIONS WHERE directionName VALUES ?;";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, directionName);
         int result = preparedStatement.executeUpdate();
@@ -114,7 +118,7 @@ public class MyUtils {
     }
 
     public int getProjectId(String projectName) throws SQLException {
-        String sql = "SELECT id FROM PROJECTS WHERE projectName VALUES ?";
+        String sql = "SELECT id FROM PROJECTS WHERE projectName VALUES ?;";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, projectName);
         int result = preparedStatement.executeUpdate();
@@ -122,7 +126,7 @@ public class MyUtils {
     }
 
     public int getEmployeeId(String firstName) throws SQLException {
-        String sql = "SELECT id FROM EMPLOYEES WHERE firstName VALUES ?";
+        String sql = "SELECT id FROM EMPLOYEES WHERE firstName VALUES ?;";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, firstName);
         int result = preparedStatement.executeUpdate();
@@ -130,7 +134,7 @@ public class MyUtils {
     }
 
     public List<String> getAllRoles() throws SQLException {
-        String sql = "SELECT * FROM ROLES ";
+        String sql = "SELECT * FROM ROLES;";
         statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         List<String> roles = new LinkedList<>();
@@ -141,7 +145,7 @@ public class MyUtils {
     }
 
     public List<String> getAllDirestion() throws SQLException {
-        String sql = "SELECT * FROM DIRECTIONS";
+        String sql = "SELECT * FROM DIRECTIONS;";
         statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         List<String> directions = new LinkedList<>();
@@ -152,7 +156,7 @@ public class MyUtils {
     }
 
     public List<String> getAllProjects() throws SQLException {
-        String sql = "SELECT * FROM PROJECTS";
+        String sql = "SELECT * FROM PROJECTS;";
         statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         List<String> projects = new LinkedList<>();
@@ -163,7 +167,7 @@ public class MyUtils {
     }
 
     public List<String> getAllEmployee() throws SQLException {
-        String sql = "SELECT * FROM EMPLOYEES";
+        String sql = "SELECT * FROM EMPLOYEES;";
         statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         List<String> employees = new LinkedList<>();
@@ -185,12 +189,18 @@ public class MyUtils {
         return null;
     }
 
+
     public static void main(String[] args) throws SQLException {
         MyUtils myUtils = new MyUtils();
         myUtils.createConnection();
         myUtils.createStatement();
-        myUtils.createSchema("ferf");
+        myUtils.createSchema("rrr");
         myUtils.useSchema();
+        myUtils.createTableRoles();
+        myUtils.createTableDirections();
+        myUtils.createTableProjects();
+        myUtils.createTableEmployee();
+        myUtils.insertTableRoles("role");
         myUtils.closeStatement();
         myUtils.closeConnection();
         System.out.println("done");
