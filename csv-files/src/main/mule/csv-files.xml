@@ -22,7 +22,7 @@ payload]]]></file:content>
 		</file:write>
 		<logger level="INFO" doc:name="Payload" doc:id="38f52821-eb47-451e-b0ba-695e32c84a9e" message="#[payload]"/>
 	</flow>
-	<flow name="WritingFileWithForEach" doc:id="f64027cf-e214-46be-a2d9-fc56102387ae" initialState="stopped">
+	<flow name="WritingFileWithForEach" doc:id="f64027cf-e214-46be-a2d9-fc56102387ae">
 		<scheduler doc:name="Scheduler" doc:id="200419ec-9813-42b7-b205-c86c5f43e6f5" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
@@ -65,8 +65,8 @@ payload]]]></file:content>
 			</otherwise>
 		</choice>
 	</flow>
-	<flow name="FileListening" doc:id="ecc5dbc7-9d1b-4a40-ac85-647d046fe209" >
-		<file:listener doc:name="IN" doc:id="14cabedb-d931-4a13-998e-9b8bcfcfe237" directory="${folder.in}" autoDelete="true" outputMimeType="application/csv; header=false" >
+	<flow name="FileListening" doc:id="ecc5dbc7-9d1b-4a40-ac85-647d046fe209">
+		<file:listener doc:name="folder IN" doc:id="14cabedb-d931-4a13-998e-9b8bcfcfe237" directory="${folder.in}" autoDelete="true" outputMimeType="application/csv; header=false" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="5" timeUnit="SECONDS" />
 			</scheduling-strategy>

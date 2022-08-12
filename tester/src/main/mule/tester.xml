@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="testerFlow" doc:id="5bc38be0-9ea7-4858-b610-18fec900f72f" >
 		<scheduler doc:name="Scheduler" doc:id="cbf2ef9f-cb7a-4985-8414-6e81ea80dde3" >
 			<scheduling-strategy >
-				<fixed-frequency />
+				<fixed-frequency timeUnit="SECONDS"/>
 			</scheduling-strategy>
 		</scheduler>
 		<http:request method="GET" doc:name="Request" doc:id="5a8df88f-49ec-4215-85bb-b79c185aa672" config-ref="HTTP_Request_configuration" path="/season_averages">
@@ -33,6 +33,6 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="db95b810-5d8f-45ff-9d2b-e0bff0bafac4" message="payload"/>
+		<logger level="INFO" doc:name="Logger" doc:id="db95b810-5d8f-45ff-9d2b-e0bff0bafac4" message="#[payload]"/>
 	</flow>
 </mule>
