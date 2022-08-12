@@ -11,6 +11,7 @@ public class MyUtils {
     private Statement statement;
     private String schemaName;
     private PreparedStatement preparedStatement;
+    private static int idRole = 0;
 
 
     public Connection createConnection() throws SQLException {
@@ -46,21 +47,21 @@ public class MyUtils {
     }
 
     public void createTableRoles() throws SQLException {
-        statement.execute("CREATE TABLE Roles(id int not NULL primary key roleName varchar );");
+        statement.execute("CREATE TABLE Roles(id int not NULL AUTO_INCREMENT primary key, roleName varchar );");
     }
 
     public void createTableDirections() throws SQLException {
-        statement.execute("CREATE TABLE Directions(id int not NULL primary key, directionName varchar );");
+        statement.execute("CREATE TABLE Directions(id int not NULL AUTO_INCREMENT primary key, directionName varchar );");
     }
 
     public void createTableProjects() throws SQLException {
-        statement.execute("CREATE TABLE Projects(id int not NULL primary key, projectName varchar, " +
+        statement.execute("CREATE TABLE Projects(id int not NULL AUTO_INCREMENT primary key, projectName varchar, " +
                 "directionId int);");
         statement.execute("ALTER TABLE Directions ADD FOREIGN KEY (Id) references Directions(Id);");
     }
 
     public void createTableEmployee() throws SQLException {
-        statement.execute("CREATE TABLE Employee(id int not NULL primary key, firstName varchar, roleId int, projectId int);");
+        statement.execute("CREATE TABLE Employee(id int not NULL AUTO_INCREMENT primary key, firstName varchar, roleId int, projectId int);");
         statement.execute("ALTER TABLE Employee ADD FOREIGN KEY (Id) references Roles(Id);");
         statement.execute("ALTER TABLE Employee ADD FOREIGN KEY (Id) references Projects(Id);");
     }
@@ -102,10 +103,10 @@ public class MyUtils {
     }
 
     public int getRoleId(String roleName) throws SQLException {
-        String sql = "SELECT id FROM ROLES WHERE roleName VALUES ?;";
+        String sql = "SELECT id FROM ROLES WHERE roleName LIKE VALUES ?;";
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, roleName);
-        int result = preparedStatement.executeUpdate();
+        int result = preparedStatement.executeQuery().getInt("id");
         return result;
     }
 
@@ -201,6 +202,7 @@ public class MyUtils {
         myUtils.createTableProjects();
         myUtils.createTableEmployee();
         myUtils.insertTableRoles("role");
+        System.out.println(myUtils.getRoleId("role"));
         myUtils.closeStatement();
         myUtils.closeConnection();
         System.out.println("done");
