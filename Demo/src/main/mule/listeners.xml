@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="listenersFlow" doc:id="f0a28d8a-bf26-4102-85bb-400882cf009e" >
+		<http:listener doc:name="Listener" doc:id="0d8c63a4-9fba-4dd2-84bd-e32701342448" config-ref="HTTP_Listener_config" path="/players" allowedMethods="GET"/>
+		<flow-ref doc:name="Get_All_Players" doc:id="45b89874-ba62-4319-a59d-d1cb9b75dba2" name="Get_All_players"/>
+	</flow>
+</mule>
