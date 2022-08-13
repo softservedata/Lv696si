@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="getAllTeams" doc:id="80f88386-3109-4012-91cc-d9c2dc2af428" >
+		<http:listener doc:name="Listener" doc:id="1b41c89c-29a5-4470-9f85-c0040fa4715f" config-ref="HTTP_Listener_config" path="/allteams" allowedMethods="GET" />
+		<flow-ref doc:name="allteams" doc:id="72a91e8f-4b20-4de3-8765-ad9445be538d" name="allteams" targetValue="payload" />
+	</flow>
+	<flow name="getAllGames" doc:id="bccdba78-8e83-4157-91ac-946b80dd7dde" >
+		<http:listener doc:name="Listener" doc:id="76c257ed-68a8-4c39-9109-e3cfaf0b897a" config-ref="HTTP_Listener_config" path="/allgames" />
+		<flow-ref doc:name="allgames" doc:id="62f43b73-eb2e-462a-af15-8fa795cb1040" name="allgames" />
+	</flow>
+</mule>

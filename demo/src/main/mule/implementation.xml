@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
+		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
+		<http:request method="GET" doc:name="GET /allgames" doc:id="8000bcf1-1640-4e3a-b154-54216eb0ff95" config-ref="HTTP_Request_configuration" path="/games" />
+		<logger level="INFO" doc:name="Logger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message="#[payload]" />
+	</sub-flow>
+</mule>
