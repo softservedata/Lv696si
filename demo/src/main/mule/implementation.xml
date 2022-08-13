@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
 		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams"/>
 		<logger level="INFO" doc:name="Logger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message="#[payload]"/>
@@ -11,5 +12,19 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
 		<http:request method="GET" doc:name="GET /allgames" doc:id="8000bcf1-1640-4e3a-b154-54216eb0ff95" config-ref="HTTP_Request_configuration" path="/games" />
 		<logger level="INFO" doc:name="Logger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="gamesbyteam" doc:id="494a3ad1-b21a-472f-8446-78e5a9581483" >
+		<set-variable value="#[attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr"/>
+		<flow-ref doc:name="allgames" doc:id="99d11d63-0125-4f23-8aa6-d02f99a1f06e" name="allgames" />
+		<ee:transform doc:name="by team" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ($.abbreviation == vars.teamAbr) 
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message="#[payload]"/>
 	</sub-flow>
 </mule>

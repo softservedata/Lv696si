@@ -12,4 +12,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="76c257ed-68a8-4c39-9109-e3cfaf0b897a" config-ref="HTTP_Listener_config" path="/allgames" />
 		<flow-ref doc:name="allgames" doc:id="62f43b73-eb2e-462a-af15-8fa795cb1040" name="allgames" />
 	</flow>
+	<flow name="listenersFlow" doc:id="70577328-3670-49bb-8f80-5486ef5ed787" >
+		<http:listener doc:name="Listener" doc:id="a87a8546-b6a6-4982-ae7d-d07c20df3a56" config-ref="HTTP_Listener_config" path="/gamesbyteam"/>
+		<flow-ref doc:name="Flow Reference" doc:id="3e257169-868a-468a-a838-d230cbc0a698" name="gamesbyteam"/>
+	</flow>
 </mule>
