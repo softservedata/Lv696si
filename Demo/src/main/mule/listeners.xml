@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="listenersFlow" doc:id="f0a28d8a-bf26-4102-85bb-400882cf009e" >
 		<http:listener doc:name="Listener" doc:id="0d8c63a4-9fba-4dd2-84bd-e32701342448" config-ref="HTTP_Listener_config" path="/players" allowedMethods="GET"/>
 		<flow-ref doc:name="Get_All_Players" doc:id="45b89874-ba62-4319-a59d-d1cb9b75dba2" name="Get_All_players"/>
+	</flow>
+	<flow name="Get_search_by_name" doc:id="a5b1e96d-d9d8-4581-9add-d74506121c59" >
+		<http:listener doc:name="" doc:id="edc35bfb-3f59-46b9-9202-0626cc54e125" config-ref="HTTP_Listener_config" path="/search_by_name"/>
+		<flow-ref doc:name="Flow Reference" doc:id="5b0c8782-bc2e-43a3-8ada-c430128c9a2e" name="Get_search"/>
+	</flow>
+	<flow name="Get_statistics" doc:id="22f17ad2-b376-4d49-8b88-7b2d4bd4e930" >
+		<http:listener doc:name="Get_statistic" doc:id="7bf01507-3c35-41fb-863d-de068ac3f568" config-ref="HTTP_Listener_config" path="/stats"/>
+		<flow-ref doc:name="Flow Reference" doc:id="17f70571-d2c9-47ca-af77-ae7163d975fa" name="Get_all_statistics"/>
+	</flow>
+	<flow name="listenersFlow1" doc:id="0d9e7143-28fc-4503-a6c7-4dec846df289" >
+		<http:listener doc:name="Get_players_by_team" doc:id="f818333a-2450-4487-bb1b-98954d0066e0" config-ref="HTTP_Listener_config" path="/players_by_team" allowedMethods="GET">
+		</http:listener>
+		<flow-ref doc:name="Flow Reference" doc:id="5d6ea9de-d811-471f-9631-7a19ed2f0307" name="Log_set_player_id"/>
+		<set-variable value="#[attributes.queryParams.team_name]" doc:name="team" doc:id="913d10b2-911f-4ee2-b0a4-a6ab3f6907f6" variableName="team"/>
+		<http:request method="GET" doc:name="Request" doc:id="6a42472b-d38e-4b20-acfc-b53d6e209a07" config-ref="HTTP_Request_configuration" path="/players"/>
+		<ee:transform doc:name="Transform Message" doc:id="b74945ac-acbf-450c-b919-52b225bb72b7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload.data]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="4bebee8a-afeb-4ee7-a364-0fe5471107ba" message="#[payload]"/>
 	</flow>
 </mule>

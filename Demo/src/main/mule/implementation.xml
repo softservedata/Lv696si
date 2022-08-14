@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="Get_All_players" doc:id="9c1462bf-a985-43e9-88e0-909ef8d3e4c4" >
 		<http:request method="GET" doc:name="AllPlayers" doc:id="24cebec1-aaaf-4526-b14b-18b5bc89acfb" config-ref="HTTP_Request_configuration" path="/players"/>
 		<logger level="INFO" doc:name="Logger" doc:id="f0d21a69-1519-48fa-b351-110e29ad749c" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="Get_all_statistics" doc:id="320a9ef4-2ef1-4f36-8933-c3659e94cd82" >
+		<http:request method="GET" doc:name="Get_statistics" doc:id="6a16346a-8655-41dd-a02b-e85b640899aa" config-ref="HTTP_Request_configuration" path="/stats"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1eda6e61-e69c-4b49-9620-fb059d02e1dd" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="Log_set_player_id" doc:id="be11c7a6-63ea-4462-a133-aed8f1d598ff" >
+		<logger level="INFO" doc:name="Logger" doc:id="ce85ec78-5b89-4d52-a57c-191a6f81108a" />
+		<set-variable value="#[message.attributes.queryParams.player_id]" doc:name="player_id" doc:id="f51a4f8f-a1cf-4131-ba29-4b2738acfe58" variableName="player_id"/>
+	</sub-flow>
+	<sub-flow name="Get_search" doc:id="dfd1e3a6-c13b-4ad7-90c6-12af8df0c10c" >
+		<http:request method="GET" doc:name="AllPlayers" doc:id="92351e66-01fe-436e-9b8e-b5ac3bd8103a" config-ref="HTTP_Request_configuration" path="/players" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"search" : attributes.queryParams.search
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="3e959933-9f09-4f80-8f58-bf2daabd492f" message="#[payload]" />
 	</sub-flow>
 </mule>
