@@ -1,20 +1,18 @@
 package com.softserve.edu;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+import com.softserve.edu.service.EuclideanService;
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+public class Application {
 
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext annotationConfigContext = new AnnotationConfigApplicationContext(Config.class);
+        //EuclideanService euclideanService = (EuclideanService) annotationConfigContext.getBean("EuclideanService");
+        EuclideanService euclideanService = annotationConfigContext.getBean(EuclideanService.class);
+        annotationConfigContext.close();
+        System.out.println("GCD(18, 30) = " + euclideanService.calculateGCD("18", "30"));
     }
 
 }
