@@ -1,0 +1,118 @@
+[
+    {
+        "id": 48752,
+        "date": "2019-02-09T00:00:00.000Z",
+        "home_team": {
+            "id": 5,
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "conference": "East",
+            "division": "Central",
+            "full_name": "Chicago Bulls",
+            "name": "Bulls"
+        },
+        "home_team_score": 125,
+        "period": 4,
+        "postseason": false,
+        "season": 2018,
+        "status": "Final",
+        "time": "     ",
+        "visitor_team": {
+            "id": 30,
+            "abbreviation": "WAS",
+            "city": "Washington",
+            "conference": "East",
+            "division": "Southeast",
+            "full_name": "Washington Wizards",
+            "name": "Wizards"
+        },
+        "visitor_team_score": 134
+    },
+    {
+        "id": 48765,
+        "date": "2019-02-11T00:00:00.000Z",
+        "home_team": {
+            "id": 5,
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "conference": "East",
+            "division": "Central",
+            "full_name": "Chicago Bulls",
+            "name": "Bulls"
+        },
+        "home_team_score": 99,
+        "period": 4,
+        "postseason": false,
+        "season": 2018,
+        "status": "Final",
+        "time": "     ",
+        "visitor_team": {
+            "id": 17,
+            "abbreviation": "MIL",
+            "city": "Milwaukee",
+            "conference": "East",
+            "division": "Central",
+            "full_name": "Milwaukee Bucks",
+            "name": "Bucks"
+        },
+        "visitor_team_score": 112
+    },
+    {
+        "id": 48780,
+        "date": "2019-02-13T00:00:00.000Z",
+        "home_team": {
+            "id": 5,
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "conference": "East",
+            "division": "Central",
+            "full_name": "Chicago Bulls",
+            "name": "Bulls"
+        },
+        "home_team_score": 122,
+        "period": 4,
+        "postseason": false,
+        "season": 2018,
+        "status": "Final",
+        "time": "     ",
+        "visitor_team": {
+            "id": 15,
+            "abbreviation": "MEM",
+            "city": "Memphis",
+            "conference": "West",
+            "division": "Southwest",
+            "full_name": "Memphis Grizzlies",
+            "name": "Grizzlies"
+        },
+        "visitor_team_score": 110
+    },
+    {
+        "id": 48796,
+        "date": "2019-02-22T00:00:00.000Z",
+        "home_team": {
+            "id": 22,
+            "abbreviation": "ORL",
+            "city": "Orlando",
+            "conference": "East",
+            "division": "Southeast",
+            "full_name": "Orlando Magic",
+            "name": "Magic"
+        },
+        "home_team_score": 109,
+        "period": 4,
+        "postseason": false,
+        "season": 2018,
+        "status": "Final",
+        "time": "     ",
+        "visitor_team": {
+            "id": 5,
+            "abbreviation": "CHI",
+            "city": "Chicago",
+            "conference": "East",
+            "division": "Central",
+            "full_name": "Chicago Bulls",
+            "name": "Bulls"
+        },
+        "visitor_team_score": 110
+    }
+]
