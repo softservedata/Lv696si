@@ -2,12 +2,14 @@ package com.softserve.edu.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UserProfile {
     public long id;
@@ -27,5 +29,5 @@ public class UserProfile {
 
     @NotNull(message = "role from cannot be null")
     @NotBlank(message = "role cannot be empty")
-    private String role;
+    private String roleName;
 }
