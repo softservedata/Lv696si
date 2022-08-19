@@ -20,6 +20,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="59fddba0-772e-4feb-9551-d5d6ba740b49" config-ref="HTTP_Listener_config" path="/gamesbyteamname" allowedMethods="GET"/>
 		<flow-ref doc:name="by Name" doc:id="f655f001-8a34-46da-9049-68ab263035eb" name="gamesbyname" />
 	</flow>
+	<flow name="Games" doc:id="05c42cc8-1e2c-48f1-a51d-420b16305567">
+		<http:listener doc:name="Listener" doc:id="e383f12a-aa07-495d-85e9-9d0464f1a1e4" config-ref="HTTP_Listener_config" path="/games" />
+		<flow-ref doc:name="Flow Reference" doc:id="2a88f705-39cb-4095-bbdd-cad9427c2aa8" name="getGames" />
+	</flow>
 	<flow name="FindAllwinners" doc:id="4c2d84db-335f-41c5-a9ba-094e62809d9f" >
 		<http:listener doc:name="Listener" doc:id="bf67aee6-9f44-4ded-a876-2072d079834c" config-ref="HTTP_Listener_config" path="/findallwinners"/>
 		<flow-ref doc:name="Flow Reference" doc:id="18ddca0d-a67d-45ce-b3d3-5f3614098356" name="findWinnersOfTheGame"/>

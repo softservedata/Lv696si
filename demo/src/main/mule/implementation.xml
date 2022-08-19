@@ -7,13 +7,13 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
 		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams"/>
-		<logger level="INFO" doc:name="Logger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message="#[payload]"/>
+		<logger level="INFO" doc:name="FinishLogger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message='#["Number of Teams " ++ sizeOf(payload.data)]'/>
 	</sub-flow>
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
-		<set-variable value="#[attributes.queryParams.season]" doc:name="season" doc:id="79463f57-85ee-4579-a73c-95064c8c4e5b" variableName="season" />
+		<set-variable value="#[message.attributes.queryParams.season]" doc:name="season" doc:id="43d0bad2-cd24-499a-a489-9dd93d8b7797" variableName="season"/>
 		<set-variable value="#[[]]" doc:name="games" doc:id="c523a437-c73d-461e-9f3a-ec880e2f0065" variableName="games" />
 		<set-variable value="#[0]" doc:name="counter" doc:id="2e184d12-efc6-4c29-94db-18dfb595a60e" variableName="counter" />
-		<logger level="INFO" doc:name="Logger Before All Pages" doc:id="531fc58c-1443-4cd6-a166-0202d01d9a0b" message="#[payload]" />
+		<logger level="INFO" doc:name="Logger Before All Pages" doc:id="531fc58c-1443-4cd6-a166-0202d01d9a0b" message='#["Variable season " ++ vars.season]' />
 		<flow-ref doc:name="findForAllPages" doc:id="4978c520-35bf-4bfa-9d02-856b67100fd9" name="findForAllPages"/>
 		<ee:transform doc:name="All games for season" doc:id="779d098d-2204-4d12-a484-9fde214b3f8d" >
 			<ee:message >
@@ -23,19 +23,20 @@ output application/json
 vars.games]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message="#[payload]" />
+		<logger level="INFO" doc:name="FinishLogger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message='#["size of allGames " ++ sizeOf(vars.games)]' />
 	</sub-flow>
 	<sub-flow name="findForAllPages" doc:id="91a68584-e17e-4e33-afd7-026dd935ea1a" >
 		<http:request method="GET" doc:name="GET /allgames" doc:id="8000bcf1-1640-4e3a-b154-54216eb0ff95" config-ref="HTTP_Request_configuration" path="/games">
 				<http:query-params><![CDATA[#[output application/java
 ---
 {
+	"postseason" : false,
 	"seasons[]" : vars.season,
 	"page" : vars.counter,
 	"per_page" : 100
 }]]]></http:query-params>
 			</http:request>
-		<logger level="INFO" doc:name="DataBase Loger" doc:id="ebfa9191-75b6-4499-826f-43fae18eafe7" message="payload"/>
+		<logger level="INFO" doc:name="DataBase Loger" doc:id="ebfa9191-75b6-4499-826f-43fae18eafe7" message='#["size of Payload " ++ sizeOf(payload.data)]'/>
 		<ee:transform doc:name="save result" doc:id="6f201922-d183-4472-a28c-654c5cd09d1b">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0 
@@ -69,12 +70,11 @@ vars.counter + 1]]></ee:set-variable>
 				<flow-ref doc:name="findForAllPages" doc:id="46cfc242-5bb3-4eac-b870-681b402b8be0" name="findForAllPages" />
 			</when>
 			<otherwise>
-				<logger level="INFO" doc:name="Logger" doc:id="38fde38a-0fc0-49b6-9148-a98439882b43" />
+				<logger level="INFO" doc:name="Numder of Iteration" doc:id="38fde38a-0fc0-49b6-9148-a98439882b43" message='#["Number of iteration " ++ vars.counter-1]'/>
 			</otherwise>
 		</choice>
 	</sub-flow>
 	<sub-flow name="gamesbyteamabr" doc:id="494a3ad1-b21a-472f-8446-78e5a9581483" >
-		<set-variable value="#[attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr"/>
 		<flow-ref doc:name="allgames" doc:id="99d11d63-0125-4f23-8aa6-d02f99a1f06e" name="allgames" />
 		<ee:transform doc:name="byabr" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777" >
 			<ee:message >
@@ -101,10 +101,9 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="violet circle" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message="#[payload]"/>
+		<logger level="INFO" doc:name="Finish Loger" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message='#["Number of games " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="gamesbyname" doc:id="e4187975-397e-4eb6-a89c-500f4a885ae1" >
-		<set-variable value="#[attributes.queryParams.teamname]" doc:name="teamName" doc:id="ee1c136b-83ed-4fe9-a520-b35efa79486a" variableName="teamName" />
 		<flow-ref doc:name="allgames" doc:id="99e2fd7a-c6ef-407a-a6bf-86b25032a62f" name="allgames" />
 		<ee:transform doc:name="byname" doc:id="2e294d4a-dcfc-47d6-a069-559fc1896ea1" >
 			<ee:message >
@@ -131,13 +130,23 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="another violet circle" doc:id="aeeac539-69e8-4733-b533-03f81a794dbc" message="#[payload]" />
+		<logger level="INFO" doc:name="Finish Loger" doc:id="aeeac539-69e8-4733-b533-03f81a794dbc" message='#["Number of games " ++ sizeOf(payload)]' />
 	</sub-flow>
-	<sub-flow name="findWinnersOfTheGame" doc:id="f25799f0-bb80-4c0a-b932-afe6b294b493" >
-		<flow-ref doc:name="allgames" doc:id="ac204f3c-8b3b-4dd2-af63-b6f1ae254451" name="allgames" />
-		<ee:transform doc:name="transform to normal view with winner" doc:id="de8411e6-7fff-4c86-a738-04388c13bf11" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+	<sub-flow name="getGames" doc:id="2a76bb87-a759-41d4-b170-5e4f435c11da" >
+		<set-variable value="#[attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr" />
+		<set-variable value="#[attributes.queryParams.teamname]" doc:name="teamName" doc:id="ee1c136b-83ed-4fe9-a520-b35efa79486a" variableName="teamName" />
+		<choice doc:name="Choice" doc:id="ba82c9c6-16cb-4c75-9a72-896ac8fc4a93" >
+			<when expression="#[(not isEmpty(vars.teamName)) and isEmpty(vars.teamAbr)]">
+				<flow-ref doc:name="getByName" doc:id="897e7ff4-4c69-4649-8e5d-9739518b149f" name="getByName"/>
+			</when>
+			<when expression="#[isEmpty(vars.teamName) and (not isEmpty(vars.teamAbr))]">
+				<flow-ref doc:name="getByAbr" doc:id="e83ff8d2-7bff-4952-ba42-d448b9d61fae" name="getByAbr"/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="allgames" doc:id="e0af97a3-a733-47b6-aa16-d97c9eceba53" name="allgames" />
+				<ee:transform doc:name="transform to normal view with winner" doc:id="de8411e6-7fff-4c86-a738-04388c13bf11">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload map ( payload01 , indexOfPayload01 ) -> {
@@ -149,6 +158,29 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="eb3885b5-8ddc-4336-be44-e4b05cbe8d00" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="FinishLogger" doc:id="75f8cbea-3461-404b-95cd-f838ef11c570" message='#["Number of games " ++ sizeOf(payload)]'/>
+	</sub-flow>
+	<sub-flow name="findWinnersOfTheGame" doc:id="01a9fd52-9c8b-40ae-9b4f-ecfa27f9c877" >
+		<flow-ref doc:name="Flow Reference" doc:id="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" name="allgames"/>
+	</sub-flow>
+	<sub-flow name="implementationSub_Flow" doc:id="7f129265-48da-4765-8584-0b89d6e7a6e0" >
+		<ee:transform doc:name="Copy_of_transform to normal view with winner" doc:id="3649b27d-46f8-4227-874e-cd531c6173b0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	home_team: payload01.home_team.full_name,
+	visitor_team: payload01.visitor_team.full_name,
+	score: payload01.home_team_score ++ "-" ++ payload01.visitor_team_score,
+	winner: if(payload01.home_team_score > payload01.visitor_team_score)
+		(payload01.home_team.abbreviation) else (payload01.visitor_team.abbreviation),
+	looser: if(payload01.home_team_score < payload01.visitor_team_score)
+		(payload01.home_team.abbreviation) else (payload01.visitor_team.abbreviation),		
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</sub-flow>
 </mule>
