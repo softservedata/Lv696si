@@ -1,0 +1,15 @@
+[
+  {
+    "id": 29,
+    "full_name": "Joel Embiid",
+    "assists": 2,
+    "blocks": 2,
+    "rebounds": 10,
+    "three_pointers_percentage": 0.25,
+    "field_goal_percentage": 0.429,
+    "free_throw_percentaget": 0.8,
+    "game_id": 1,
+    "season": 2018,
+    "team": "Philadelphia 76ers"
+  }
+]

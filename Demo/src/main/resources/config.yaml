@@ -1,0 +1,9 @@
+# HTTP Listener
+http:
+  port: "8081"
+  
+# basketball
+players:
+  host: "www.balldontlie.io"
+  basepath: "/api/v1"
+  

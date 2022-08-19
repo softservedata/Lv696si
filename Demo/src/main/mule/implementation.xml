@@ -6,25 +6,53 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="Get_All_players" doc:id="9c1462bf-a985-43e9-88e0-909ef8d3e4c4" >
+		<logger level="INFO" doc:name="Starting Logger" doc:id="68d3f439-9054-420a-93e1-fdb6da952682" />
 		<http:request method="GET" doc:name="AllPlayers" doc:id="24cebec1-aaaf-4526-b14b-18b5bc89acfb" config-ref="HTTP_Request_configuration" path="/players"/>
-		<logger level="INFO" doc:name="Logger" doc:id="f0d21a69-1519-48fa-b351-110e29ad749c" message="#[payload]"/>
+		<logger level="INFO" doc:name="End Logger" doc:id="f0d21a69-1519-48fa-b351-110e29ad749c" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="Get_all_statistics" doc:id="320a9ef4-2ef1-4f36-8933-c3659e94cd82" >
-		<http:request method="GET" doc:name="Get_statistics" doc:id="6a16346a-8655-41dd-a02b-e85b640899aa" config-ref="HTTP_Request_configuration" path="/stats"/>
-		<logger level="INFO" doc:name="Logger" doc:id="1eda6e61-e69c-4b49-9620-fb059d02e1dd" message="#[payload]"/>
-	</sub-flow>
-	<sub-flow name="Log_set_player_id" doc:id="be11c7a6-63ea-4462-a133-aed8f1d598ff" >
-		<logger level="INFO" doc:name="Logger" doc:id="ce85ec78-5b89-4d52-a57c-191a6f81108a" />
-		<set-variable value="#[message.attributes.queryParams.player_id]" doc:name="player_id" doc:id="f51a4f8f-a1cf-4131-ba29-4b2738acfe58" variableName="player_id"/>
-	</sub-flow>
-	<sub-flow name="Get_search" doc:id="dfd1e3a6-c13b-4ad7-90c6-12af8df0c10c" >
-		<http:request method="GET" doc:name="AllPlayers" doc:id="92351e66-01fe-436e-9b8e-b5ac3bd8103a" config-ref="HTTP_Request_configuration" path="/players" >
+		<logger level="INFO" doc:name="Starting Logger" doc:id="b6a447eb-28f8-440d-aa6f-ce4cf78d05d1" message="Starting logger"/>
+		<http:request method="GET" doc:name="Get_statistics" doc:id="6a16346a-8655-41dd-a02b-e85b640899aa" config-ref="HTTP_Request_configuration" path="/stats">
 			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"seasons[]" : vars.season
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Info about stats" doc:id="4e4b3ab9-98bf-46ab-90a1-6db0f2b75371">
+			<ee:message>
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.data map ( data , indexofdata ) -> {
+	id: data.id,
+	full_name: data.player.first_name ++ " " ++ data.player.last_name,
+	assists: data.ast,
+	blocks: data.blk,
+	three_pointers_percentage: data.fg3_pct,
+	field_goal_percentage: data.fg_pct,
+	free_throw_percentaget: data.ft_pct,
+	game_id: data.game.id,
+	season: data.game.season,
+	team: data.team.full_name
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End Logger" doc:id="1eda6e61-e69c-4b49-9620-fb059d02e1dd" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="Get_search" doc:id="dfd1e3a6-c13b-4ad7-90c6-12af8df0c10c">
+		<logger level="INFO" doc:name="Starting Logger" doc:id="7a60d75c-178a-4b93-8f1b-1b15fe5fde51" />
+		<http:request method="GET" doc:name="AllPlayers" doc:id="92351e66-01fe-436e-9b8e-b5ac3bd8103a" config-ref="HTTP_Request_configuration" path="/players">
+			<http:query-params><![CDATA[#[output application/java
 ---
 {
 	"search" : attributes.queryParams.search
 }]]]></http:query-params>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="3e959933-9f09-4f80-8f58-bf2daabd492f" message="#[payload]" />
+		<logger level="INFO" doc:name="End Logger" doc:id="3e959933-9f09-4f80-8f58-bf2daabd492f" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="Get_players_by_season" doc:id="c7a588b0-a100-4525-99e8-27bc465c9a8a" >
+		<set-variable value="#[attributes.queryParams.season]" doc:name="season" doc:id="407e2d79-0908-4054-ba60-0fdeecd4c42f" variableName="season"/>
+		<flow-ref doc:name="Get_statistics" doc:id="9800543f-ff16-43ad-bab8-7a95bb704e26" name="Get_all_statistics"/>
 	</sub-flow>
 </mule>

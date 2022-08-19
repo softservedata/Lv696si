@@ -1,0 +1,56 @@
+[
+        {
+            "id": 1069008,
+            "ast": 0,
+            "blk": 1,
+            "dreb": 2,
+            "fg3_pct": 0.2,
+            "fg3a": 5,
+            "fg3m": 1,
+            "fg_pct": 0.333,
+            "fga": 9,
+            "fgm": 3,
+            "ft_pct": 0.0,
+            "fta": 0,
+            "ftm": 0,
+            "game": {
+                "id": 45237,
+                "date": "2019-01-17T00:00:00.000Z",
+                "home_team_id": 4,
+                "home_team_score": 114,
+                "period": 4,
+                "postseason": false,
+                "season": 2018,
+                "status": "Final",
+                "time": " ",
+                "visitor_team_id": 26,
+                "visitor_team_score": 95
+            },
+            "min": "20:08",
+            "oreb": 0,
+            "pf": 0,
+            "player": {
+                "id": 415,
+                "first_name": "Iman",
+                "height_feet": 6,
+                "height_inches": 5,
+                "last_name": "Shumpert",
+                "position": "G",
+                "team_id": 3,
+                "weight_pounds": 215
+            },
+            "pts": 7,
+            "reb": 2,
+            "stl": 0,
+            "team": {
+                "id": 26,
+                "abbreviation": "SAC",
+                "city": "Sacramento",
+                "conference": "West",
+                "division": "Pacific",
+                "full_name": "Sacramento Kings",
+                "name": "Kings"
+            },
+            "turnover": 2
+        }
+        ]

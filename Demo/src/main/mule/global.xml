@@ -5,9 +5,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="344b9031-8e34-4fba-aeed-943baa86aefa" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="adf6a6de-ecd7-4ab6-8022-86c49df5b6e9" basePath="/api/v1" >
-		<http:request-connection host="www.balldontlie.io" protocol="HTTPS"/>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="adf6a6de-ecd7-4ab6-8022-86c49df5b6e9" basePath="${players.basepath}" >
+		<http:request-connection host="${players.host}" protocol="HTTPS"/>
 	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="553d78a4-04a1-42e5-a68d-a61a70eeb2a2" file="config.yaml" />
 </mule>
