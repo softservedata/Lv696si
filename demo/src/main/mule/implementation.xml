@@ -6,8 +6,17 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
-		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams"/>
-		<logger level="INFO" doc:name="FinishLogger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message='#["Number of Teams " ++ sizeOf(payload.data)]'/>
+		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams">
+		</http:request>
+		<ee:transform doc:name="Transform All Teams To Array" doc:id="bf632308-b098-474f-b588-e03003ae037b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.data]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="FinishLogger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message='#["Number of Teams " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
 		<set-variable value="#[message.attributes.queryParams.season]" doc:name="season" doc:id="43d0bad2-cd24-499a-a489-9dd93d8b7797" variableName="season"/>
@@ -191,10 +200,351 @@ import * from dw::core::Arrays
 ((payload map ( object , index ) -> {
 	team_abbr : object.winner,
 	wins: payload.*winner countBy($ == object.winner),
-	losses : payload.*looser countBy($ == object.looser)	
+	losses : payload.*looser countBy($ == object.looser),	
 }) distinctBy $.team_abbr) orderBy -$.wins]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<ee:transform doc:name="Calculate Prcentage and Sort" doc:id="a57efd1a-4186-4448-9723-d423703b1f98" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+(payload map ( object , index ) -> {
+	team_abbr : object.team_abbr,
+	wins: object.wins,
+	losses : object.losses,
+	percentage: (object.wins/(object.losses + object.wins)) 	
+}) orderBy -$.percentage ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<logger level="INFO" doc:name="Number of Records" doc:id="369d2ec7-0650-4774-bfb1-9e0e9621b7fa" message='#["Number of Records " ++ sizeOf(payload)]' />
+	</sub-flow>
+	<sub-flow name="addAdditionalInfo" doc:id="09e1db7b-5f5b-4352-8f7b-0aeb5f1cddf2" >
+		<flow-ref doc:name="findWinnersOfTheGame" doc:id="3468603c-632e-452f-8197-b461a44d1d01" name="findWinnersOfTheGame"/>
+		<set-variable value="#[null]" doc:name="Info" doc:id="8b641a11-42ba-4c94-9404-e9f598265490" variableName="Info"/>
+		<set-variable value="#[[]]" doc:name="newPayload" doc:id="cb1d740b-0ef9-4b50-a2b0-4e7d483ddf36" variableName="newPayload"/>
+		<foreach doc:name="For Each" doc:id="00bbc96d-2246-48a0-a9f0-01e02a557f90" collection="#[payload]">
+			<set-variable value="#[payload.team_abbr]" doc:name="teamAbbr" doc:id="e725417e-6065-434b-aa7c-ba4261c57afb" variableName="teamAbbr"/>
+			<set-variable value="#[payload]" doc:name="thisPayload" doc:id="191021d5-e71e-4085-af29-0633a194e02e" variableName="thisPayload"/>
+			<flow-ref doc:name="findTeamByAbbr" doc:id="27f19481-d9e5-4d0b-9a14-906386e1335a" name="findTeamByAbbr" targetValue="#[vars.Info]"/>
+			<ee:transform doc:name="return old payload" doc:id="026a3680-458e-4f2d-aaad-76f3a55f996c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.thisPayload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<ee:transform doc:name="add Name Conference Division" doc:id="35b8ba53-89d6-4b34-80a4-47e8cdad9c4d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	team_name: vars.Info[0].full_name,	
+	team_abbr : payload.team_abbr,
+	conference: vars.Info[0].conference,
+	division: vars.Info[0].division,
+	wins: payload.wins,
+	losses : payload.losses,
+	"percentage": payload.percentage
+}
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[output application/json --- vars.newPayload + payload]" doc:name="newPayload" doc:id="2d1a7c24-18e3-4a7e-8535-ad10e578d8fa" variableName="newPayload" />
+			<logger level="INFO" doc:name="payload" doc:id="20fa474b-9c9c-4227-9ba0-a978e3c1625b"/>
+		</foreach>
+		<ee:transform doc:name="Transform Message" doc:id="8a011863-f4cd-4ede-a352-d943ea8bc99e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.newPayload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Number of Teams" doc:id="a3a4d2fd-672e-4dba-b56d-dad6ae6f82c0" message='#["Number of Teams" ++ sizeOf(payload)]'/>
+	</sub-flow>
+	<sub-flow name="findTeamByAbbr" doc:id="c1d101b2-aea7-4c40-bf49-73bee5184dc7" >
+		<flow-ref doc:name="allteams" doc:id="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" name="allteams"/>
+		<ee:transform doc:name="Filter by Abbr" doc:id="f87bab3b-f495-4874-a6cc-66e8c95fc088" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.abbreviation == vars.teamAbbr
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Set Variable Info" doc:id="a3702f03-7991-4021-a68a-54273c29f6a5" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="Info" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="payload" doc:id="228c71f8-13f3-415b-ab81-85b3ad813eed" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="getStandings" doc:id="0b962125-0c57-43b7-82aa-6595543b37c3" >
+		<set-variable value="#[message.attributes.queryParams.standingsby]" doc:name="standingsBy" doc:id="13db0879-4f34-4345-bcbf-8201303bc6c6" variableName="standingsBy"/>
+		<choice doc:name="Choice" doc:id="dce53514-0c85-4552-be37-13f7da4c629d" >
+			<when expression='#[vars.standingsBy == "conference"]'>
+				<flow-ref doc:name="Flow Reference" doc:id="9db9b04b-0b6e-4d68-8265-27f4b40f331d" name="standingsByConference"/>
+			</when>
+			<when expression='#[vars.standingsBy == "division"]'>
+				<flow-ref doc:name="standingsByDivision" doc:id="a3c65147-fdb9-434d-84b4-af6f44d6b894" name="standingsByDivision"/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="addAdditionalInfo" doc:id="b7a1ee94-8f4e-48ae-821e-02f6fbf1fbe2" name="addAdditionalInfo"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="0297eac7-c017-46c3-a2b4-960d04ee22c0" />
+	</sub-flow>
+	<sub-flow name="standingsByConference" doc:id="2ad3b21f-0e3b-493d-b08c-3f8a80967d8e" >
+		<flow-ref doc:name="addAdditionalInfo" doc:id="e5752f8d-f889-439b-9b17-f07a1c41d85c" name="addAdditionalInfo"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="feb233d8-811e-452a-9f07-c7a9a981cc96" >
+			<route >
+				<ee:transform doc:name="filter by East" doc:id="f6806945-6727-4537-9919-329581bf0e1f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.conference == "East"
+)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="f0fdf307-9586-40f9-be35-40fa3eb534c7" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	conference: "East",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by West" doc:id="73f935e4-3a98-4ab5-aff2-ed9dc4e65537" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload filter ((object, index) -> object.conference == "West"
+)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="296f1bf8-e3d5-4f66-b099-3892999da9f0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	conference: "West",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="flatten" doc:id="6291cac5-99d9-4bfe-a9e2-8b97fed45957" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..*payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="SIze of payload" doc:id="16d596c0-4bac-4df6-90d3-4104ea8defcd" message='#["SIze of payload " ++ sizeOf(payload)]'/>
+	</sub-flow>
+	<sub-flow name="standingsByDivision" doc:id="6c77c919-de77-4923-9bd9-7b70719d83de" >
+		<flow-ref doc:name="addAdditionalInfo" doc:id="9c550c08-671d-4d31-a852-d82d75b0a534" name="addAdditionalInfo" />
+		<scatter-gather doc:name="Scatter-Gather" doc:id="1daa9566-de70-4480-8346-33084fd14d8f" >
+			<route >
+				<ee:transform doc:name="filter by Atlantic" doc:id="532c46b1-5284-40ef-9ace-bf8bfca0e838">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Atlantic"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="5acb5d57-d481-45d3-8b8f-cf0e7fb70550" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "Atlantic",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by Central" doc:id="b17c1fd2-e1d6-4216-93c4-91bd9b227bb2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Central"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="e75a00b4-52d3-44c7-b03d-455b9ecb20f9" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "Central",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by SouthEast" doc:id="d9dd962e-344f-479c-b07a-cd7902b52c5d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Southeast"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="d193cca4-b956-4d8e-9c00-737a13edc1b6" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "SouthEast",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by Northwest" doc:id="5cf099a8-e80e-4ae2-9228-4be301ecc012">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Northwest"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="fa45bd73-0259-4cd8-a0b6-8ccf6823fc7f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "NorthWest",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by Pacific" doc:id="84f55514-33d0-42ce-8a0b-8123ab9fa0f0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Pacific"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="81c5c20d-4889-4c6d-9fdd-13a15867be04" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "Pacific",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="filter by Southwest" doc:id="4c5425bb-0d2c-4159-94e0-aac9d98b0c0e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((object, index) -> object.division == "Southwest"
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<ee:transform doc:name="remove unnessary Info" doc:id="9e4ecd00-e3a0-46fe-8a1a-3d32062b8a42" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	division: "SouthWest",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: payload01.percentage
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="flatten" doc:id="9014b053-3d1e-4985-906c-e64a9769e753" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..*payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="SIze of payload" doc:id="dd6262cd-1927-4806-8380-bca61f128185" message='#["SIze of payload " ++ sizeOf(payload)]' />
 	</sub-flow>
 </mule>

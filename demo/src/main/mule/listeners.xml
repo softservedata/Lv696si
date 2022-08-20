@@ -28,4 +28,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="bf67aee6-9f44-4ded-a876-2072d079834c" config-ref="HTTP_Listener_config" path="/findallwinners"/>
 		<flow-ref doc:name="Flow Reference" doc:id="18ddca0d-a67d-45ce-b3d3-5f3614098356" name="findWinnersOfTheGame"/>
 	</flow>
+	<flow name="addInfo" doc:id="10ec4546-f229-4ad2-b131-43bc1f803480" >
+		<http:listener doc:name="Listener" doc:id="b7a3fb88-36a6-49e7-b26f-2268a4b35ff7" config-ref="HTTP_Listener_config" path="/getinfo"/>
+		<flow-ref doc:name="addAdditionalInfo" doc:id="de1386c6-f522-4f7b-9fa3-cb073b2460fb" name="addAdditionalInfo"/>
+	</flow>
+	<flow name="standinga" doc:id="37d2612b-2816-484e-b9e8-8d929938b4b6" >
+		<http:listener doc:name="Listener" doc:id="e2937a41-5ae3-40eb-8507-86d386bb6ca9" config-ref="HTTP_Listener_config" path="/standings"/>
+		<flow-ref doc:name="getStandings" doc:id="752cdbc2-af75-416d-bd7a-d47001831594" name="getStandings"/>
+	</flow>
 </mule>

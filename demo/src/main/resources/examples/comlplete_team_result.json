@@ -1,0 +1,20 @@
+[
+    {
+        "team_name": "Golden State Warriors",
+        "team_abbr": "GSW",
+        "conference": "West",
+        "division": "Pacific",
+        "wins": 74,
+        "losses": 45,
+        "percentage": 0.6218487394957983193277310924369748
+    },
+    {
+        "team_name": "San Antonio Spurs",
+        "team_abbr": "SAS",
+        "conference": "West",
+        "division": "Southwest",
+        "wins": 68,
+        "losses": 45,
+        "percentage": 0.6017699115044247787610619469026549
+    }
+]
