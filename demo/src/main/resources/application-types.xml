@@ -396,6 +396,13 @@ type auto_bccdba78_8e83_4157_91ac_946b80dd7dde_Output_Variables_counter = Any
 
 ]]></types:shape>
     </types:type>
+    <types:type name="result" format="json">
+      <types:shape format="weave" example="examples/results.json"><![CDATA[%dw 2.0
+
+type result = Array<{|  taem_abbr: String,   wins: Number {"typeId": "int"},   loseses: Number {"typeId": "int"}|}> {"example": "[{\\\"taem_abbr\\\":\\\"MIA\\\",\\\"wins\\\":52,\\\"loseses\\\":25}]"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#494a3ad1-b21a-472f-8446-78e5a9581483">
     <types:processor-declaration>
@@ -553,4 +560,5 @@ type auto_bccdba78_8e83_4157_91ac_946b80dd7dde_Output_Variables_counter = Any
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#4ed25f5d-fdeb-474c-a7f8-d292cc1ce026"/>
 </types:mule>

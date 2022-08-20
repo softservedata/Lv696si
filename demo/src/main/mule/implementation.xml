@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
 		<set-variable value="#[message.attributes.queryParams.season]" doc:name="season" doc:id="43d0bad2-cd24-499a-a489-9dd93d8b7797" variableName="season"/>
 		<set-variable value="#[[]]" doc:name="games" doc:id="c523a437-c73d-461e-9f3a-ec880e2f0065" variableName="games" />
-		<set-variable value="#[0]" doc:name="counter" doc:id="2e184d12-efc6-4c29-94db-18dfb595a60e" variableName="counter" />
+		<set-variable value="#[0]" doc:name="counter" doc:id="0972c1b1-8472-42f0-9044-9b54cf31fbe2" variableName="counter"/>
 		<logger level="INFO" doc:name="Logger Before All Pages" doc:id="531fc58c-1443-4cd6-a166-0202d01d9a0b" message='#["Variable season " ++ vars.season]' />
 		<flow-ref doc:name="findForAllPages" doc:id="4978c520-35bf-4bfa-9d02-856b67100fd9" name="findForAllPages"/>
 		<ee:transform doc:name="All games for season" doc:id="779d098d-2204-4d12-a484-9fde214b3f8d" >
@@ -101,7 +101,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Finish Loger" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message='#["Number of games " ++ sizeOf(payload)]'/>
+		<logger level="INFO" doc:name="Number of Games" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message='#["Number of games " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="gamesbyname" doc:id="e4187975-397e-4eb6-a89c-500f4a885ae1" >
 		<flow-ref doc:name="allgames" doc:id="99e2fd7a-c6ef-407a-a6bf-86b25032a62f" name="allgames" />
@@ -130,11 +130,11 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Finish Loger" doc:id="aeeac539-69e8-4733-b533-03f81a794dbc" message='#["Number of games " ++ sizeOf(payload)]' />
+		<logger level="INFO" doc:name="Number of Games" doc:id="aeeac539-69e8-4733-b533-03f81a794dbc" message='#["Number of games " ++ sizeOf(payload)]' />
 	</sub-flow>
 	<sub-flow name="getGames" doc:id="2a76bb87-a759-41d4-b170-5e4f435c11da" >
-		<set-variable value="#[attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr" />
-		<set-variable value="#[attributes.queryParams.teamname]" doc:name="teamName" doc:id="ee1c136b-83ed-4fe9-a520-b35efa79486a" variableName="teamName" />
+		<set-variable value="#[message.attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr" />
+		<set-variable value="#[message.attributes.queryParams.teamname]" doc:name="teamName" doc:id="ee1c136b-83ed-4fe9-a520-b35efa79486a" variableName="teamName" />
 		<choice doc:name="Choice" doc:id="ba82c9c6-16cb-4c75-9a72-896ac8fc4a93" >
 			<when expression="#[(not isEmpty(vars.teamName)) and isEmpty(vars.teamAbr)]">
 				<flow-ref doc:name="getByName" doc:id="897e7ff4-4c69-4649-8e5d-9739518b149f" name="getByName"/>
@@ -160,13 +160,11 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 		</ee:transform>
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="FinishLogger" doc:id="75f8cbea-3461-404b-95cd-f838ef11c570" message='#["Number of games " ++ sizeOf(payload)]'/>
+		<logger level="INFO" doc:name="Number of games " doc:id="75f8cbea-3461-404b-95cd-f838ef11c570" message='#["Number of games " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="findWinnersOfTheGame" doc:id="01a9fd52-9c8b-40ae-9b4f-ecfa27f9c877" >
-		<flow-ref doc:name="Flow Reference" doc:id="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" name="allgames"/>
-	</sub-flow>
-	<sub-flow name="implementationSub_Flow" doc:id="7f129265-48da-4765-8584-0b89d6e7a6e0" >
-		<ee:transform doc:name="Copy_of_transform to normal view with winner" doc:id="3649b27d-46f8-4227-874e-cd531c6173b0">
+		<flow-ref doc:name="allgames" doc:id="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" name="allgames"/>
+		<ee:transform doc:name="to normal view with winner and looser" doc:id="3649b27d-46f8-4227-874e-cd531c6173b0">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -178,9 +176,25 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	winner: if(payload01.home_team_score > payload01.visitor_team_score)
 		(payload01.home_team.abbreviation) else (payload01.visitor_team.abbreviation),
 	looser: if(payload01.home_team_score < payload01.visitor_team_score)
-		(payload01.home_team.abbreviation) else (payload01.visitor_team.abbreviation),		
+		(payload01.home_team.abbreviation) else (payload01.visitor_team.abbreviation),
+				
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<ee:transform doc:name="find Team Record and Full Standings" doc:id="4ed25f5d-fdeb-474c-a7f8-d292cc1ce026">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+import * from dw::core::Arrays
+
+---
+((payload map ( object , index ) -> {
+	team_abbr : object.winner,
+	wins: payload.*winner countBy($ == object.winner),
+	losses : payload.*looser countBy($ == object.looser)	
+}) distinctBy $.team_abbr) orderBy -$.wins]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Number of Records" doc:id="369d2ec7-0650-4774-bfb1-9e0e9621b7fa" message='#["Number of Records " ++ sizeOf(payload)]' />
 	</sub-flow>
 </mule>
