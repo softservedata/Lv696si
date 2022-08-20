@@ -200,7 +200,7 @@ import * from dw::core::Arrays
 ((payload map ( object , index ) -> {
 	team_abbr : object.winner,
 	wins: payload.*winner countBy($ == object.winner),
-	losses : payload.*looser countBy($ == object.looser),	
+	losses : payload.*looser countBy($ == object.winner),	
 }) distinctBy $.team_abbr) orderBy -$.wins]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
