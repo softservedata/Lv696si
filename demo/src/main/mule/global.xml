@@ -92,4 +92,62 @@ output application/json
 			</ee:transform>
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="Api_Error_Handler" doc:id="3af1e10b-b377-4bd6-b1c3-0330d3b062e3" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e2bf4987-093f-42e5-8b33-0aec2a67766b" type="APP:NAMEVALIDATION">
+			<ee:transform doc:name="Transform Message" doc:id="1d03ee99-58ad-4ff5-9959-90ed5bf70d75" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Invalid Name Of The Team",
+teamname: vars.teamName
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="eda18a35-19db-471c-a6b4-4d1d362e6fcc" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4c19d2fe-4703-4000-b2fd-241852aef204" type="APP:ABBRVALIDATION" >
+			<ee:transform doc:name="Transform Message" doc:id="cf3214d6-9186-407e-8697-87e6487ddede" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Invalid Abbreviation Of The Team",
+abbreviation: vars.teamAbr
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="bc935bdf-5a79-40d7-bda5-2ef0b2a29bf4" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="ea1a92b0-e226-4964-827f-c9206d52a5b4" type="APP:SEASONVALIDATION">
+			<ee:transform doc:name="Transform Message" doc:id="0a5a48a8-650d-4d66-8747-380e7f3c980c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Season Must Be Between 1980 AND 2021",
+season: vars.season
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="4cc34188-808b-4db5-9195-f9110a324e0f" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6991be2a-cf67-4f32-9f32-98e685c9179d" type="APP:STANDIGSBYVALIDATION">
+			<ee:transform doc:name="Transform Message" doc:id="97e316ea-235e-43bc-a404-6de2178d2c0d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Choose division or conference or leave empty",
+standingsBy: vars.standingsBy
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="8097c73d-5df5-410b-a708-9517f1db8aef" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
 </mule>

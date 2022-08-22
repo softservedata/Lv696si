@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_3dd7f310_ee30_4ca9_be4a_57dea7d9cba3_Output_Variables_games = Any
+

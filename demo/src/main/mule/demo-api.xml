@@ -32,8 +32,10 @@
     </flow>
     <flow name="get:\games:demo-api-config">
         <flow-ref doc:name="getGames" doc:id="4388b4fe-346d-445f-ac13-1e5ecfdcf9f5" name="getGames"/>
+		<error-handler ref="Api_Error_Handler" />
     </flow>
     <flow name="get:\standings:demo-api-config">
         <flow-ref doc:name="getStandings" doc:id="95531b74-9642-48ce-abcb-ea6a1ce89b7f" name="getStandings"/>
+		<error-handler ref="Api_Error_Handler" />
     </flow>
 </mule>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
 		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams">
 		</http:request>
@@ -20,6 +21,7 @@ payload.data]]></ee:set-payload>
 	</sub-flow>
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
 		<set-variable value="#[message.attributes.queryParams.season]" doc:name="season" doc:id="43d0bad2-cd24-499a-a489-9dd93d8b7797" variableName="season"/>
+		<flow-ref doc:name="validSeason" doc:id="e7d8f3c2-eaed-4057-bc1c-8fcb3217be24" name="validSeason"/>
 		<set-variable value="#[[]]" doc:name="games" doc:id="c523a437-c73d-461e-9f3a-ec880e2f0065" variableName="games" />
 		<set-variable value="#[0]" doc:name="counter" doc:id="0972c1b1-8472-42f0-9044-9b54cf31fbe2" variableName="counter"/>
 		<logger level="INFO" doc:name="Logger Before All Pages" doc:id="531fc58c-1443-4cd6-a166-0202d01d9a0b" message='#["Variable season " ++ vars.season]' />
@@ -85,7 +87,7 @@ vars.counter + 1]]></ee:set-variable>
 	</sub-flow>
 	<sub-flow name="gamesbyteamabr" doc:id="494a3ad1-b21a-472f-8446-78e5a9581483" >
 		<flow-ref doc:name="allgames" doc:id="99d11d63-0125-4f23-8aa6-d02f99a1f06e" name="allgames" />
-		<ee:transform doc:name="byabr" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777" >
+		<ee:transform doc:name="filter by Abbr" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -114,7 +116,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	</sub-flow>
 	<sub-flow name="gamesbyname" doc:id="e4187975-397e-4eb6-a89c-500f4a885ae1" >
 		<flow-ref doc:name="allgames" doc:id="99e2fd7a-c6ef-407a-a6bf-86b25032a62f" name="allgames" />
-		<ee:transform doc:name="byname" doc:id="2e294d4a-dcfc-47d6-a069-559fc1896ea1" >
+		<ee:transform doc:name="filter by Name" doc:id="2e294d4a-dcfc-47d6-a069-559fc1896ea1" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -144,6 +146,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	<sub-flow name="getGames" doc:id="2a76bb87-a759-41d4-b170-5e4f435c11da" >
 		<set-variable value="#[message.attributes.queryParams.abbreviation]" doc:name="teamAbr" doc:id="0800195a-c730-48bb-912e-5993b858dd9d" variableName="teamAbr" />
 		<set-variable value="#[message.attributes.queryParams.teamname]" doc:name="teamName" doc:id="ee1c136b-83ed-4fe9-a520-b35efa79486a" variableName="teamName" />
+		<flow-ref doc:name="validNameAbbr" doc:id="3940018e-4f8f-40ec-a3d2-2b47c9a915ca" name="validNameAbbr"/>
 		<choice doc:name="Choice" doc:id="ba82c9c6-16cb-4c75-9a72-896ac8fc4a93" >
 			<when expression="#[(not isEmpty(vars.teamName)) and isEmpty(vars.teamAbr)]">
 				<flow-ref doc:name="getByName" doc:id="897e7ff4-4c69-4649-8e5d-9739518b149f" name="getByName"/>
@@ -204,7 +207,7 @@ import * from dw::core::Arrays
 }) distinctBy $.team_abbr) orderBy -$.wins]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<ee:transform doc:name="Calculate Prcentage and Sort" doc:id="a57efd1a-4186-4448-9723-d423703b1f98" >
+		<ee:transform doc:name="Calculate Percentage and Sort" doc:id="a57efd1a-4186-4448-9723-d423703b1f98" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -213,11 +216,11 @@ output application/json
 	team_abbr : object.team_abbr,
 	wins: object.wins,
 	losses : object.losses,
-	percentage: (object.wins/(object.losses + object.wins)) 	
+	percentage: (object.wins/(object.losses + object.wins))	
 }) orderBy -$.percentage ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Number of Records" doc:id="369d2ec7-0650-4774-bfb1-9e0e9621b7fa" message='#["Number of Records " ++ sizeOf(payload)]' />
+		<logger level="INFO" doc:name="Number of games " doc:id="6b4a129a-3d12-4821-a6f7-a5d345a892af" message='#["Number of teams " ++ sizeOf(payload)]' />
 	</sub-flow>
 	<sub-flow name="addAdditionalInfo" doc:id="09e1db7b-5f5b-4352-8f7b-0aeb5f1cddf2" >
 		<flow-ref doc:name="findWinnersOfTheGame" doc:id="3468603c-632e-452f-8197-b461a44d1d01" name="findWinnersOfTheGame"/>
@@ -290,9 +293,12 @@ payload]]></ee:set-variable>
 	</sub-flow>
 	<sub-flow name="getStandings" doc:id="0b962125-0c57-43b7-82aa-6595543b37c3" >
 		<set-variable value="#[message.attributes.queryParams.standingsby]" doc:name="standingsBy" doc:id="13db0879-4f34-4345-bcbf-8201303bc6c6" variableName="standingsBy"/>
+		<validation:is-true doc:name="StandingsBy Validation" doc:id="edb7c58b-df43-473a-8df0-ad805bc0782e" expression='#[(["division", "conference"] contains  vars.standingsBy) or (isEmpty(vars.standingsBy))]'>
+			<error-mapping targetType="APP:STANDIGSBYVALIDATION" />
+		</validation:is-true>
 		<choice doc:name="Choice" doc:id="dce53514-0c85-4552-be37-13f7da4c629d" >
 			<when expression='#[vars.standingsBy == "conference"]'>
-				<flow-ref doc:name="Flow Reference" doc:id="9db9b04b-0b6e-4d68-8265-27f4b40f331d" name="standingsByConference"/>
+				<flow-ref doc:name="standingsByConference" doc:id="9db9b04b-0b6e-4d68-8265-27f4b40f331d" name="standingsByConference"/>
 			</when>
 			<when expression='#[vars.standingsBy == "division"]'>
 				<flow-ref doc:name="standingsByDivision" doc:id="a3c65147-fdb9-434d-84b4-af6f44d6b894" name="standingsByDivision"/>
@@ -301,7 +307,7 @@ payload]]></ee:set-variable>
 				<flow-ref doc:name="addAdditionalInfo" doc:id="b7a1ee94-8f4e-48ae-821e-02f6fbf1fbe2" name="addAdditionalInfo"/>
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger" doc:id="0297eac7-c017-46c3-a2b4-960d04ee22c0" />
+		<logger level="INFO" doc:name="Size of payload" doc:id="0297eac7-c017-46c3-a2b4-960d04ee22c0" message='#["Size of payload " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="standingsByConference" doc:id="2ad3b21f-0e3b-493d-b08c-3f8a80967d8e" >
 		<flow-ref doc:name="addAdditionalInfo" doc:id="e5752f8d-f889-439b-9b17-f07a1c41d85c" name="addAdditionalInfo"/>
@@ -316,7 +322,7 @@ payload filter ((object, index) -> object.conference == "East"
 )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="f0fdf307-9586-40f9-be35-40fa3eb534c7" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="f0fdf307-9586-40f9-be35-40fa3eb534c7" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -343,7 +349,7 @@ payload filter ((object, index) -> object.conference == "West"
 )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="296f1bf8-e3d5-4f66-b099-3892999da9f0" >
+				<ee:transform doc:name="remove unnecessary  Info" doc:id="296f1bf8-e3d5-4f66-b099-3892999da9f0" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -384,7 +390,7 @@ payload filter ((object, index) -> object.division == "Atlantic"
 )]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="5acb5d57-d481-45d3-8b8f-cf0e7fb70550" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="5acb5d57-d481-45d3-8b8f-cf0e7fb70550" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -411,7 +417,7 @@ payload filter ((object, index) -> object.division == "Central"
 )]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="e75a00b4-52d3-44c7-b03d-455b9ecb20f9" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="e75a00b4-52d3-44c7-b03d-455b9ecb20f9" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -465,7 +471,7 @@ payload filter ((object, index) -> object.division == "Northwest"
 )]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="fa45bd73-0259-4cd8-a0b6-8ccf6823fc7f" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="fa45bd73-0259-4cd8-a0b6-8ccf6823fc7f" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -492,7 +498,7 @@ payload filter ((object, index) -> object.division == "Pacific"
 )]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="81c5c20d-4889-4c6d-9fdd-13a15867be04" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="81c5c20d-4889-4c6d-9fdd-13a15867be04" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -519,7 +525,7 @@ payload filter ((object, index) -> object.division == "Southwest"
 )]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-				<ee:transform doc:name="remove unnessary Info" doc:id="9e4ecd00-e3a0-46fe-8a1a-3d32062b8a42" >
+				<ee:transform doc:name="remove unnecessary Info" doc:id="9e4ecd00-e3a0-46fe-8a1a-3d32062b8a42" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -546,5 +552,32 @@ flatten(payload..*payload)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="SIze of payload" doc:id="dd6262cd-1927-4806-8380-bca61f128185" message='#["SIze of payload " ++ sizeOf(payload)]' />
+	</sub-flow>
+	<sub-flow name="validSeason" doc:id="47bb9cb2-3ffc-402c-84b3-49417997da20" >
+		<set-variable value="#[vars.season]" doc:name="testSeason" doc:id="33e01e2a-de40-4243-a2d9-415bd9de860d" variableName="testSeason"/>
+		<ee:transform doc:name="season as Number" doc:id="2d2e5442-21bd-4d65-bbf5-00636b8d1ae0">
+				<ee:message>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="testSeason"><![CDATA[%dw 2.0
+output application/java
+---
+vars.testSeason  as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		<validation:is-true doc:name="Season Validation" doc:id="00591dcc-f78e-474d-bb91-3ccb2df6b26e" expression="#[(vars.testSeason &lt; 2022) and (vars.testSeason &gt; 1979)]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:SEASONVALIDATION" />
+		</validation:is-true>
+	</sub-flow>
+	<sub-flow name="validNameAbbr" doc:id="3dd7f310-ee30-4ca9-be4a-57dea7d9cba3" >
+		<set-variable value='#[[&#10;  "Hawks",&#10;  "Celtics",&#10;  "Nets",&#10;  "Hornets",&#10;  "Bulls",&#10;  "Cavaliers",&#10;  "Mavericks",&#10;  "Nuggets",&#10;  "Pistons",&#10;  "Warriors",&#10;  "Rockets",&#10;  "Pacers",&#10;  "Clippers",&#10;  "Lakers",&#10;  "Grizzlies",&#10;  "Heat",&#10;  "Bucks",&#10;  "Timberwolves",&#10;  "Pelicans",&#10;  "Knicks",&#10;  "Thunder",&#10;  "Magic",&#10;  "76ers",&#10;  "Suns",&#10;  "Trail Blazers",&#10;  "Kings",&#10;  "Spurs",&#10;  "Raptors",&#10;  "Jazz",&#10;  "Wizards"&#10;]]' doc:name="names" doc:id="3d40a0fe-3fbd-4e76-aba7-ccec8a416357" variableName="names"/>
+		<set-variable value='#[[&#10;  "ATL",&#10;  "BOS",&#10;  "BKN",&#10;  "CHA",&#10;  "CHI",&#10;  "CLE",&#10;  "DAL",&#10;  "DEN",&#10;  "DET",&#10;  "GSW",&#10;  "HOU",&#10;  "IND",&#10;  "LAC",&#10;  "LAL",&#10;  "MEM",&#10;  "MIA",&#10;  "MIL",&#10;  "MIN",&#10;  "NOP",&#10;  "NYK",&#10;  "OKC",&#10;  "ORL",&#10;  "PHI",&#10;  "PHX",&#10;  "POR",&#10;  "SAC",&#10;  "SAS",&#10;  "TOR",&#10;  "UTA",&#10;  "WAS"&#10;]]' doc:name="abbrs" doc:id="1d66df3f-73aa-43ee-a704-89370ad9aecb" variableName="abbrs"/>
+		<validation:is-true doc:name="Name Validation" doc:id="305256dc-f743-4f2e-be12-0dba8d2f8364" expression="#[(vars.names contains vars.teamName) or (isEmpty(vars.teamname))]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:NAMEVALIDATION" />
+		</validation:is-true>
+		<validation:is-true doc:name="Abbr Validation" doc:id="7b50d379-012f-4438-91d4-da803389b6bf" expression="#[(vars.abbrs contains vars.teamAbr) or (isEmpty(vars.teamAbr))]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ABBRVALIDATION" />
+		</validation:is-true>
+		<logger level="INFO" doc:name="Validation Logger" doc:id="6c1677e8-231c-4282-8f68-93452908065b" message="Name and Abreviation is valid"/>
 	</sub-flow>
 </mule>
