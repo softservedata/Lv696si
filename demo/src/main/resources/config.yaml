@@ -1,0 +1,7 @@
+http:
+  port: "8081"
+  
+ballapi:
+  host: "www.balldontlie.io"
+  basepath: "/api/v1"
+  

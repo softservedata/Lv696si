@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_2a76bb87_a759_41d4_b170_5e4f435c11da_Output_Variables_teamAbr = Any
+

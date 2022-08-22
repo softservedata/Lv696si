@@ -1,0 +1,88 @@
+#%RAML 1.0
+title: Demo API
+
+types:
+  game: !include /gametype.raml  
+  confstand: !include /confstandtype.raml
+  teamresult: !include /teamresulttype.raml
+  team: !include /teamtype.raml
+
+/allteams:
+  get:
+    description: return all NBA teams   
+      
+    responses:
+      200:
+        body:
+          application/json:
+            type: team[]
+            examples:
+              output: !include /examples/teams_example.raml
+      400:
+        body:
+          application/json:
+            example:
+              message: Bad request
+
+/games:
+    get:
+      description: returns all games of season
+      queryParameters:
+        season:
+          displayName: Season
+          description: NBA Season
+          type: number
+          required: true
+        abbreviation:
+          displayName: Abbreeviatoin of the Team
+          description: Abbreeviatoin of the Team (exmpl. GSW)
+          required: false
+        teamname:
+          displayName: Name of the Team
+          description: Name of the Team (exmpl. Lakers)
+          required: false
+      
+      responses:
+        200:
+          body:
+            application/json:
+              type: game[]
+              examples:
+                !include /examples/games_example.raml
+        400:
+          body:
+            application/json:
+              example:
+                message: Bad request
+
+/standings:
+  get:
+    description: return all NBA teams
+    queryParameters:
+      season:
+        displayName: Season
+        description: NBA Season
+        type: number
+        required: true
+      standingsby:
+        displayName: Standings By(Division, Conference)
+        description: Standings of Teams
+        type: string
+        required: false
+    responses:
+        200:
+          body:
+            application/json:
+              type: confstand[]
+              examples:
+                !include /examples/standings_example.raml     
+        400:
+          body:
+            application/json:
+              example:
+                message: Bad request
+          
+            
+            
+          
+      

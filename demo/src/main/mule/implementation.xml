@@ -255,7 +255,7 @@ output application/json
 			<set-variable value="#[output application/json --- vars.newPayload + payload]" doc:name="newPayload" doc:id="2d1a7c24-18e3-4a7e-8535-ad10e578d8fa" variableName="newPayload" />
 			<logger level="INFO" doc:name="payload" doc:id="20fa474b-9c9c-4227-9ba0-a978e3c1625b"/>
 		</foreach>
-		<ee:transform doc:name="Transform Message" doc:id="8a011863-f4cd-4ede-a352-d943ea8bc99e" >
+		<ee:transform doc:name="to Array with Full Info" doc:id="8a011863-f4cd-4ede-a352-d943ea8bc99e" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
