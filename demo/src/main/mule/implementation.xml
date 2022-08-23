@@ -149,10 +149,10 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 		<flow-ref doc:name="validNameAbbr" doc:id="3940018e-4f8f-40ec-a3d2-2b47c9a915ca" name="validNameAbbr"/>
 		<choice doc:name="Choice" doc:id="ba82c9c6-16cb-4c75-9a72-896ac8fc4a93" >
 			<when expression="#[(not isEmpty(vars.teamName)) and isEmpty(vars.teamAbr)]">
-				<flow-ref doc:name="getByName" doc:id="897e7ff4-4c69-4649-8e5d-9739518b149f" name="getByName"/>
+				<flow-ref doc:name="gamesbyname" doc:id="897e7ff4-4c69-4649-8e5d-9739518b149f" name="gamesbyname"/>
 			</when>
 			<when expression="#[isEmpty(vars.teamName) and (not isEmpty(vars.teamAbr))]">
-				<flow-ref doc:name="getByAbr" doc:id="e83ff8d2-7bff-4952-ba42-d448b9d61fae" name="getByAbr"/>
+				<flow-ref doc:name="gamesbyteamabr" doc:id="e83ff8d2-7bff-4952-ba42-d448b9d61fae" name="gamesbyteamabr"/>
 			</when>
 			<otherwise >
 				<flow-ref doc:name="allgames" doc:id="e0af97a3-a733-47b6-aa16-d97c9eceba53" name="allgames" />
