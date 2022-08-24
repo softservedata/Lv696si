@@ -50,7 +50,11 @@
 				</executions>
 				<configuration>
 					<coverage>
-						<runCoverage>true</runCoverage>
+						<runCoverage>true</runCoverage>	
+						<ignoreFiles>
+        					<ignoreFile>./main/mule/demo-api.xml</ignoreFile>
+        					<ignoreFile>./main/mule/global.xml</ignoreFile>	
+        				</ignoreFiles>				
 						<formats>
 							<format>html</format>
 						</formats>
