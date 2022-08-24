@@ -4,40 +4,4 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="getAllTeams" doc:id="80f88386-3109-4012-91cc-d9c2dc2af428" >
-		<http:listener doc:name="Listener" doc:id="1b41c89c-29a5-4470-9f85-c0040fa4715f" config-ref="HTTP_Listener_config" path="/allteams" allowedMethods="GET" />
-		<flow-ref doc:name="allteams" doc:id="72a91e8f-4b20-4de3-8765-ad9445be538d" name="allteams" targetValue="payload" />
-	</flow>
-	<flow name="getAllGames" doc:id="bccdba78-8e83-4157-91ac-946b80dd7dde" >
-		<http:listener doc:name="Listener" doc:id="76c257ed-68a8-4c39-9109-e3cfaf0b897a" config-ref="HTTP_Listener_config" path="/allgames" />
-		<flow-ref doc:name="allgames" doc:id="62f43b73-eb2e-462a-af15-8fa795cb1040" name="allgames" />
-	</flow>
-	<flow name="getByAbr" doc:id="70577328-3670-49bb-8f80-5486ef5ed787" >
-		<http:listener doc:name="Listener" doc:id="a87a8546-b6a6-4982-ae7d-d07c20df3a56" config-ref="HTTP_Listener_config" path="/gamesbyteam"/>
-		<flow-ref doc:name="by Abr" doc:id="3e257169-868a-468a-a838-d230cbc0a698" name="gamesbyteamabr"/>
-	</flow>
-	<flow name="getByName" doc:id="39d4fe15-1bf4-4a93-8dd9-51a38d060bd4" >
-		<http:listener doc:name="Listener" doc:id="59fddba0-772e-4feb-9551-d5d6ba740b49" config-ref="HTTP_Listener_config" path="/gamesbyteamname" allowedMethods="GET"/>
-		<flow-ref doc:name="by Name" doc:id="f655f001-8a34-46da-9049-68ab263035eb" name="gamesbyname" />
-	</flow>
-	<flow name="Games" doc:id="05c42cc8-1e2c-48f1-a51d-420b16305567">
-		<http:listener doc:name="Listener" doc:id="e383f12a-aa07-495d-85e9-9d0464f1a1e4" config-ref="HTTP_Listener_config" path="/games" />
-		<flow-ref doc:name="Flow Reference" doc:id="2a88f705-39cb-4095-bbdd-cad9427c2aa8" name="getGames" />
-	</flow>
-	<flow name="FindAllwinners" doc:id="4c2d84db-335f-41c5-a9ba-094e62809d9f" >
-		<http:listener doc:name="Listener" doc:id="bf67aee6-9f44-4ded-a876-2072d079834c" config-ref="HTTP_Listener_config" path="/findallwinners"/>
-		<flow-ref doc:name="Flow Reference" doc:id="18ddca0d-a67d-45ce-b3d3-5f3614098356" name="findWinnersOfTheGame"/>
-	</flow>
-	<flow name="addInfo" doc:id="10ec4546-f229-4ad2-b131-43bc1f803480" >
-		<http:listener doc:name="Listener" doc:id="b7a3fb88-36a6-49e7-b26f-2268a4b35ff7" config-ref="HTTP_Listener_config" path="/getinfo"/>
-		<flow-ref doc:name="addAdditionalInfo" doc:id="de1386c6-f522-4f7b-9fa3-cb073b2460fb" name="addAdditionalInfo"/>
-	</flow>
-	<flow name="standings" doc:id="37d2612b-2816-484e-b9e8-8d929938b4b6" >
-		<http:listener doc:name="Listener" doc:id="e2937a41-5ae3-40eb-8507-86d386bb6ca9" config-ref="HTTP_Listener_config" path="/standings"/>
-		<flow-ref doc:name="getStandings" doc:id="752cdbc2-af75-416d-bd7a-d47001831594" name="getStandings"/>
-	</flow>
-	<flow name="listenersFlow" doc:id="8ce71df5-74cb-4fd7-a3aa-5e0bad28f5f4" >
-		<http:listener doc:name="Listener" doc:id="bec6e756-7a79-4b7e-8f34-9952b0d5277b" config-ref="HTTP_Listener_config" path="/valid"/>
-		<flow-ref doc:name="Flow Reference" doc:id="821da0a4-30d0-446f-8652-155ff99a4b1b" name="validNameAbbr"/>
-	</flow>
 </mule>
