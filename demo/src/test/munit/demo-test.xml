@@ -2382,179 +2382,125 @@ output application/json
 					<ee:set-variable variableName="getStandingsTestResult" ><![CDATA[%dw 2.0
 output application/json
 ---
-[
-  {
-    "team_name": "Oklahoma City Thunder",
-    "team_abbr": "OKC",
-    "conference": "West",
-    "division": "Northwest",
-    "wins": 3,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Portland Trail Blazers",
-    "team_abbr": "POR",
-    "conference": "West",
-    "division": "Northwest",
-    "wins": 2,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "New York Knicks",
-    "team_abbr": "NYK",
-    "conference": "East",
-    "division": "Atlantic",
-    "wins": 2,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Toronto Raptors",
-    "team_abbr": "TOR",
-    "conference": "East",
-    "division": "Atlantic",
-    "wins": 2,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Dallas Mavericks",
-    "team_abbr": "DAL",
-    "conference": "West",
-    "division": "Southwest",
-    "wins": 1,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Los Angeles Lakers",
-    "team_abbr": "LAL",
-    "conference": "West",
-    "division": "Pacific",
-    "wins": 1,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Utah Jazz",
-    "team_abbr": "UTA",
-    "conference": "West",
-    "division": "Northwest",
-    "wins": 1,
-    "losses": 0,
-    "percentage": 1
-  },
-  {
-    "team_name": "Cleveland Cavaliers",
-    "team_abbr": "CLE",
-    "conference": "East",
-    "division": "Central",
-    "wins": 5,
-    "losses": 1,
-    "percentage": 0.8333333333333333333333333333333333
-  },
-  {
-    "team_name": "Phoenix Suns",
-    "team_abbr": "PHX",
-    "conference": "West",
-    "division": "Pacific",
-    "wins": 5,
-    "losses": 2,
-    "percentage": 0.7142857142857142857142857142857143
-  },
-  {
-    "team_name": "Boston Celtics",
-    "team_abbr": "BOS",
-    "conference": "East",
-    "division": "Atlantic",
-    "wins": 2,
-    "losses": 1,
-    "percentage": 0.6666666666666666666666666666666667
-  },
-  {
-    "team_name": "San Antonio Spurs",
-    "team_abbr": "SAS",
-    "conference": "West",
-    "division": "Southwest",
-    "wins": 2,
-    "losses": 1,
-    "percentage": 0.6666666666666666666666666666666667
-  },
-  {
-    "team_name": "Miami Heat",
-    "team_abbr": "MIA",
-    "conference": "East",
-    "division": "Southeast",
-    "wins": 2,
-    "losses": 2,
-    "percentage": 0.5
-  },
-  {
-    "team_name": "Houston Rockets",
-    "team_abbr": "HOU",
-    "conference": "West",
-    "division": "Southwest",
-    "wins": 2,
-    "losses": 2,
-    "percentage": 0.5
-  },
-  {
-    "team_name": "Milwaukee Bucks",
-    "team_abbr": "MIL",
-    "conference": "East",
-    "division": "Central",
-    "wins": 2,
-    "losses": 2,
-    "percentage": 0.5
-  },
-  {
-    "team_name": "Chicago Bulls",
-    "team_abbr": "CHI",
-    "conference": "East",
-    "division": "Central",
-    "wins": 1,
-    "losses": 1,
-    "percentage": 0.5
-  },
-  {
-    "team_name": "Detroit Pistons",
-    "team_abbr": "DET",
-    "conference": "East",
-    "division": "Central",
-    "wins": 1,
-    "losses": 2,
-    "percentage": 0.3333333333333333333333333333333333
-  },
-  {
-    "team_name": "Denver Nuggets",
-    "team_abbr": "DEN",
-    "conference": "West",
-    "division": "Northwest",
-    "wins": 1,
-    "losses": 2,
-    "percentage": 0.3333333333333333333333333333333333
-  },
-  {
-    "team_name": "Atlanta Hawks",
-    "team_abbr": "ATL",
-    "conference": "East",
-    "division": "Southeast",
-    "wins": 1,
-    "losses": 2,
-    "percentage": 0.3333333333333333333333333333333333
-  },
-  {
-    "team_name": "Washington Wizards",
-    "team_abbr": "WAS",
-    "conference": "East",
-    "division": "Southeast",
-    "wins": 1,
-    "losses": 4,
-    "percentage": 0.2
-  }
-]]]></ee:set-variable>
+{
+  "standings": "All NBA",
+  "teams": [
+    {
+      "team_name": "Oklahoma City Thunder",
+      "wins": 3,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Portland Trail Blazers",
+      "wins": 2,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "New York Knicks",
+      "wins": 2,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Toronto Raptors",
+      "wins": 2,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Dallas Mavericks",
+      "wins": 1,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Los Angeles Lakers",
+      "wins": 1,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Utah Jazz",
+      "wins": 1,
+      "losses": 0,
+      "percentage": 1.000
+    },
+    {
+      "team_name": "Cleveland Cavaliers",
+      "wins": 5,
+      "losses": 1,
+      "percentage": 0.833
+    },
+    {
+      "team_name": "Phoenix Suns",
+      "wins": 5,
+      "losses": 2,
+      "percentage": 0.714
+    },
+    {
+      "team_name": "Boston Celtics",
+      "wins": 2,
+      "losses": 1,
+      "percentage": 0.667
+    },
+    {
+      "team_name": "San Antonio Spurs",
+      "wins": 2,
+      "losses": 1,
+      "percentage": 0.667
+    },
+    {
+      "team_name": "Miami Heat",
+      "wins": 2,
+      "losses": 2,
+      "percentage": 0.500
+    },
+    {
+      "team_name": "Houston Rockets",
+      "wins": 2,
+      "losses": 2,
+      "percentage": 0.500
+    },
+    {
+      "team_name": "Milwaukee Bucks",
+      "wins": 2,
+      "losses": 2,
+      "percentage": 0.500
+    },
+    {
+      "team_name": "Chicago Bulls",
+      "wins": 1,
+      "losses": 1,
+      "percentage": 0.500
+    },
+    {
+      "team_name": "Detroit Pistons",
+      "wins": 1,
+      "losses": 2,
+      "percentage": 0.333
+    },
+    {
+      "team_name": "Denver Nuggets",
+      "wins": 1,
+      "losses": 2,
+      "percentage": 0.333
+    },
+    {
+      "team_name": "Atlanta Hawks",
+      "wins": 1,
+      "losses": 2,
+      "percentage": 0.333
+    },
+    {
+      "team_name": "Washington Wizards",
+      "wins": 1,
+      "losses": 4,
+      "percentage": 0.200
+    }
+  ]
+}]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:assert-that doc:name="getStandingsTestResult equalTo payload" doc:id="eea945e9-92ad-43fc-9261-ff71164f431d" is="#[MunitTools::equalTo(vars.getStandingsTestResult)]" expression="#[payload]"/>
@@ -3967,61 +3913,61 @@ output application/json
         "team_name": "New York Knicks",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Toronto Raptors",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Cleveland Cavaliers",
         "wins": 5,
         "losses": 1,
-        "percentage": 0.8333333333333333333333333333333333
+        "percentage": 0.833
       },
       {
         "team_name": "Boston Celtics",
         "wins": 2,
         "losses": 1,
-        "percentage": 0.6666666666666666666666666666666667
+        "percentage": 0.667
       },
       {
         "team_name": "Miami Heat",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Milwaukee Bucks",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Chicago Bulls",
         "wins": 1,
         "losses": 1,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Detroit Pistons",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333333333333333333333
+        "percentage": 0.333
       },
       {
         "team_name": "Atlanta Hawks",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333333333333333333333
+        "percentage": 0.333
       },
       {
         "team_name": "Washington Wizards",
         "wins": 1,
         "losses": 4,
-        "percentage": 0.2
+        "percentage": 0.200
       }
     ]
   },
@@ -4032,55 +3978,55 @@ output application/json
         "team_name": "Oklahoma City Thunder",
         "wins": 3,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Portland Trail Blazers",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Dallas Mavericks",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Los Angeles Lakers",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Utah Jazz",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Phoenix Suns",
         "wins": 5,
         "losses": 2,
-        "percentage": 0.7142857142857143
+        "percentage": 0.714
       },
       {
         "team_name": "San Antonio Spurs",
         "wins": 2,
         "losses": 1,
-        "percentage": 0.6666666666666666
+        "percentage": 0.667
       },
       {
         "team_name": "Houston Rockets",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Denver Nuggets",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333
+        "percentage": 0.333
       }
     ]
   }
@@ -5497,19 +5443,19 @@ output application/json
         "team_name": "New York Knicks",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Toronto Raptors",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Boston Celtics",
         "wins": 2,
         "losses": 1,
-        "percentage": 0.6666666666666666666666666666666667
+        "percentage": 0.667
       }
     ]
   },
@@ -5520,25 +5466,25 @@ output application/json
         "team_name": "Cleveland Cavaliers",
         "wins": 5,
         "losses": 1,
-        "percentage": 0.8333333333333333333333333333333333
+        "percentage": 0.833
       },
       {
         "team_name": "Milwaukee Bucks",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Chicago Bulls",
         "wins": 1,
         "losses": 1,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Detroit Pistons",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333333333333333333333
+        "percentage": 0.333
       }
     ]
   },
@@ -5549,19 +5495,19 @@ output application/json
         "team_name": "Miami Heat",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       },
       {
         "team_name": "Atlanta Hawks",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333333333333333333333
+        "percentage": 0.333
       },
       {
         "team_name": "Washington Wizards",
         "wins": 1,
         "losses": 4,
-        "percentage": 0.2
+        "percentage": 0.200
       }
     ]
   },
@@ -5572,25 +5518,25 @@ output application/json
         "team_name": "Oklahoma City Thunder",
         "wins": 3,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Portland Trail Blazers",
         "wins": 2,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Utah Jazz",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Denver Nuggets",
         "wins": 1,
         "losses": 2,
-        "percentage": 0.3333333333333333333333333333333333
+        "percentage": 0.333
       }
     ]
   },
@@ -5601,13 +5547,13 @@ output application/json
         "team_name": "Los Angeles Lakers",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "Phoenix Suns",
         "wins": 5,
         "losses": 2,
-        "percentage": 0.7142857142857142857142857142857143
+        "percentage": 0.714
       }
     ]
   },
@@ -5618,19 +5564,19 @@ output application/json
         "team_name": "Dallas Mavericks",
         "wins": 1,
         "losses": 0,
-        "percentage": 1
+        "percentage": 1.000
       },
       {
         "team_name": "San Antonio Spurs",
         "wins": 2,
         "losses": 1,
-        "percentage": 0.6666666666666666666666666666666667
+        "percentage": 0.667
       },
       {
         "team_name": "Houston Rockets",
         "wins": 2,
         "losses": 2,
-        "percentage": 0.5
+        "percentage": 0.500
       }
     ]
   }

@@ -305,6 +305,22 @@ payload]]></ee:set-variable>
 			</when>
 			<otherwise >
 				<flow-ref doc:name="addAdditionalInfo" doc:id="b7a1ee94-8f4e-48ae-821e-02f6fbf1fbe2" name="addAdditionalInfo"/>
+				<ee:transform doc:name="remove unnecessary Info" doc:id="d61d4252-a822-4cae-a0cb-c586ca3ad200" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	standings: "All NBA",
+	teams: payload map ( payload01 , indexOfPayload01 ) -> {
+		team_name: payload01.team_name,
+		wins: payload01.wins,
+		losses: payload01.losses,
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Size of payload" doc:id="0297eac7-c017-46c3-a2b4-960d04ee22c0" message='#["Size of payload " ++ sizeOf(payload)]'/>
@@ -333,7 +349,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -360,7 +376,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -401,7 +417,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -428,7 +444,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -455,7 +471,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -482,7 +498,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -509,7 +525,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -536,7 +552,7 @@ output application/json
 		team_name: payload01.team_name,
 		wins: payload01.wins,
 		losses: payload01.losses,
-		percentage: payload01.percentage
+		percentage: ((payload01.percentage as String{format: "0.000"}) replace "," with ".") as Number
 	}
 }]]></ee:set-payload>
 					</ee:message>
