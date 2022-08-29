@@ -625,7 +625,7 @@ output application/java
 vars.games ++ payload.data]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<ee:transform doc:name="0 to numberOfPages" doc:id="f9b4666c-9063-4fd7-8294-b05535b699c1" >
+		<ee:transform doc:name="2 to numberOfPages" doc:id="f9b4666c-9063-4fd7-8294-b05535b699c1" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
@@ -660,9 +660,6 @@ vars.games ++ payload.data]]></ee:set-variable>
 			</ee:transform>
 		</foreach>
 		<logger level="INFO" doc:name="Log number of pages" doc:id="50f41128-4c24-457d-909a-ad809f99b614" message='#["Number of Pages " ++ vars.numberOfpages]'/>
-	</sub-flow>
-	<sub-flow name="implementationSub_Flow" doc:id="96427050-c469-4e55-8d3d-5858c87ed10a">
-		<logger level="INFO" doc:name="Logger" doc:id="fa0b4722-a3eb-4ae9-8c63-564b75685e24" />
 	</sub-flow>
 	<sub-flow name="addToDataBaseEast" doc:id="8e3277ff-a629-4be4-abae-953ff7e1a004" >
 		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0ce48158-9474-4097-b1fc-98bfc7c37365" variableName="oldPayload"/>
@@ -701,10 +698,10 @@ vars.oldPayload]]></ee:set-payload>
 			</db:insert>
 		</foreach>
 	</sub-flow>
-	<sub-flow name="addToDataBaseWest" doc:id="c7432009-931c-4b07-9adb-22f1579cd722" >
+	<sub-flow name="addToDataBaseWest" doc:id="c7432009-931c-4b07-9adb-22f1579cd722">
 		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0f0edd59-1bc2-49df-99d2-da343bc7e46f" variableName="oldPayload" />
-		<db:execute-ddl doc:name="Create Table West" doc:id="558b6d14-b9cd-4875-962d-3012b66e1092" config-ref="Database_Config" >
-			<db:sql ><![CDATA[CREATE TABLE IF NOT EXISTS results.west(
+		<db:execute-ddl doc:name="Create Table West" doc:id="558b6d14-b9cd-4875-962d-3012b66e1092" config-ref="Database_Config">
+			<db:sql><![CDATA[CREATE TABLE IF NOT EXISTS results.west(
             id integer,
             team_name varchar(100),
             wins integer,
@@ -712,22 +709,22 @@ vars.oldPayload]]></ee:set-payload>
             percentage numeric
         )]]></db:sql>
 		</db:execute-ddl>
-		<db:delete doc:name="Delete All Data From Table" doc:id="ab4a9aeb-0321-4fd3-9ae0-423662ca5b5d" config-ref="Database_Config" >
-			<db:sql ><![CDATA[delete from results.west]]></db:sql>
+		<db:delete doc:name="Delete All Data From Table" doc:id="ab4a9aeb-0321-4fd3-9ae0-423662ca5b5d" config-ref="Database_Config">
+			<db:sql><![CDATA[delete from results.west]]></db:sql>
 		</db:delete>
-		<ee:transform doc:name="return old payload" doc:id="6c7f0fdc-a8cb-4896-bc8c-4c94cdfa923a" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="return old payload" doc:id="6c7f0fdc-a8cb-4896-bc8c-4c94cdfa923a">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 vars.oldPayload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<foreach doc:name="For Each" doc:id="d51e3a77-1c40-4aac-8a53-4d745192ec7d" collection="#[payload.teams]" >
-			<db:insert doc:name="Insert to West" doc:id="e968b5c9-5a3e-4b20-a385-4a6cee655c35" config-ref="Database_Config" >
-				<db:sql ><![CDATA[INSERT INTO results.west(id, team_name, wins, losses, percentage)
+		<foreach doc:name="For Each" doc:id="d51e3a77-1c40-4aac-8a53-4d745192ec7d" collection="#[payload.teams]">
+			<db:insert doc:name="Insert to West" doc:id="e968b5c9-5a3e-4b20-a385-4a6cee655c35" config-ref="Database_Config">
+				<db:sql><![CDATA[INSERT INTO results.west(id, team_name, wins, losses, percentage)
     VALUES (:id, :team_name, :wins, :losses, :percentage)]]></db:sql>
-				<db:input-parameters ><![CDATA[#[{
+				<db:input-parameters><![CDATA[#[{
 	id: vars.counter,
 	team_name: payload.team_name,
 	wins: payload.wins,
