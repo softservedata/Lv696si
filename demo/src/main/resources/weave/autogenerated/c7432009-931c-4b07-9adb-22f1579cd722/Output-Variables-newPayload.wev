@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_c7432009_931c_4b07_9adb_22f1579cd722_Output_Variables_newPayload = Array<Nothing>
+

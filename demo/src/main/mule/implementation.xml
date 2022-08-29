@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
 		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams">
 		</http:request>
@@ -25,7 +26,7 @@ payload.data]]></ee:set-payload>
 		<set-variable value="#[[]]" doc:name="games" doc:id="c523a437-c73d-461e-9f3a-ec880e2f0065" variableName="games" />
 		<set-variable value="#[0]" doc:name="counter" doc:id="0972c1b1-8472-42f0-9044-9b54cf31fbe2" variableName="counter"/>
 		<logger level="INFO" doc:name="Logger Before All Pages" doc:id="531fc58c-1443-4cd6-a166-0202d01d9a0b" message='#["Variable season " ++ vars.season]' />
-		<flow-ref doc:name="findForAllPages" doc:id="4978c520-35bf-4bfa-9d02-856b67100fd9" name="findForAllPages"/>
+		<flow-ref doc:name="findForAllPages1" doc:id="4978c520-35bf-4bfa-9d02-856b67100fd9" name="findForAllPages1"/>
 		<ee:transform doc:name="All games for season" doc:id="779d098d-2204-4d12-a484-9fde214b3f8d" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -311,7 +312,7 @@ payload]]></ee:set-variable>
 output application/json
 ---
 {
-	standings: "All NBA",
+	standings: "All_NBA",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -344,7 +345,7 @@ payload filter ((object, index) -> object.conference == "East"
 output application/json
 ---
 {
-	conference: "East",
+	standings: "East",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -354,6 +355,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addToDataBaseEast" doc:id="5353d128-3112-4aab-b979-0951de6b0457" name="addToDataBaseEast"/>
 			</route>
 			<route >
 				<ee:transform doc:name="filter by West" doc:id="73f935e4-3a98-4ab5-aff2-ed9dc4e65537" >
@@ -371,7 +373,7 @@ payload filter ((object, index) -> object.conference == "West"
 output application/json
 ---
 {
-	conference: "West",
+	standings: "West",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -381,6 +383,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addToDataBaseWest" doc:id="fcff9b5a-ad73-4d13-8b32-ca80542bca42" name="addToDataBaseWest"/>
 			</route>
 		</scatter-gather>
 		<ee:transform doc:name="flatten" doc:id="6291cac5-99d9-4bfe-a9e2-8b97fed45957" >
@@ -412,7 +415,7 @@ payload filter ((object, index) -> object.division == "Atlantic"
 output application/json
 ---
 {
-	division: "Atlantic",
+	standings: "Atlantic",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -439,7 +442,7 @@ payload filter ((object, index) -> object.division == "Central"
 output application/json
 ---
 {
-	division: "Central",
+	standings: "Central",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -466,7 +469,7 @@ payload filter ((object, index) -> object.division == "Southeast"
 output application/json
 ---
 {
-	division: "SouthEast",
+	standings: "SouthEast",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -493,7 +496,7 @@ payload filter ((object, index) -> object.division == "Northwest"
 output application/json
 ---
 {
-	division: "NorthWest",
+	standings: "NorthWest",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -520,7 +523,7 @@ payload filter ((object, index) -> object.division == "Pacific"
 output application/json
 ---
 {
-	division: "Pacific",
+	standings: "Pacific",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -547,7 +550,7 @@ payload filter ((object, index) -> object.division == "Southwest"
 output application/json
 ---
 {
-	division: "SouthWest",
+	standings: "SouthWest",
 	teams: payload map ( payload01 , indexOfPayload01 ) -> {
 		team_name: payload01.team_name,
 		wins: payload01.wins,
@@ -595,5 +598,144 @@ vars.testSeason  as Number]]></ee:set-variable>
 			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ABBRVALIDATION" />
 		</validation:is-true>
 		<logger level="INFO" doc:name="Validation Logger" doc:id="6c1677e8-231c-4282-8f68-93452908065b" message="Name and Abreviation is valid"/>
+	</sub-flow>
+	<sub-flow name="findForAllPages1" doc:id="e439caac-40ff-4b26-9af7-b112374b7afb" >
+		<http:request method="GET" doc:name="GET /allgames first page" doc:id="799a4a9d-0a38-4c7b-b0af-a12ae225205f" config-ref="HTTP_Request_configuration" path="/games">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"postseason" : false,
+	"seasons[]" : vars.season,
+	"page" : 1,
+	"per_page" : 100
+}]]]></http:query-params>
+		</http:request>
+		<set-variable value="#[message.payload.meta.total_pages]" doc:name="numberOfpages" doc:id="6714c9e3-f7ae-4b97-8ab8-153a669598b4" variableName="numberOfpages"/>
+		<ee:transform doc:name="save result" doc:id="310db87e-a868-40e9-9a1c-d129a2a28e3f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0 
+output application/json 
+--- 
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="games" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.games ++ payload.data]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="0 to numberOfPages" doc:id="f9b4666c-9063-4fd7-8294-b05535b699c1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+2 to vars.numberOfpages]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="e2dd1e29-d462-4f41-b13a-4e5db0862ac4" >
+			<http:request method="GET" doc:name="GET /allgames from one page" doc:id="b8c593c3-877a-4d23-bf8f-847201813837" config-ref="HTTP_Request_configuration" path="/games">
+				<http:query-params><![CDATA[#[output application/java
+---
+{
+	"postseason" : false,
+	"seasons[]" : vars.season,
+	"page" : payload,
+	"per_page" : 100
+}]]]></http:query-params>
+			</http:request>
+			<ee:transform doc:name="save result" doc:id="3e271721-7113-4398-9e51-15b5d9d37dbb" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0 
+output application/json 
+--- 
+payload]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="games" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.games ++ payload.data]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</foreach>
+		<logger level="INFO" doc:name="Log number of pages" doc:id="50f41128-4c24-457d-909a-ad809f99b614" message='#["Number of Pages " ++ vars.numberOfpages]'/>
+	</sub-flow>
+	<sub-flow name="implementationSub_Flow" doc:id="96427050-c469-4e55-8d3d-5858c87ed10a">
+		<logger level="INFO" doc:name="Logger" doc:id="fa0b4722-a3eb-4ae9-8c63-564b75685e24" />
+	</sub-flow>
+	<sub-flow name="addToDataBaseEast" doc:id="8e3277ff-a629-4be4-abae-953ff7e1a004" >
+		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0ce48158-9474-4097-b1fc-98bfc7c37365" variableName="oldPayload"/>
+		<db:execute-ddl doc:name="Create Table East" doc:id="09bf6117-6345-4ef8-a5a1-001977d23f4e" config-ref="Database_Config">
+			<db:sql ><![CDATA[CREATE TABLE IF NOT EXISTS results.east(
+            id integer,
+            team_name varchar(100),
+            wins integer,
+            losses integer,
+            percentage numeric
+        )]]></db:sql>
+		</db:execute-ddl>
+		<db:delete doc:name="Delete All Data From Table" doc:id="c91c9444-5b00-4e94-8a26-baebbb7954a4" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from results.east]]></db:sql>
+		</db:delete>
+		<ee:transform doc:name="return old payload" doc:id="417bd5c0-da95-440d-9890-d94b12f133e2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.oldPayload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="0dc9cb9e-bc2c-40d2-acb2-2ba9d6b5ebb9" collection="#[payload.teams]">
+			<db:insert doc:name="Insert to East" doc:id="0b6a7d65-f729-447b-a442-91ea196e77a6" config-ref="Database_Config">
+				<db:sql><![CDATA[INSERT INTO results.east(id, team_name, wins, losses, percentage)
+    VALUES (:id, :team_name, :wins, :losses, :percentage)]]></db:sql>
+				<db:input-parameters><![CDATA[#[{
+	id: vars.counter,
+	team_name: payload.team_name,
+	wins: payload.wins,
+	losses: payload.losses,
+	percentage: payload.percentage
+	
+}]]]></db:input-parameters>
+			</db:insert>
+		</foreach>
+	</sub-flow>
+	<sub-flow name="addToDataBaseWest" doc:id="c7432009-931c-4b07-9adb-22f1579cd722" >
+		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0f0edd59-1bc2-49df-99d2-da343bc7e46f" variableName="oldPayload" />
+		<db:execute-ddl doc:name="Create Table West" doc:id="558b6d14-b9cd-4875-962d-3012b66e1092" config-ref="Database_Config" >
+			<db:sql ><![CDATA[CREATE TABLE IF NOT EXISTS results.west(
+            id integer,
+            team_name varchar(100),
+            wins integer,
+            losses integer,
+            percentage numeric
+        )]]></db:sql>
+		</db:execute-ddl>
+		<db:delete doc:name="Delete All Data From Table" doc:id="ab4a9aeb-0321-4fd3-9ae0-423662ca5b5d" config-ref="Database_Config" >
+			<db:sql ><![CDATA[delete from results.west]]></db:sql>
+		</db:delete>
+		<ee:transform doc:name="return old payload" doc:id="6c7f0fdc-a8cb-4896-bc8c-4c94cdfa923a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.oldPayload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="d51e3a77-1c40-4aac-8a53-4d745192ec7d" collection="#[payload.teams]" >
+			<db:insert doc:name="Insert to West" doc:id="e968b5c9-5a3e-4b20-a385-4a6cee655c35" config-ref="Database_Config" >
+				<db:sql ><![CDATA[INSERT INTO results.west(id, team_name, wins, losses, percentage)
+    VALUES (:id, :team_name, :wins, :losses, :percentage)]]></db:sql>
+				<db:input-parameters ><![CDATA[#[{
+	id: vars.counter,
+	team_name: payload.team_name,
+	wins: payload.wins,
+	losses: payload.losses,
+	percentage: payload.percentage
+	
+}]]]></db:input-parameters>
+			</db:insert>
+		</foreach>
 	</sub-flow>
 </mule>

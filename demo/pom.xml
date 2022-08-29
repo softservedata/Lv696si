@@ -33,6 +33,18 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<sharedLibraries>
+						<sharedLibrary>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.mycompany</groupId>
+							<artifactId>postgresql-42.5.0</artifactId>
+						</sharedLibrary>
+					</sharedLibraries>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>
@@ -50,11 +62,11 @@
 				</executions>
 				<configuration>
 					<coverage>
-						<runCoverage>true</runCoverage>	
+						<runCoverage>true</runCoverage>
 						<ignoreFiles>
-        					<ignoreFile>./main/mule/demo-api.xml</ignoreFile>
-        					<ignoreFile>./main/mule/global.xml</ignoreFile>	
-        				</ignoreFiles>				
+							<ignoreFile>/main/mule/demo-api.xml</ignoreFile>
+							<ignoreFile>/main/mule/global.xml</ignoreFile>
+						</ignoreFiles>
 						<formats>
 							<format>html</format>
 						</formats>
@@ -108,6 +120,22 @@
 			<artifactId>assertions</artifactId>
 			<version>1.0.2</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-db-connector</artifactId>
+			<version>1.12.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mycompany</groupId>
+			<artifactId>postgresql-42.5.0</artifactId>
+			<version>0.1</version>
 		</dependency>
 	</dependencies>
 
