@@ -37,19 +37,19 @@ vars.games]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="FinishLogger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message='#["size of allGames " ++ sizeOf(vars.games)]' />
 	</sub-flow>
-	<sub-flow name="findForAllPages" doc:id="91a68584-e17e-4e33-afd7-026dd935ea1a" >
-		<http:request method="GET" doc:name="GET /allgames" doc:id="8000bcf1-1640-4e3a-b154-54216eb0ff95" config-ref="HTTP_Request_configuration" path="/games">
-				<http:query-params><![CDATA[#[output application/java
+	<sub-flow name="findForAllPages1" doc:id="e439caac-40ff-4b26-9af7-b112374b7afb">
+		<http:request method="GET" doc:name="GET /allgames first page" doc:id="799a4a9d-0a38-4c7b-b0af-a12ae225205f" config-ref="HTTP_Request_configuration" path="/games">
+			<http:query-params><![CDATA[#[output application/java
 ---
 {
 	"postseason" : false,
 	"seasons[]" : vars.season,
-	"page" : vars.counter,
+	"page" : 1,
 	"per_page" : 100
 }]]]></http:query-params>
-			</http:request>
-		<logger level="INFO" doc:name="DataBase Loger" doc:id="ebfa9191-75b6-4499-826f-43fae18eafe7" message='#["size of Payload " ++ sizeOf(payload.data)]'/>
-		<ee:transform doc:name="save result" doc:id="6f201922-d183-4472-a28c-654c5cd09d1b">
+		</http:request>
+		<set-variable value="#[message.payload.meta.total_pages]" doc:name="numberOfpages" doc:id="6714c9e3-f7ae-4b97-8ab8-153a669598b4" variableName="numberOfpages" />
+		<ee:transform doc:name="save result" doc:id="310db87e-a868-40e9-9a1c-d129a2a28e3f">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0 
 output application/json 
@@ -63,34 +63,47 @@ output application/java
 vars.games ++ payload.data]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<choice doc:name="Choice" doc:id="7b9ac99f-0958-42bc-9084-c93830f5ca69">
-			<when expression="#[!isEmpty(payload.data)]">
-				<ee:transform doc:name="increment counter" doc:id="579c5a5e-086e-49e2-ac45-1a1ac511677e">
-					<ee:message>
-						<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-					</ee:message>
-					<ee:variables>
-						<ee:set-variable variableName="counter"><![CDATA[%dw 2.0
+		<ee:transform doc:name="2 to numberOfPages" doc:id="f9b4666c-9063-4fd7-8294-b05535b699c1">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
-vars.counter + 1]]></ee:set-variable>
-					</ee:variables>
-				</ee:transform>
-				<flow-ref doc:name="findForAllPages" doc:id="46cfc242-5bb3-4eac-b870-681b402b8be0" name="findForAllPages" />
-			</when>
-			<otherwise>
-				<logger level="INFO" doc:name="Numder of Iteration" doc:id="38fde38a-0fc0-49b6-9148-a98439882b43" message='#["Number of iteration " ++ vars.counter-1]'/>
-			</otherwise>
-		</choice>
+2 to vars.numberOfpages]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="e2dd1e29-d462-4f41-b13a-4e5db0862ac4">
+			<http:request method="GET" doc:name="GET /allgames from one page" doc:id="b8c593c3-877a-4d23-bf8f-847201813837" config-ref="HTTP_Request_configuration" path="/games">
+				<http:query-params><![CDATA[#[output application/java
+---
+{
+	"postseason" : false,
+	"seasons[]" : vars.season,
+	"page" : payload,
+	"per_page" : 100
+}]]]></http:query-params>
+			</http:request>
+			<ee:transform doc:name="save result" doc:id="3e271721-7113-4398-9e51-15b5d9d37dbb">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0 
+output application/json 
+--- 
+payload]]></ee:set-payload>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="games"><![CDATA[%dw 2.0
+output application/java
+---
+vars.games ++ payload.data]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</foreach>
+		<logger level="INFO" doc:name="Log number of pages" doc:id="50f41128-4c24-457d-909a-ad809f99b614" message='#["Number of Pages " ++ vars.numberOfpages]' />
 	</sub-flow>
-	<sub-flow name="gamesbyteamabr" doc:id="494a3ad1-b21a-472f-8446-78e5a9581483" >
+	<sub-flow name="gamesbyteamabr" doc:id="494a3ad1-b21a-472f-8446-78e5a9581483">
 		<flow-ref doc:name="allgames" doc:id="99d11d63-0125-4f23-8aa6-d02f99a1f06e" name="allgames" />
-		<ee:transform doc:name="filter by Abbr" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="filter by Abbr" doc:id="90a8bd08-30b2-41c9-ab2a-3edd4a53d777">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload filter ((object, index) -> object.home_team.abbreviation == vars.teamAbr 
@@ -113,7 +126,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Number of Games" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message='#["Number of games " ++ sizeOf(payload)]'/>
+		<logger level="INFO" doc:name="Number of Games" doc:id="dee3c419-55f5-490e-a122-b9f045874085" message='#["Number of games " ++ sizeOf(payload)]' />
 	</sub-flow>
 	<sub-flow name="gamesbyname" doc:id="e4187975-397e-4eb6-a89c-500f4a885ae1" >
 		<flow-ref doc:name="allgames" doc:id="99e2fd7a-c6ef-407a-a6bf-86b25032a62f" name="allgames" />
@@ -257,7 +270,7 @@ output application/json
 				</ee:message>
 			</ee:transform>
 			<set-variable value="#[output application/json --- vars.newPayload + payload]" doc:name="newPayload" doc:id="2d1a7c24-18e3-4a7e-8535-ad10e578d8fa" variableName="newPayload" />
-			<logger level="INFO" doc:name="payload" doc:id="20fa474b-9c9c-4227-9ba0-a978e3c1625b"/>
+			<logger level="INFO" doc:name="Iteration number" doc:id="20fa474b-9c9c-4227-9ba0-a978e3c1625b" message='#["Iteration number " ++ vars.counter]'/>
 		</foreach>
 		<ee:transform doc:name="to Array with Full Info" doc:id="8a011863-f4cd-4ede-a352-d943ea8bc99e" >
 			<ee:message >
@@ -606,68 +619,6 @@ vars.testSeason  as Number]]></ee:set-variable>
 		</validation:is-true>
 		<logger level="INFO" doc:name="Validation Logger" doc:id="6c1677e8-231c-4282-8f68-93452908065b" message="Name and Abreviation is valid"/>
 	</sub-flow>
-	<sub-flow name="findForAllPages1" doc:id="e439caac-40ff-4b26-9af7-b112374b7afb" >
-		<http:request method="GET" doc:name="GET /allgames first page" doc:id="799a4a9d-0a38-4c7b-b0af-a12ae225205f" config-ref="HTTP_Request_configuration" path="/games">
-			<http:query-params><![CDATA[#[output application/java
----
-{
-	"postseason" : false,
-	"seasons[]" : vars.season,
-	"page" : 1,
-	"per_page" : 100
-}]]]></http:query-params>
-		</http:request>
-		<set-variable value="#[message.payload.meta.total_pages]" doc:name="numberOfpages" doc:id="6714c9e3-f7ae-4b97-8ab8-153a669598b4" variableName="numberOfpages"/>
-		<ee:transform doc:name="save result" doc:id="310db87e-a868-40e9-9a1c-d129a2a28e3f" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0 
-output application/json 
---- 
-payload]]></ee:set-payload>
-			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="games" ><![CDATA[%dw 2.0
-output application/java
----
-vars.games ++ payload.data]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<ee:transform doc:name="2 to numberOfPages" doc:id="f9b4666c-9063-4fd7-8294-b05535b699c1" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
----
-2 to vars.numberOfpages]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<foreach doc:name="For Each" doc:id="e2dd1e29-d462-4f41-b13a-4e5db0862ac4" >
-			<http:request method="GET" doc:name="GET /allgames from one page" doc:id="b8c593c3-877a-4d23-bf8f-847201813837" config-ref="HTTP_Request_configuration" path="/games">
-				<http:query-params><![CDATA[#[output application/java
----
-{
-	"postseason" : false,
-	"seasons[]" : vars.season,
-	"page" : payload,
-	"per_page" : 100
-}]]]></http:query-params>
-			</http:request>
-			<ee:transform doc:name="save result" doc:id="3e271721-7113-4398-9e51-15b5d9d37dbb" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0 
-output application/json 
---- 
-payload]]></ee:set-payload>
-				</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="games" ><![CDATA[%dw 2.0
-output application/java
----
-vars.games ++ payload.data]]></ee:set-variable>
-				</ee:variables>
-			</ee:transform>
-		</foreach>
-		<logger level="INFO" doc:name="Log number of pages" doc:id="50f41128-4c24-457d-909a-ad809f99b614" message='#["Number of Pages " ++ vars.numberOfpages]'/>
-	</sub-flow>
 	<sub-flow name="addDataToDatabase" doc:id="3c948ce4-3595-4ea0-998d-a577a999f06f">
 		<set-variable doc:name="tableName" doc:id="331b43e6-05bd-4c4d-9aa8-9a76f32cc2f2" variableName="tableName" value='#["results."]' />
 		<ee:transform doc:name="set tableName" doc:id="4fc90078-b67a-44df-b394-c80f1679857d">
@@ -714,6 +665,56 @@ vars.insertionQuery ++ "INSERT INTO " ++ vars.tableName ++ "(id, team_name, wins
 				<db:sql><![CDATA[#[vars.insertionQuery]]]></db:sql>
 			</db:insert>
 		</foreach>
+		<logger level="INFO" doc:name="Database Logger" doc:id="c040b7fb-1bb9-47a2-9de1-ba2607324689" message='#["Record was added to DataBase successfully"]'/>
+	</sub-flow>
+	<sub-flow name="findForAllPages" doc:id="7bd804e3-5d09-4596-8c7e-18c07956d793">
+		<http:request method="GET" doc:name="GET /allgames" doc:id="beaf0ac5-0e57-48fe-abfe-04ab80962bef" config-ref="HTTP_Request_configuration" path="/games">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"postseason" : false,
+	"seasons[]" : vars.season,
+	"page" : vars.counter,
+	"per_page" : 100
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="DataBase Loger" doc:id="6d6e0d67-35b5-4255-a0c1-ee66babb75e7" message='#["size of Payload " ++ sizeOf(payload.data)]' />
+		<ee:transform doc:name="save result" doc:id="8a96ddd7-0e77-49f7-b2ab-3f3dfa80b5fb">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0 
+output application/json 
+--- 
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="games"><![CDATA[%dw 2.0
+output application/java
+---
+vars.games ++ payload.data]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="2bec9962-bc9d-4c09-be00-05aa6bfa58ba">
+			<when expression="#[!isEmpty(payload.data)]">
+				<ee:transform doc:name="increment counter" doc:id="a9cc031b-dfa6-4a95-b1fd-f03270f29e8b">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+					<ee:variables>
+						<ee:set-variable variableName="counter"><![CDATA[%dw 2.0
+output application/java
+---
+vars.counter + 1]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<flow-ref doc:name="findForAllPages" doc:id="243bc3e5-18dc-4790-9ad4-e98e20056848" name="findForAllPages" />
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Numder of Iteration" doc:id="b9124a8c-a6de-4e1b-af2e-660d11646c5d" message='#["Number of iteration " ++ vars.counter-1]' />
+			</otherwise>
+		</choice>
 	</sub-flow>
 	<sub-flow name="addToDataBaseEast" doc:id="8e3277ff-a629-4be4-abae-953ff7e1a004" >
 		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0ce48158-9474-4097-b1fc-98bfc7c37365" variableName="oldPayload"/>

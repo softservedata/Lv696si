@@ -9,7 +9,7 @@
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<munit:config name="new-test-suite.xml" />
-	<munit:test name="new-test-suite-allteamsTest" doc:id="e130fd97-af4c-4bdb-8a86-0312a5a042fe" description="Test">
+	<munit:test name="new-test-suite-allteamsTest" doc:id="e130fd97-af4c-4bdb-8a86-0312a5a042fe" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="teamsTest var" doc:id="a397af04-7e71-4136-acea-66c5e8b44397" >
 				<ee:message >
@@ -99,19 +99,113 @@ output application/json
 ---
 {
     "data": [
-       
-    ]
+        {
+            "id": 47179,
+            "date": "2019-01-30T00:00:00.000Z",
+            "home_team": {
+                "id": 2,
+                "abbreviation": "BOS",
+                "city": "Boston",
+                "conference": "East",
+                "division": "Atlantic",
+                "full_name": "Boston Celtics",
+                "name": "Celtics"
+            },
+            "home_team_score": 126,
+            "period": 4,
+            "postseason": false,
+            "season": 2018,
+            "status": "Final",
+            "time": " ",
+            "visitor_team": {
+                "id": 4,
+                "abbreviation": "CHA",
+                "city": "Charlotte",
+                "conference": "East",
+                "division": "Southeast",
+                "full_name": "Charlotte Hornets",
+                "name": "Hornets"
+            },
+            "visitor_team_score": 94
+        }
+     ],
+     "meta": {
+        "total_pages": 2,
+        "current_page": 1,
+        "next_page": 2,
+        "per_page": 25,
+        "total_count": 51256
+    }
 }
     ]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="GET /allgames " doc:id="58605bca-07d2-488d-ba14-8169e950e42f" processor="http:request">
+			<munit-tools:mock-when doc:name="GET /allgames first page" doc:id="58605bca-07d2-488d-ba14-8169e950e42f" processor="http:request">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
-					<munit-tools:with-attribute whereValue="GET /allgames" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="GET /allgames first page" attributeName="doc:name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.gamesTest]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="gamesTestSecond var" doc:id="3ebb3376-40be-48db-a57f-eda7496ba087" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="gamesTestSecond" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "data": [
+        {
+            "id": 48772,
+            "date": "2019-02-12T00:00:00.000Z",
+            "home_team": {
+                "id": 15,
+                "abbreviation": "MEM",
+                "city": "Memphis",
+                "conference": "West",
+                "division": "Southwest",
+                "full_name": "Memphis Grizzlies",
+                "name": "Grizzlies"
+            },
+            "home_team_score": 107,
+            "period": 4,
+            "postseason": false,
+            "season": 2018,
+            "status": "Final",
+            "time": "     ",
+            "visitor_team": {
+                "id": 27,
+                "abbreviation": "SAS",
+                "city": "San Antonio",
+                "conference": "West",
+                "division": "Southwest",
+                "full_name": "San Antonio Spurs",
+                "name": "Spurs"
+            },
+            "visitor_team_score": 108
+        }
+     ],
+     "meta": {
+        "total_pages": 2,
+        "current_page": 2,
+        "next_page": 2,
+        "per_page": 25,
+        "total_count": 51256
+    }
+}
+    ]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="GET /allgames from one page" doc:id="d2e9edcc-3923-4eab-9dca-509f2f5477d9" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /allgames from one page" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.gamesTestSecond]" mediaType="application/json" />
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
 		</munit:behavior>
@@ -128,10 +222,66 @@ output application/json
 					<ee:set-variable variableName="gamesTestResult" ><![CDATA[%dw 2.0
 output application/json
 ---
-
-    [
-       
-    ]
+[
+  {
+    "id": 47179,
+    "date": "2019-01-30T00:00:00.000Z",
+    "home_team": {
+      "id": 2,
+      "abbreviation": "BOS",
+      "city": "Boston",
+      "conference": "East",
+      "division": "Atlantic",
+      "full_name": "Boston Celtics",
+      "name": "Celtics"
+    },
+    "home_team_score": 126,
+    "period": 4,
+    "postseason": false,
+    "season": 2018,
+    "status": "Final",
+    "time": " ",
+    "visitor_team": {
+      "id": 4,
+      "abbreviation": "CHA",
+      "city": "Charlotte",
+      "conference": "East",
+      "division": "Southeast",
+      "full_name": "Charlotte Hornets",
+      "name": "Hornets"
+    },
+    "visitor_team_score": 94
+  },
+  {
+    "id": 48772,
+    "date": "2019-02-12T00:00:00.000Z",
+    "home_team": {
+      "id": 15,
+      "abbreviation": "MEM",
+      "city": "Memphis",
+      "conference": "West",
+      "division": "Southwest",
+      "full_name": "Memphis Grizzlies",
+      "name": "Grizzlies"
+    },
+    "home_team_score": 107,
+    "period": 4,
+    "postseason": false,
+    "season": 2018,
+    "status": "Final",
+    "time": "     ",
+    "visitor_team": {
+      "id": 27,
+      "abbreviation": "SAS",
+      "city": "San Antonio",
+      "conference": "West",
+      "division": "Southwest",
+      "full_name": "San Antonio Spurs",
+      "name": "Spurs"
+    },
+    "visitor_team_score": 108
+  }
+]
 
      ]]></ee:set-variable>
 				</ee:variables>
@@ -3907,7 +4057,7 @@ output application/json
 ---
 [
   {
-    "conference": "East",
+    "standings": "East",
     "teams": [
       {
         "team_name": "New York Knicks",
@@ -3972,7 +4122,7 @@ output application/json
     ]
   },
   {
-    "conference": "West",
+    "standings": "West",
     "teams": [
       {
         "team_name": "Oklahoma City Thunder",
@@ -5437,7 +5587,7 @@ output application/json
 ---
 [
   {
-    "division": "Atlantic",
+    "standings": "Atlantic",
     "teams": [
       {
         "team_name": "New York Knicks",
@@ -5460,7 +5610,7 @@ output application/json
     ]
   },
   {
-    "division": "Central",
+    "standings": "Central",
     "teams": [
       {
         "team_name": "Cleveland Cavaliers",
@@ -5489,7 +5639,7 @@ output application/json
     ]
   },
   {
-    "division": "SouthEast",
+    "standings": "SouthEast",
     "teams": [
       {
         "team_name": "Miami Heat",
@@ -5512,7 +5662,7 @@ output application/json
     ]
   },
   {
-    "division": "NorthWest",
+    "standings": "NorthWest",
     "teams": [
       {
         "team_name": "Oklahoma City Thunder",
@@ -5541,7 +5691,7 @@ output application/json
     ]
   },
   {
-    "division": "Pacific",
+    "standings": "Pacific",
     "teams": [
       {
         "team_name": "Los Angeles Lakers",
@@ -5558,7 +5708,7 @@ output application/json
     ]
   },
   {
-    "division": "SouthWest",
+    "standings": "SouthWest",
     "teams": [
       {
         "team_name": "Dallas Mavericks",
