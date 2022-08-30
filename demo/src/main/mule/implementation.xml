@@ -322,6 +322,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="597becb6-c55b-4877-9197-6b2dc8193572" name="addDataToDatabase" />
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Size of payload" doc:id="0297eac7-c017-46c3-a2b4-960d04ee22c0" message='#["Size of payload " ++ sizeOf(payload)]'/>
@@ -355,7 +356,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<flow-ref doc:name="addToDataBaseEast" doc:id="5353d128-3112-4aab-b979-0951de6b0457" name="addToDataBaseEast"/>
+				<flow-ref doc:name='addDataToDatabase' doc:id="e319eaff-38e6-44ae-ab4e-d0a82a452909" name="addDataToDatabase"/>
 			</route>
 			<route >
 				<ee:transform doc:name="filter by West" doc:id="73f935e4-3a98-4ab5-aff2-ed9dc4e65537" >
@@ -383,7 +384,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<flow-ref doc:name="addToDataBaseWest" doc:id="fcff9b5a-ad73-4d13-8b32-ca80542bca42" name="addToDataBaseWest"/>
+				<flow-ref doc:name="addDataToDatabase" doc:id="0035cc16-0fd9-4ad3-a854-e4f6ed24390b" name="addDataToDatabase" />
 			</route>
 		</scatter-gather>
 		<ee:transform doc:name="flatten" doc:id="6291cac5-99d9-4bfe-a9e2-8b97fed45957" >
@@ -425,6 +426,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="946d863a-13ae-42c4-9980-0cd1814a415e" name="addDataToDatabase" />
 			</route>
 			<route >
 				<ee:transform doc:name="filter by Central" doc:id="b17c1fd2-e1d6-4216-93c4-91bd9b227bb2">
@@ -452,6 +454,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="c6279f75-d14a-46a3-9638-871e8b3a6d53" name="addDataToDatabase" />
 			</route>
 			<route >
 				<ee:transform doc:name="filter by SouthEast" doc:id="d9dd962e-344f-479c-b07a-cd7902b52c5d">
@@ -479,6 +482,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="0b56e6a6-e98c-4344-b1d4-b956ce397c75" name="addDataToDatabase" />
 			</route>
 			<route >
 				<ee:transform doc:name="filter by Northwest" doc:id="5cf099a8-e80e-4ae2-9228-4be301ecc012">
@@ -506,6 +510,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="738fe5e1-6a93-4efe-830c-5f9e3a94ff92" name="addDataToDatabase" />
 			</route>
 			<route >
 				<ee:transform doc:name="filter by Pacific" doc:id="84f55514-33d0-42ce-8a0b-8123ab9fa0f0">
@@ -533,6 +538,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="3f15fd9d-429d-4d53-af73-8f5754cde248" name="addDataToDatabase" />
 			</route>
 			<route >
 				<ee:transform doc:name="filter by Southwest" doc:id="4c5425bb-0d2c-4159-94e0-aac9d98b0c0e">
@@ -560,6 +566,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="addDataToDatabase" doc:id="b4bdf3a5-d886-441c-905f-8aea5b924766" name="addDataToDatabase" />
 			</route>
 		</scatter-gather>
 		<ee:transform doc:name="flatten" doc:id="9014b053-3d1e-4985-906c-e64a9769e753" >
@@ -661,10 +668,57 @@ vars.games ++ payload.data]]></ee:set-variable>
 		</foreach>
 		<logger level="INFO" doc:name="Log number of pages" doc:id="50f41128-4c24-457d-909a-ad809f99b614" message='#["Number of Pages " ++ vars.numberOfpages]'/>
 	</sub-flow>
+	<sub-flow name="addDataToDatabase" doc:id="3c948ce4-3595-4ea0-998d-a577a999f06f">
+		<set-variable doc:name="tableName" doc:id="331b43e6-05bd-4c4d-9aa8-9a76f32cc2f2" variableName="tableName" value='#["results."]' />
+		<ee:transform doc:name="set tableName" doc:id="4fc90078-b67a-44df-b394-c80f1679857d">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="tableName"><![CDATA[%dw 2.0
+output application/java
+---
+vars.tableName ++ payload.standings ++ vars.season]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<set-variable value='#["CREATE TABLE IF NOT EXISTS " ++ vars.tableName ++ "(&#10;            id integer,&#10;            team_name varchar(100),&#10;            wins integer,&#10;            losses integer,&#10;            percentage numeric&#10;        )"]' doc:name="creationQuery" doc:id="5d58ef04-a7a1-446e-aad1-8ba435cfc614" variableName="creationQuery" />
+		<set-variable value="#[message.payload]" doc:name="oldPayload" doc:id="5d7e1686-05e1-48f5-98da-4df44da69beb" variableName="oldPayload" />
+		<db:execute-ddl doc:name="Create Table" doc:id="60fd7ab1-8800-4243-b0d9-c395fc3d31c0" config-ref="Database_Config">
+			<db:sql><![CDATA[#[vars.creationQuery]]]></db:sql>
+		</db:execute-ddl>
+		<set-variable value='#["delete from " ++ vars.tableName]' doc:name="clearingQuery" doc:id="6f1ec15b-ea50-4ae0-b657-49532cf640f6" variableName="clearingQuery" />
+		<db:delete doc:name="Delete All Data From Table" doc:id="3f58fdc0-adfb-4a98-9669-a0db7c7967c2" config-ref="Database_Config">
+			<db:sql><![CDATA[#[vars.clearingQuery]]]></db:sql>
+		</db:delete>
+		<ee:transform doc:name="return old payload" doc:id="c1dda644-0fdb-423c-88e9-a99ab0646023">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.oldPayload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each Team" doc:id="81feb510-0941-4677-9a03-92c0a582afb0" collection="#[payload.teams]">
+			<set-variable doc:name="insertionQuery" doc:id="9e1025a4-40b8-4698-a1ad-f7d7692fdfa3" variableName="insertionQuery" value='#[""]' />
+			<ee:transform doc:name="set insertionQuery" doc:id="4685a509-c82b-4eb6-bda7-c5c3c976b422">
+				<ee:message>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="insertionQuery"><![CDATA[%dw 2.0
+output application/java
+---
+vars.insertionQuery ++ "INSERT INTO " ++ vars.tableName ++ "(id, team_name, wins, losses, percentage)
+    VALUES (" ++ vars.counter ++ ", '" ++ payload.team_name ++ "', " ++ payload.wins ++ ", " ++ payload.losses ++ ", " ++ payload.percentage ++ ")"]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<db:insert doc:name="Insert into Table" doc:id="2c61cae1-5913-4979-b6d3-87a733a8a163" config-ref="Database_Config">
+				<db:sql><![CDATA[#[vars.insertionQuery]]]></db:sql>
+			</db:insert>
+		</foreach>
+	</sub-flow>
 	<sub-flow name="addToDataBaseEast" doc:id="8e3277ff-a629-4be4-abae-953ff7e1a004" >
 		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0ce48158-9474-4097-b1fc-98bfc7c37365" variableName="oldPayload"/>
 		<db:execute-ddl doc:name="Create Table East" doc:id="09bf6117-6345-4ef8-a5a1-001977d23f4e" config-ref="Database_Config">
-			<db:sql ><![CDATA[CREATE TABLE IF NOT EXISTS results.east(
+			<db:sql><![CDATA[CREATE TABLE IF NOT EXISTS results.east(
             id integer,
             team_name varchar(100),
             wins integer,
@@ -699,7 +753,7 @@ vars.oldPayload]]></ee:set-payload>
 		</foreach>
 	</sub-flow>
 	<sub-flow name="addToDataBaseWest" doc:id="c7432009-931c-4b07-9adb-22f1579cd722">
-		<set-variable value="#[payload]" doc:name="oldPayload" doc:id="0f0edd59-1bc2-49df-99d2-da343bc7e46f" variableName="oldPayload" />
+		<set-variable value="#[message.payload]" doc:name="oldPayload" doc:id="0f0edd59-1bc2-49df-99d2-da343bc7e46f" variableName="oldPayload" />
 		<db:execute-ddl doc:name="Create Table West" doc:id="558b6d14-b9cd-4875-962d-3012b66e1092" config-ref="Database_Config">
 			<db:sql><![CDATA[CREATE TABLE IF NOT EXISTS results.west(
             id integer,
