@@ -8,5 +8,5 @@ ballapi:
 database:
   URL: "jdbc:postgresql://localhost:5432/demo"
   driver: "org.postgresql.Driver"
-  user: "postgres"
-  password: "1111"
+  user: "![vLHxaHIIKgvunWo2QVaADw==]" 
+  password: "![2t9+l5SdtYs=]"
