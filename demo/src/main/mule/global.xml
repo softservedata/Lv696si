@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	</http:listener-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="e577ab23-8814-4cb3-b302-5f03ccccb8e8" file="config.yaml" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="e95af0e1-7b25-4b80-b4f0-1064fd394717" >
-		<db:generic-connection url="jdbc:postgresql://localhost:5432/demo" driverClassName="org.postgresql.Driver" user="postgres" password="1111" />
+		<db:generic-connection url="${database.URL}" driverClassName="${database.driver}" user="${database.user}" password="${database.password}" />
 	</db:config>
 	<error-handler name="globalError_Handler" doc:id="1d06f253-04ba-4be3-84c2-c69d8b34b155" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="41826be5-e342-428e-bbc2-f849224e1690" type="APIKIT:BAD_REQUEST" >

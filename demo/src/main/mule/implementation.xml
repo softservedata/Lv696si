@@ -18,7 +18,7 @@ output application/json
 payload.data]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="FinishLogger" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message='#["Number of Teams " ++ sizeOf(payload)]'/>
+		<logger level="INFO" doc:name="Number of Teams" doc:id="7f18e868-e01f-4556-badc-5eb7a1ca5764" message='#["Number of Teams " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="allgames" doc:id="1d2abf3c-16a2-41dd-947e-ae276a0a3ac6" >
 		<set-variable value="#[message.attributes.queryParams.season]" doc:name="season" doc:id="43d0bad2-cd24-499a-a489-9dd93d8b7797" variableName="season"/>
@@ -35,7 +35,7 @@ output application/json
 vars.games]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="FinishLogger" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message='#["size of allGames " ++ sizeOf(vars.games)]' />
+		<logger level="INFO" doc:name="Size of allGames" doc:id="71269e45-43ae-431a-8076-0c86f8296077" message='#["Size of allGames " ++ sizeOf(vars.games)]' />
 	</sub-flow>
 	<sub-flow name="findForAllPages1" doc:id="e439caac-40ff-4b26-9af7-b112374b7afb">
 		<http:request method="GET" doc:name="GET /allgames first page" doc:id="799a4a9d-0a38-4c7b-b0af-a12ae225205f" config-ref="HTTP_Request_configuration" path="/games">
@@ -234,7 +234,7 @@ output application/json
 }) orderBy -$.percentage ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Number of games " doc:id="6b4a129a-3d12-4821-a6f7-a5d345a892af" message='#["Number of teams " ++ sizeOf(payload)]' />
+		<logger level="INFO" doc:name="Number of Teams" doc:id="6b4a129a-3d12-4821-a6f7-a5d345a892af" message='#["Number of Teams " ++ sizeOf(payload)]' />
 	</sub-flow>
 	<sub-flow name="addAdditionalInfo" doc:id="09e1db7b-5f5b-4352-8f7b-0aeb5f1cddf2" >
 		<flow-ref doc:name="findWinnersOfTheGame" doc:id="3468603c-632e-452f-8197-b461a44d1d01" name="findWinnersOfTheGame"/>
@@ -280,7 +280,7 @@ output application/json
 vars.newPayload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Number of Teams" doc:id="a3a4d2fd-672e-4dba-b56d-dad6ae6f82c0" message='#["Number of Teams" ++ sizeOf(payload)]'/>
+		<logger level="INFO" doc:name="Number of Teams" doc:id="a3a4d2fd-672e-4dba-b56d-dad6ae6f82c0" message='#["Number of Teams " ++ sizeOf(payload)]'/>
 	</sub-flow>
 	<sub-flow name="findTeamByAbbr" doc:id="c1d101b2-aea7-4c40-bf49-73bee5184dc7" >
 		<flow-ref doc:name="allteams" doc:id="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" name="allteams"/>

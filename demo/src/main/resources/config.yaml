@@ -4,4 +4,9 @@ http:
 ballapi:
   host: "www.balldontlie.io"
   basepath: "/api/v1"
-  
+
+database:
+  URL: "jdbc:postgresql://localhost:5432/demo"
+  driver: "org.postgresql.Driver"
+  user: "postgres"
+  password: "1111"
