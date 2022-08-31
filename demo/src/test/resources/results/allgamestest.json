@@ -1,0 +1,224 @@
+[
+  {
+    "home_team": "Washington Wizards",
+    "visitor_team": "Atlanta Hawks",
+    "score": "94-87",
+    "winner": "WAS"
+  },
+  {
+    "home_team": "Memphis Grizzlies",
+    "visitor_team": "Portland Trail Blazers",
+    "score": "86-106",
+    "winner": "POR"
+  },
+  {
+    "home_team": "Boston Celtics",
+    "visitor_team": "Washington Wizards",
+    "score": "112-101",
+    "winner": "BOS"
+  },
+  {
+    "home_team": "Phoenix Suns",
+    "visitor_team": "Philadelphia 76ers",
+    "score": "84-80",
+    "winner": "PHX"
+  },
+  {
+    "home_team": "Orlando Magic",
+    "visitor_team": "Cleveland Cavaliers",
+    "score": "99-104",
+    "winner": "CLE"
+  },
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "Dallas Mavericks",
+    "score": "97-120",
+    "winner": "DAL"
+  },
+  {
+    "home_team": "Phoenix Suns",
+    "visitor_team": "San Antonio Spurs",
+    "score": "77-74",
+    "winner": "PHX"
+  },
+  {
+    "home_team": "New York Knicks",
+    "visitor_team": "Milwaukee Bucks",
+    "score": "111-101",
+    "winner": "NYK"
+  },
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "San Antonio Spurs",
+    "score": "89-118",
+    "winner": "SAS"
+  },
+  {
+    "home_team": "Brooklyn Nets",
+    "visitor_team": "Phoenix Suns",
+    "score": "89-104",
+    "winner": "PHX"
+  },
+  {
+    "home_team": "Detroit Pistons",
+    "visitor_team": "Toronto Raptors",
+    "score": "106-123",
+    "winner": "TOR"
+  },
+  {
+    "home_team": "Washington Wizards",
+    "visitor_team": "Miami Heat",
+    "score": "95-104",
+    "winner": "MIA"
+  },
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "Houston Rockets",
+    "score": "95-103",
+    "winner": "HOU"
+  },
+  {
+    "home_team": "Los Angeles Lakers",
+    "visitor_team": "Atlanta Hawks",
+    "score": "93-88",
+    "winner": "LAL"
+  },
+  {
+    "home_team": "Brooklyn Nets",
+    "visitor_team": "Oklahoma City Thunder",
+    "score": "92-100",
+    "winner": "OKC"
+  },
+  {
+    "home_team": "Indiana Pacers",
+    "visitor_team": "Detroit Pistons",
+    "score": "99-107",
+    "winner": "DET"
+  },
+  {
+    "home_team": "Boston Celtics",
+    "visitor_team": "Milwaukee Bucks",
+    "score": "112-114",
+    "winner": "MIL"
+  },
+  {
+    "home_team": "Portland Trail Blazers",
+    "visitor_team": "Houston Rockets",
+    "score": "91-88",
+    "winner": "POR"
+  },
+  {
+    "home_team": "Miami Heat",
+    "visitor_team": "Washington Wizards",
+    "score": "89-86",
+    "winner": "MIA"
+  },
+  {
+    "home_team": "Chicago Bulls",
+    "visitor_team": "Indiana Pacers",
+    "score": "83-82",
+    "winner": "CHI"
+  },
+  {
+    "home_team": "Cleveland Cavaliers",
+    "visitor_team": "Detroit Pistons",
+    "score": "116-107",
+    "winner": "CLE"
+  },
+  {
+    "home_team": "Oklahoma City Thunder",
+    "visitor_team": "Brooklyn Nets",
+    "score": "95-92",
+    "winner": "OKC"
+  },
+  {
+    "home_team": "Cleveland Cavaliers",
+    "visitor_team": "Orlando Magic",
+    "score": "102-90",
+    "winner": "CLE"
+  },
+  {
+    "home_team": "Boston Celtics",
+    "visitor_team": "Phoenix Suns",
+    "score": "91-88",
+    "winner": "BOS"
+  },
+  {
+    "home_team": "Chicago Bulls",
+    "visitor_team": "Toronto Raptors",
+    "score": "89-106",
+    "winner": "TOR"
+  },
+  {
+    "home_team": "Oklahoma City Thunder",
+    "visitor_team": "Milwaukee Bucks",
+    "score": "99-99",
+    "winner": "MIL"
+  },
+  {
+    "home_team": "Denver Nuggets",
+    "visitor_team": "Philadelphia 76ers",
+    "score": "83-80",
+    "winner": "DEN"
+  },
+  {
+    "home_team": "Cleveland Cavaliers",
+    "visitor_team": "Washington Wizards",
+    "score": "112-108",
+    "winner": "CLE"
+  },
+  {
+    "home_team": "Oklahoma City Thunder",
+    "visitor_team": "Phoenix Suns",
+    "score": "94-67",
+    "winner": "OKC"
+  },
+  {
+    "home_team": "Cleveland Cavaliers",
+    "visitor_team": "Atlanta Hawks",
+    "score": "94-102",
+    "winner": "ATL"
+  },
+  {
+    "home_team": "New York Knicks",
+    "visitor_team": "Miami Heat",
+    "score": "94-80",
+    "winner": "NYK"
+  },
+  {
+    "home_team": "Denver Nuggets",
+    "visitor_team": "San Antonio Spurs",
+    "score": "97-106",
+    "winner": "SAS"
+  },
+  {
+    "home_team": "Charlotte Hornets",
+    "visitor_team": "Utah Jazz",
+    "score": "87-89",
+    "winner": "UTA"
+  },
+  {
+    "home_team": "Houston Rockets",
+    "visitor_team": "Brooklyn Nets",
+    "score": "99-92",
+    "winner": "HOU"
+  },
+  {
+    "home_team": "Denver Nuggets",
+    "visitor_team": "Cleveland Cavaliers",
+    "score": "92-100",
+    "winner": "CLE"
+  },
+  {
+    "home_team": "Phoenix Suns",
+    "visitor_team": "Miami Heat",
+    "score": "100-92",
+    "winner": "PHX"
+  },
+  {
+    "home_team": "Houston Rockets",
+    "visitor_team": "Phoenix Suns",
+    "score": "101-108",
+    "winner": "PHX"
+  }
+]

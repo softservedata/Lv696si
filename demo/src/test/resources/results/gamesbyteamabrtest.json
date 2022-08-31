@@ -1,0 +1,20 @@
+[
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "Dallas Mavericks",
+    "score": "97-120",
+    "winner": "DAL"
+  },
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "San Antonio Spurs",
+    "score": "89-118",
+    "winner": "SAS"
+  },
+  {
+    "home_team": "Golden State Warriors",
+    "visitor_team": "Houston Rockets",
+    "score": "95-103",
+    "winner": "HOU"
+  }
+]

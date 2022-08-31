@@ -1,0 +1,62 @@
+[
+  {
+    "id": 47179,
+    "date": "2019-01-30T00:00:00.000Z",
+    "home_team": {
+      "id": 2,
+      "abbreviation": "BOS",
+      "city": "Boston",
+      "conference": "East",
+      "division": "Atlantic",
+      "full_name": "Boston Celtics",
+      "name": "Celtics"
+    },
+    "home_team_score": 126,
+    "period": 4,
+    "postseason": false,
+    "season": 2018,
+    "status": "Final",
+    "time": " ",
+    "visitor_team": {
+      "id": 4,
+      "abbreviation": "CHA",
+      "city": "Charlotte",
+      "conference": "East",
+      "division": "Southeast",
+      "full_name": "Charlotte Hornets",
+      "name": "Hornets"
+    },
+    "visitor_team_score": 94
+  },
+  {
+    "id": 48772,
+    "date": "2019-02-12T00:00:00.000Z",
+    "home_team": {
+      "id": 15,
+      "abbreviation": "MEM",
+      "city": "Memphis",
+      "conference": "West",
+      "division": "Southwest",
+      "full_name": "Memphis Grizzlies",
+      "name": "Grizzlies"
+    },
+    "home_team_score": 107,
+    "period": 4,
+    "postseason": false,
+    "season": 2018,
+    "status": "Final",
+    "time": "     ",
+    "visitor_team": {
+      "id": 27,
+      "abbreviation": "SAS",
+      "city": "San Antonio",
+      "conference": "West",
+      "division": "Southwest",
+      "full_name": "San Antonio Spurs",
+      "name": "Spurs"
+    },
+    "visitor_team_score": 108
+  }
+]
+
+ 

@@ -1,0 +1,126 @@
+[
+  {
+    "standings": "East",
+    "teams": [
+      {
+        "team_name": "New York Knicks",
+        "wins": 2,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Toronto Raptors",
+        "wins": 2,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Cleveland Cavaliers",
+        "wins": 5,
+        "losses": 1,
+        "percentage": 0.833
+      },
+      {
+        "team_name": "Boston Celtics",
+        "wins": 2,
+        "losses": 1,
+        "percentage": 0.667
+      },
+      {
+        "team_name": "Miami Heat",
+        "wins": 2,
+        "losses": 2,
+        "percentage": 0.500
+      },
+      {
+        "team_name": "Milwaukee Bucks",
+        "wins": 2,
+        "losses": 2,
+        "percentage": 0.500
+      },
+      {
+        "team_name": "Chicago Bulls",
+        "wins": 1,
+        "losses": 1,
+        "percentage": 0.500
+      },
+      {
+        "team_name": "Detroit Pistons",
+        "wins": 1,
+        "losses": 2,
+        "percentage": 0.333
+      },
+      {
+        "team_name": "Atlanta Hawks",
+        "wins": 1,
+        "losses": 2,
+        "percentage": 0.333
+      },
+      {
+        "team_name": "Washington Wizards",
+        "wins": 1,
+        "losses": 4,
+        "percentage": 0.200
+      }
+    ]
+  },
+  {
+    "standings": "West",
+    "teams": [
+      {
+        "team_name": "Oklahoma City Thunder",
+        "wins": 3,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Portland Trail Blazers",
+        "wins": 2,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Dallas Mavericks",
+        "wins": 1,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Los Angeles Lakers",
+        "wins": 1,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Utah Jazz",
+        "wins": 1,
+        "losses": 0,
+        "percentage": 1.000
+      },
+      {
+        "team_name": "Phoenix Suns",
+        "wins": 5,
+        "losses": 2,
+        "percentage": 0.714
+      },
+      {
+        "team_name": "San Antonio Spurs",
+        "wins": 2,
+        "losses": 1,
+        "percentage": 0.667
+      },
+      {
+        "team_name": "Houston Rockets",
+        "wins": 2,
+        "losses": 2,
+        "percentage": 0.500
+      },
+      {
+        "team_name": "Denver Nuggets",
+        "wins": 1,
+        "losses": 2,
+        "percentage": 0.333
+      }
+    ]
+  }
+]
