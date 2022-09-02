@@ -517,8 +517,8 @@ readUrl("classpath://results/getstandingsbydivtest.json", "application/json")]]>
 	<sub-flow name="MockDBConection" doc:id="82249609-8f8b-4491-9cc5-64d3dd160e51" >
 		<munit-tools:mock-when doc:name="Mock DB Creation" doc:id="c1ac1d0f-03b4-4dc5-9ad8-af3bab7c48d9" processor="db:execute-ddl" >
 			<munit-tools:with-attributes >
-				<munit-tools:with-attribute whereValue="Create Table East" attributeName="doc:name" />
-				<munit-tools:with-attribute whereValue="09bf6117-6345-4ef8-a5a1-001977d23f4e" attributeName="doc:id" />
+				<munit-tools:with-attribute whereValue="Create Table" attributeName="doc:name" />
+				<munit-tools:with-attribute whereValue="60fd7ab1-8800-4243-b0d9-c395fc3d31c0" attributeName="doc:id" />
 				<munit-tools:with-attribute whereValue="Database_Config" attributeName="config-ref" />
 			</munit-tools:with-attributes>
 			<munit-tools:then-return >
