@@ -10,7 +10,7 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 	<munit:config name="new-test-suite.xml" />
-	<munit:test name="new-test-suite-allteamsTest" doc:id="e130fd97-af4c-4bdb-8a86-0312a5a042fe" description="Test">
+	<munit:test name="new-test-suite-allteamsTest" doc:id="e130fd97-af4c-4bdb-8a86-0312a5a042fe" description="Test" ignore="true">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="GET/ allteams" doc:id="41bc1478-c2d2-41d5-9885-75eb5798acc5" processor="http:request">
 				<munit-tools:with-attributes >
@@ -43,7 +43,7 @@ readUrl("classpath://results/allteamtest.json", "application/json")]]></ee:set-v
 			<munit-tools:assert-that doc:name="Assert that" doc:id="4d116ab0-398b-44a8-952c-64723bc70fcc" is="#[MunitTools::equalTo(vars.allTeamsTestResult)]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-allgamesTest" doc:id="9bd2a1b1-7cdb-497f-972f-f348b6d80786" description="Test">
+	<munit:test name="new-test-suite-allgamesTest" doc:id="9bd2a1b1-7cdb-497f-972f-f348b6d80786" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="gamesTest var" doc:id="b2a273c6-dc91-4c9e-9a9f-8b6d41d75677" >
 				<ee:message >
@@ -103,7 +103,7 @@ readUrl("classpath://results/gamestest.json", "application/json")     ]]></ee:se
 			<munit-tools:assert-that doc:name="gamesTestResult equalTo payload" doc:id="3bdd17b3-4733-4e27-82be-483feba100f5" is="#[MunitTools::equalTo(vars.gamesTestResult)]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-gamesbyteamabrTest" doc:id="6dd34106-c27f-4de7-9ccb-7b91cd6e148f" description="Test">
+	<munit:test name="new-test-suite-gamesbyteamabrTest" doc:id="6dd34106-c27f-4de7-9ccb-7b91cd6e148f" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allGamesTest var" doc:id="30897756-ebc4-4112-a76a-5bb4e9001c94" >
 				<ee:message >
@@ -146,7 +146,7 @@ readUrl("classpath://results/gamesbyteamabrtest.json", "application/json")  ]]><
 			<munit-tools:assert-that doc:name="gamesByTeamAbrTestResult equalTo payload" doc:id="042ff08f-8459-46b2-9448-4dba50f4c9d8" is="#[MunitTools::equalTo(vars.gamesByTeamAbrTestResult)]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-gamesbynameTest" doc:id="bed65245-2b06-4e3b-bd2b-77aeb0e9d65a" description="Test">
+	<munit:test name="new-test-suite-gamesbynameTest" doc:id="bed65245-2b06-4e3b-bd2b-77aeb0e9d65a" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allGamesTest var" doc:id="eb73fb20-73b2-41b4-8036-09acb8ed0089" >
 				<ee:message />
@@ -187,7 +187,7 @@ readUrl("classpath://results/gamesbynametest.json", "application/json")  ]]></ee
 			<munit-tools:assert-that doc:name="gamesByNameTestResult equalTo payload" doc:id="9b3b77fe-b82a-4e30-91e4-dae3254fe1ff" expression="#[payload]" is="#[MunitTools::equalTo(vars.gamesByNameTestResult)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-getGamesTest" doc:id="8586022f-5828-4f55-a37d-56848a53acc4" description="Test">
+	<munit:test name="new-test-suite-getGamesTest" doc:id="8586022f-5828-4f55-a37d-56848a53acc4" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allGamesTest var" doc:id="a47e3649-5dc3-4330-9b7d-e4b12b8791ce" >
 				<ee:message />
@@ -263,7 +263,7 @@ readUrl("classpath://results/winnerstest.json", "application/json") ]]></ee:set-
 			<munit-tools:assert-that doc:name="winnersTestResult equalTo payload" doc:id="d87bca64-a7ec-48b4-b518-fa83ba98f399" expression="#[payload]" is="#[MunitTools::equalTo(vars.winnersTestResult)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-addAdditionalInfoTest" doc:id="9ef60946-6385-42bd-aab1-94f41808cab1" description="Test">
+	<munit:test name="new-test-suite-addAdditionalInfoTest" doc:id="9ef60946-6385-42bd-aab1-94f41808cab1" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allTeamsTest var" doc:id="446f9a2e-29cc-412a-917e-594ef38e779f" >
 				<ee:message >
@@ -322,7 +322,7 @@ readUrl("classpath://results/addinfotest.json", "application/json") ]]></ee:set-
 			<munit-tools:assert-that doc:name="addInfoResultTest equalTo payload" doc:id="d59b6c42-ef5b-4206-aa4f-9536485df3db" expression="#[payload]" is="#[MunitTools::equalTo(vars.addInfoResultTest)]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-getStandingsTest" doc:id="c19bbbd8-854b-4139-8993-fe7d46b1faf0" description="Test">
+	<munit:test name="new-test-suite-getStandingsTest" doc:id="c19bbbd8-854b-4139-8993-fe7d46b1faf0" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allTeamsTest var" doc:id="5fcba404-868a-4bea-bd72-21f0bc1f50e5" >
 				<ee:message />
@@ -386,7 +386,7 @@ readUrl("classpath://results/getstandingstest.json", "application/json")]]></ee:
 			<munit-tools:assert-that doc:name="getStandingsTestResult equalTo payload" doc:id="eea945e9-92ad-43fc-9261-ff71164f431d" is="#[MunitTools::equalTo(vars.getStandingsTestResult)]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-standingsByConferenceTest" doc:id="95bb9ab5-de7f-48be-8b7c-673a6d104d4f" description="Test">
+	<munit:test name="new-test-suite-standingsByConferenceTest" doc:id="95bb9ab5-de7f-48be-8b7c-673a6d104d4f" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allGamesTest var" doc:id="35f1e2b0-abbe-44e9-a755-29b3db523794">
 				<ee:message />
@@ -450,7 +450,7 @@ readUrl("classpath://results/getstandingsbyconftest.json", "application/json")]]
 			<munit-tools:assert-that doc:name="getStandingsTestResult equalTo payload" doc:id="4f76ab71-fb3b-4f3e-b4aa-08f8e88dbab9" expression="#[payload]" is="#[MunitTools::equalTo(vars.getStandingsTestResult)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-standingsByDivisionTest" doc:id="683bafc3-8c0f-4e2f-8132-8eae781688f2" description="Test">
+	<munit:test name="new-test-suite-standingsByDivisionTest" doc:id="683bafc3-8c0f-4e2f-8132-8eae781688f2" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="allGamesTest var" doc:id="414582b3-e265-4ded-a204-b2d78d1698b1" >
 				<ee:message />
