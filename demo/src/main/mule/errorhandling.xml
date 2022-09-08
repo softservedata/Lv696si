@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="globalError_Handler" doc:id="216bd913-fa00-4747-ad99-e1cfa20128a4" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f03251f3-e843-4185-9be7-aec62776c91d" type="APIKIT:BAD_REQUEST" >
+			<ee:transform doc:name="Transform Message" doc:id="729be5c6-9512-460e-a4ff-504d11b46214" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="193a7a9e-02b4-4789-bf63-303b509f92d2" type="APIKIT:NOT_FOUND" >
+			<ee:transform doc:name="Transform Message" doc:id="117e3e75-d9d8-4d00-b07f-f846fd35e798" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="52fa4427-2391-4379-abee-03c7c6f05bbe" type="APIKIT:METHOD_NOT_ALLOWED" >
+			<ee:transform doc:name="Transform Message" doc:id="7a3c6225-2199-482e-b021-48ef7c44c5fb" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[405]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a095fa55-67f1-41cf-8dc3-7d28f7a3398f" type="APIKIT:NOT_ACCEPTABLE" >
+			<ee:transform doc:name="Transform Message" doc:id="a55c767e-a451-46f4-8911-653822e7b680" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[406]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="72a43dc8-d520-4b02-8ef8-7f7a10a66a57" type="APIKIT:UNSUPPORTED_MEDIA_TYPE" >
+			<ee:transform doc:name="Transform Message" doc:id="c91ba55e-3bf7-4e94-a505-c3e00c6ce7fe" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[415]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c20093fd-8d65-435b-9573-1a3f045a3831" type="APIKIT:NOT_IMPLEMENTED" >
+			<ee:transform doc:name="Transform Message" doc:id="8a9b647a-aa58-4c94-a466-24ae2f46b19b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[501]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="Api_Error_Handler" doc:id="dd1fde9a-f7c5-4939-a0b4-69b9718cc8c4" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2fbb7281-2029-46c1-b260-526d98d494b7" type="APP:NAMEVALIDATION" >
+			<ee:transform doc:name="Transform Message" doc:id="984e3498-7d96-47a1-ab9d-8c716b987f0b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Invalid Name Of The Team",
+teamname: vars.teamName
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="e92668b0-0aa9-478a-83ff-881a57d86f7c" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="32cab24e-5863-44d3-82fc-fe89c518f622" type="APP:ABBRVALIDATION" >
+			<ee:transform doc:name="Transform Message" doc:id="92eeaa9e-5821-46c7-af45-aa369f6b9909" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Invalid Abbreviation Of The Team",
+abbreviation: vars.teamAbr
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="b0dba486-afe2-495c-9d3f-28b436e241b9" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5080f074-0e75-46fe-b5b4-12e08c914eea" type="APP:SEASONVALIDATION" >
+			<ee:transform doc:name="Transform Message" doc:id="7e33330e-6b98-495b-b175-742e437eaa03" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Season Must Be Between 1980 AND 2021",
+season: vars.season
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="4db55ace-1afd-4bc5-9117-1b2471f9d79a" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bf848729-f361-42d2-9b68-2f3a23fee82f" type="APP:STANDIGSBYVALIDATION" >
+			<ee:transform doc:name="Transform Message" doc:id="8389409d-786f-4774-afee-6034dea2f09b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Choose division or conference or leave empty",
+standingsBy: vars.standingsBy
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="8fe9e506-0f18-4815-9c76-bb94ae64913e" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
+</mule>

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:microsoftOneDrive="http://www.mulesoft.org/schema/mule/microsoftOneDrive" xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:telegram="http://www.mulesoft.org/schema/mule/telegram" xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:excel="http://www.mulesoft.org/schema/mule/excel" xmlns:microsoftOneDrive="http://www.mulesoft.org/schema/mule/microsoftOneDrive" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/microsoftOneDrive http://www.mulesoft.org/schema/mule/microsoftOneDrive/current/mule-microsoftOneDrive.xsd">
+http://www.mulesoft.org/schema/mule/microsoftOneDrive http://www.mulesoft.org/schema/mule/microsoftOneDrive/current/mule-microsoftOneDrive.xsd
+http://www.mulesoft.org/schema/mule/excel http://www.mulesoft.org/schema/mule/excel/current/mule-excel.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd
+http://www.mulesoft.org/schema/mule/telegram http://www.mulesoft.org/schema/mule/telegram/current/mule-telegram.xsd">
 	<sub-flow name="allteams" doc:id="aaa1eaff-0b8e-4142-a92e-21cdd7f1394c" >
 		<http:request method="GET" doc:name="GET /allteams" doc:id="91409d0f-05f7-4893-862d-17667d2dbed8" config-ref="HTTP_Request_configuration" path="/teams">
 		</http:request>
@@ -593,33 +597,6 @@ flatten(payload..*payload)]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="SIze of payload" doc:id="dd6262cd-1927-4806-8380-bca61f128185" message='#["SIze of payload " ++ sizeOf(payload)]' />
 	</sub-flow>
-	<sub-flow name="validSeason" doc:id="47bb9cb2-3ffc-402c-84b3-49417997da20" >
-		<set-variable value="#[vars.season]" doc:name="testSeason" doc:id="33e01e2a-de40-4243-a2d9-415bd9de860d" variableName="testSeason"/>
-		<ee:transform doc:name="season as Number" doc:id="2d2e5442-21bd-4d65-bbf5-00636b8d1ae0">
-				<ee:message>
-				</ee:message>
-				<ee:variables>
-					<ee:set-variable variableName="testSeason"><![CDATA[%dw 2.0
-output application/java
----
-vars.testSeason  as Number]]></ee:set-variable>
-				</ee:variables>
-			</ee:transform>
-		<validation:is-true doc:name="Season Validation" doc:id="00591dcc-f78e-474d-bb91-3ccb2df6b26e" expression="#[(vars.testSeason &lt; 2022) and (vars.testSeason &gt; 1979)]">
-			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:SEASONVALIDATION" />
-		</validation:is-true>
-	</sub-flow>
-	<sub-flow name="validNameAbbr" doc:id="3dd7f310-ee30-4ca9-be4a-57dea7d9cba3" >
-		<set-variable value='#[[&#10;  "Hawks",&#10;  "Celtics",&#10;  "Nets",&#10;  "Hornets",&#10;  "Bulls",&#10;  "Cavaliers",&#10;  "Mavericks",&#10;  "Nuggets",&#10;  "Pistons",&#10;  "Warriors",&#10;  "Rockets",&#10;  "Pacers",&#10;  "Clippers",&#10;  "Lakers",&#10;  "Grizzlies",&#10;  "Heat",&#10;  "Bucks",&#10;  "Timberwolves",&#10;  "Pelicans",&#10;  "Knicks",&#10;  "Thunder",&#10;  "Magic",&#10;  "76ers",&#10;  "Suns",&#10;  "Trail Blazers",&#10;  "Kings",&#10;  "Spurs",&#10;  "Raptors",&#10;  "Jazz",&#10;  "Wizards"&#10;]]' doc:name="names" doc:id="3d40a0fe-3fbd-4e76-aba7-ccec8a416357" variableName="names"/>
-		<set-variable value='#[[&#10;  "ATL",&#10;  "BOS",&#10;  "BKN",&#10;  "CHA",&#10;  "CHI",&#10;  "CLE",&#10;  "DAL",&#10;  "DEN",&#10;  "DET",&#10;  "GSW",&#10;  "HOU",&#10;  "IND",&#10;  "LAC",&#10;  "LAL",&#10;  "MEM",&#10;  "MIA",&#10;  "MIL",&#10;  "MIN",&#10;  "NOP",&#10;  "NYK",&#10;  "OKC",&#10;  "ORL",&#10;  "PHI",&#10;  "PHX",&#10;  "POR",&#10;  "SAC",&#10;  "SAS",&#10;  "TOR",&#10;  "UTA",&#10;  "WAS"&#10;]]' doc:name="abbrs" doc:id="1d66df3f-73aa-43ee-a704-89370ad9aecb" variableName="abbrs"/>
-		<validation:is-true doc:name="Name Validation" doc:id="305256dc-f743-4f2e-be12-0dba8d2f8364" expression="#[(vars.names contains vars.teamName) or (isEmpty(vars.teamname))]">
-			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:NAMEVALIDATION" />
-		</validation:is-true>
-		<validation:is-true doc:name="Abbr Validation" doc:id="7b50d379-012f-4438-91d4-da803389b6bf" expression="#[(vars.abbrs contains vars.teamAbr) or (isEmpty(vars.teamAbr))]">
-			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ABBRVALIDATION" />
-		</validation:is-true>
-		<logger level="INFO" doc:name="Validation Logger" doc:id="6c1677e8-231c-4282-8f68-93452908065b" message="Name and Abreviation is valid"/>
-	</sub-flow>
 	<sub-flow name="addDataToDatabase" doc:id="3c948ce4-3595-4ea0-998d-a577a999f06f">
 		<set-variable doc:name="tableName" doc:id="331b43e6-05bd-4c4d-9aa8-9a76f32cc2f2" variableName="tableName" value='#["results."]' />
 		<ee:transform doc:name="set tableName" doc:id="4fc90078-b67a-44df-b394-c80f1679857d">
@@ -666,7 +643,34 @@ vars.insertionQuery ++ "INSERT INTO " ++ vars.tableName ++ "(id, team_name, wins
 				<db:sql><![CDATA[#[vars.insertionQuery]]]></db:sql>
 			</db:insert>
 		</foreach>
-		<logger level="INFO" doc:name="Database Logger" doc:id="c040b7fb-1bb9-47a2-9de1-ba2607324689" message='#["Record was added to DataBase successfully"]'/>
+		<logger level="INFO" doc:name="Database Logger" doc:id="c040b7fb-1bb9-47a2-9de1-ba2607324689" message='#["Record was added to DataBase successfully"]' />
+	</sub-flow>
+	<sub-flow name="validSeason" doc:id="47bb9cb2-3ffc-402c-84b3-49417997da20" >
+		<set-variable value="#[vars.season]" doc:name="testSeason" doc:id="33e01e2a-de40-4243-a2d9-415bd9de860d" variableName="testSeason"/>
+		<ee:transform doc:name="season as Number" doc:id="2d2e5442-21bd-4d65-bbf5-00636b8d1ae0">
+				<ee:message>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="testSeason"><![CDATA[%dw 2.0
+output application/java
+---
+vars.testSeason  as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		<validation:is-true doc:name="Season Validation" doc:id="00591dcc-f78e-474d-bb91-3ccb2df6b26e" expression="#[(vars.testSeason &lt; 2022) and (vars.testSeason &gt; 1979)]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:SEASONVALIDATION" />
+		</validation:is-true>
+	</sub-flow>
+	<sub-flow name="validNameAbbr" doc:id="3dd7f310-ee30-4ca9-be4a-57dea7d9cba3" >
+		<set-variable value='#[[&#10;  "Hawks",&#10;  "Celtics",&#10;  "Nets",&#10;  "Hornets",&#10;  "Bulls",&#10;  "Cavaliers",&#10;  "Mavericks",&#10;  "Nuggets",&#10;  "Pistons",&#10;  "Warriors",&#10;  "Rockets",&#10;  "Pacers",&#10;  "Clippers",&#10;  "Lakers",&#10;  "Grizzlies",&#10;  "Heat",&#10;  "Bucks",&#10;  "Timberwolves",&#10;  "Pelicans",&#10;  "Knicks",&#10;  "Thunder",&#10;  "Magic",&#10;  "76ers",&#10;  "Suns",&#10;  "Trail Blazers",&#10;  "Kings",&#10;  "Spurs",&#10;  "Raptors",&#10;  "Jazz",&#10;  "Wizards"&#10;]]' doc:name="names" doc:id="3d40a0fe-3fbd-4e76-aba7-ccec8a416357" variableName="names"/>
+		<set-variable value='#[[&#10;  "ATL",&#10;  "BOS",&#10;  "BKN",&#10;  "CHA",&#10;  "CHI",&#10;  "CLE",&#10;  "DAL",&#10;  "DEN",&#10;  "DET",&#10;  "GSW",&#10;  "HOU",&#10;  "IND",&#10;  "LAC",&#10;  "LAL",&#10;  "MEM",&#10;  "MIA",&#10;  "MIL",&#10;  "MIN",&#10;  "NOP",&#10;  "NYK",&#10;  "OKC",&#10;  "ORL",&#10;  "PHI",&#10;  "PHX",&#10;  "POR",&#10;  "SAC",&#10;  "SAS",&#10;  "TOR",&#10;  "UTA",&#10;  "WAS"&#10;]]' doc:name="abbrs" doc:id="1d66df3f-73aa-43ee-a704-89370ad9aecb" variableName="abbrs"/>
+		<validation:is-true doc:name="Name Validation" doc:id="305256dc-f743-4f2e-be12-0dba8d2f8364" expression="#[(vars.names contains vars.teamName) or (isEmpty(vars.teamname))]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:NAMEVALIDATION" />
+		</validation:is-true>
+		<validation:is-true doc:name="Abbr Validation" doc:id="7b50d379-012f-4438-91d4-da803389b6bf" expression="#[(vars.abbrs contains vars.teamAbr) or (isEmpty(vars.teamAbr))]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ABBRVALIDATION" />
+		</validation:is-true>
+		<logger level="INFO" doc:name="Validation Logger" doc:id="6c1677e8-231c-4282-8f68-93452908065b" message="Name and Abreviation is valid"/>
 	</sub-flow>
 	<sub-flow name="findForAllPages" doc:id="7bd804e3-5d09-4596-8c7e-18c07956d793">
 		<http:request method="GET" doc:name="GET /allgames" doc:id="beaf0ac5-0e57-48fe-abfe-04ab80962bef" config-ref="HTTP_Request_configuration" path="/games">
@@ -717,4 +721,219 @@ vars.counter + 1]]></ee:set-variable>
 			</otherwise>
 		</choice>
 	</sub-flow>
+	<flow name="implementationFlow" doc:id="d9ece13e-a8cf-4799-b105-9383292e6813" >
+		<http:listener doc:name="Listener" doc:id="bc8cecf5-768c-4a08-ab5c-8338183f3789" config-ref="HTTP_Listener_config" path="/excel"/>
+		<ee:transform doc:name="Transform Message" doc:id="d0f42eda-9ffe-4515-b087-84e8ce7996f4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    "standings": "East",
+    "teams": [
+      {
+        "team_name": "Miami Heat",
+        "wins": 66,
+        "losses": 16,
+        "percentage": 0.805
+      },
+      {
+        "team_name": "New York Knicks",
+        "wins": 54,
+        "losses": 28,
+        "percentage": 0.659
+      },
+      {
+        "team_name": "Indiana Pacers",
+        "wins": 49,
+        "losses": 32,
+        "percentage": 0.605
+      },
+      {
+        "team_name": "Brooklyn Nets",
+        "wins": 49,
+        "losses": 33,
+        "percentage": 0.598
+      },
+      {
+        "team_name": "Chicago Bulls",
+        "wins": 45,
+        "losses": 37,
+        "percentage": 0.549
+      },
+      {
+        "team_name": "Atlanta Hawks",
+        "wins": 44,
+        "losses": 38,
+        "percentage": 0.537
+      },
+      {
+        "team_name": "Boston Celtics",
+        "wins": 41,
+        "losses": 40,
+        "percentage": 0.506
+      },
+      {
+        "team_name": "Milwaukee Bucks",
+        "wins": 38,
+        "losses": 44,
+        "percentage": 0.463
+      },
+      {
+        "team_name": "Philadelphia 76ers",
+        "wins": 34,
+        "losses": 48,
+        "percentage": 0.415
+      },
+      {
+        "team_name": "Toronto Raptors",
+        "wins": 34,
+        "losses": 48,
+        "percentage": 0.415
+      },
+      {
+        "team_name": "Detroit Pistons",
+        "wins": 29,
+        "losses": 53,
+        "percentage": 0.354
+      },
+      {
+        "team_name": "Washington Wizards",
+        "wins": 29,
+        "losses": 53,
+        "percentage": 0.354
+      },
+      {
+        "team_name": "Cleveland Cavaliers",
+        "wins": 24,
+        "losses": 58,
+        "percentage": 0.293
+      },
+      {
+        "team_name": "Charlotte Hornets",
+        "wins": 21,
+        "losses": 61,
+        "percentage": 0.256
+      },
+      {
+        "team_name": "Orlando Magic",
+        "wins": 20,
+        "losses": 62,
+        "percentage": 0.244
+      }
+    ]
+  },
+  {
+    "standings": "West",
+    "teams": [
+      {
+        "team_name": "Oklahoma City Thunder",
+        "wins": 60,
+        "losses": 22,
+        "percentage": 0.732
+      },
+      {
+        "team_name": "San Antonio Spurs",
+        "wins": 58,
+        "losses": 24,
+        "percentage": 0.707
+      },
+      {
+        "team_name": "Denver Nuggets",
+        "wins": 57,
+        "losses": 25,
+        "percentage": 0.695
+      },
+      {
+        "team_name": "LA Clippers",
+        "wins": 56,
+        "losses": 26,
+        "percentage": 0.683
+      },
+      {
+        "team_name": "Memphis Grizzlies",
+        "wins": 56,
+        "losses": 26,
+        "percentage": 0.683
+      },
+      {
+        "team_name": "Golden State Warriors",
+        "wins": 47,
+        "losses": 35,
+        "percentage": 0.573
+      },
+      {
+        "team_name": "Houston Rockets",
+        "wins": 45,
+        "losses": 37,
+        "percentage": 0.549
+      },
+      {
+        "team_name": "Los Angeles Lakers",
+        "wins": 45,
+        "losses": 37,
+        "percentage": 0.549
+      },
+      {
+        "team_name": "Utah Jazz",
+        "wins": 43,
+        "losses": 39,
+        "percentage": 0.524
+      },
+      {
+        "team_name": "Dallas Mavericks",
+        "wins": 41,
+        "losses": 41,
+        "percentage": 0.500
+      },
+      {
+        "team_name": "Portland Trail Blazers",
+        "wins": 33,
+        "losses": 49,
+        "percentage": 0.402
+      },
+      {
+        "team_name": "Minnesota Timberwolves",
+        "wins": 31,
+        "losses": 51,
+        "percentage": 0.378
+      },
+      {
+        "team_name": "Sacramento Kings",
+        "wins": 28,
+        "losses": 54,
+        "percentage": 0.341
+      },
+      {
+        "team_name": "New Orleans Pelicans",
+        "wins": 27,
+        "losses": 55,
+        "percentage": 0.329
+      },
+      {
+        "team_name": "Phoenix Suns",
+        "wins": 25,
+        "losses": 57,
+        "percentage": 0.305
+      }
+    ]
+  }
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="6ff78502-d819-484a-a9e0-720ac57f29f7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xlsx 
+---
+{
+	East: payload[0].teams,
+	West: payload[1].teams
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="50cce97d-efc1-4c26-8153-03d135cc2ddb" path="d:/AnypointStudio/1.xlsx"/>
+		<logger level="INFO" doc:name="Logger" doc:id="883ae44e-c9f2-4ac1-8735-4f02bb6d59b6" />
+	</flow>
 </mule>
