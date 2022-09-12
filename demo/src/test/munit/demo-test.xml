@@ -12,10 +12,11 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<munit:config name="new-test-suite.xml" />
 	<munit:test name="new-test-suite-allteamsTest" doc:id="e130fd97-af4c-4bdb-8a86-0312a5a042fe" description="Test">
 		<munit:behavior >
-			<munit-tools:mock-when doc:name="GET/ allteams" doc:id="41bc1478-c2d2-41d5-9885-75eb5798acc5" processor="http:request">
+			<munit-tools:mock-when doc:name="GET/ allTeams" doc:id="41bc1478-c2d2-41d5-9885-75eb5798acc5" processor="http:request">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
-					<munit-tools:with-attribute whereValue="GET /allteams" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="GET /allTeams" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="91409d0f-05f7-4893-862d-17667d2dbed8" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[MunitTools::getResourceAsStream('mock/allteams.json')]" mediaType="application/json" encoding="UTF-8" />
@@ -23,7 +24,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 			</munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to allteams" doc:id="65e7b0a4-d66e-4c03-9575-0415d4707909" name="allteams"/>
+			<flow-ref doc:name="Flow-ref to allteams" doc:id="65e7b0a4-d66e-4c03-9575-0415d4707909" name="allTeams"/>
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="allTeamsTestResult var" doc:id="483fe078-3af8-412d-9c87-89346a22fccc" >
@@ -55,10 +56,11 @@ output application/json
 readUrl("classpath://mock/games.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="GET /allgames first page" doc:id="58605bca-07d2-488d-ba14-8169e950e42f" processor="http:request">
+			<munit-tools:mock-when doc:name="GET /allGames first page" doc:id="58605bca-07d2-488d-ba14-8169e950e42f" processor="http:request">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
-					<munit-tools:with-attribute whereValue="GET /allgames first page" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="GET /allGames first page" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="799a4a9d-0a38-4c7b-b0af-a12ae225205f" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.gamesTest]" mediaType="application/json" />
@@ -74,10 +76,11 @@ output application/json
 readUrl("classpath://mock/gamessecond.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="GET /allgames from one page" doc:id="d2e9edcc-3923-4eab-9dca-509f2f5477d9" processor="http:request">
+			<munit-tools:mock-when doc:name="GET /allGames from one page" doc:id="d2e9edcc-3923-4eab-9dca-509f2f5477d9" processor="http:request">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
 					<munit-tools:with-attribute whereValue="GET /allgames from one page" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b8c593c3-877a-4d23-bf8f-847201813837" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.gamesTestSecond]" mediaType="application/json" />
@@ -88,7 +91,7 @@ readUrl("classpath://mock/gamessecond.json", "application/json")]]></ee:set-vari
 			<munit:set-event doc:name="Set queryParams season" doc:id="124fd654-30b5-4094-935b-18dca77c136c">
 				<munit:attributes value='#["queryParams":{"season": 2016}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow-ref to allgames" doc:id="957bfdbe-27b6-4838-8bb7-ba4d712e9e5e" name="allgames"/>
+			<flow-ref doc:name="Flow-ref to allgames" doc:id="957bfdbe-27b6-4838-8bb7-ba4d712e9e5e" name="allGames"/>
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="gamesTestResult  var" doc:id="76054ed4-0ce1-4460-b52b-d013ed137b50">
@@ -115,11 +118,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="760d23e4-07f2-4aae-b73f-630ac0616e0f" processor="flow-ref">
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="760d23e4-07f2-4aae-b73f-630ac0616e0f" processor="flow-ref">
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="99d11d63-0125-4f23-8aa6-d02f99a1f06e" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -157,11 +159,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="288aa55c-e8be-4da7-b021-ea870533518d" processor="flow-ref">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="288aa55c-e8be-4da7-b021-ea870533518d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="99e2fd7a-c6ef-407a-a6bf-86b25032a62f" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -170,7 +171,7 @@ readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variabl
 		</munit:behavior>
 		<munit:execution>
 			<munit:set-event doc:name="Set queryParams  teamname" doc:id="785ef3fc-4b07-4432-a304-82efd1eab263" >
-				<munit:attributes value='#["queryParams":{"teamname":"Warriors"}]' />
+				<munit:attributes value='#["queryParams":{"teamName":"Warriors"}]' />
 			</munit:set-event>
 			<flow-ref doc:name="Flow-ref to getGames" doc:id="a7a3078b-c2d6-4591-be9c-e8e40ac06885" name="getGames" />
 		</munit:execution>
@@ -198,11 +199,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="353ce116-0a51-43b2-9fa8-e7bc0274874f" processor="flow-ref">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="353ce116-0a51-43b2-9fa8-e7bc0274874f" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="e0af97a3-a733-47b6-aa16-d97c9eceba53" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -236,11 +236,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="b440e0fd-8923-45b4-866c-eb8bf3709eab" processor="flow-ref">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="b440e0fd-8923-45b4-866c-eb8bf3709eab" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -275,7 +274,7 @@ output application/json
 readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allteams" doc:id="4b5f13a8-1234-4319-8cdd-941c802c4df6" processor="flow-ref">
+			<munit-tools:mock-when doc:name="flow ref allTeams" doc:id="4b5f13a8-1234-4319-8cdd-941c802c4df6" processor="flow-ref">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="allteams" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" attributeName="doc:id" />
@@ -294,11 +293,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="0aee26ea-adbf-4eb6-a938-9775b0516485" processor="flow-ref">
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="0aee26ea-adbf-4eb6-a938-9775b0516485" processor="flow-ref">
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -333,11 +331,10 @@ output application/json
 readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allteams" doc:id="3d571eb9-8933-4f21-bb1e-0fad2706b279" processor="flow-ref" >
+			<munit-tools:mock-when doc:name="flow ref allTeams" doc:id="3d571eb9-8933-4f21-bb1e-0fad2706b279" processor="flow-ref" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allteams" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allTeams" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allteams" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allTeamsTest]" mediaType="application/json" />
@@ -352,11 +349,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="17c0b8c3-29ea-4b28-8c14-a25d0c652154" processor="flow-ref" >
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="17c0b8c3-29ea-4b28-8c14-a25d0c652154" processor="flow-ref" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -397,11 +393,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="5be4577a-7d8f-4975-b0b7-106a3a5f835a" processor="flow-ref">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="5be4577a-7d8f-4975-b0b7-106a3a5f835a" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -416,11 +411,10 @@ output application/json
 readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allteams" doc:id="6cda889d-9e9f-4946-8a61-d69250b61c49" processor="flow-ref" >
+			<munit-tools:mock-when doc:name="flow ref allTeams" doc:id="6cda889d-9e9f-4946-8a61-d69250b61c49" processor="flow-ref" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allteams" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allTeams" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allteams" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allTeamsTest]" mediaType="application/json" />
@@ -430,7 +424,7 @@ readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-va
 		</munit:behavior>
 		<munit:execution>
 			<munit:set-event doc:name="Set queryParams  standingby an variable season" doc:id="8eb5354d-9993-4955-8651-2f311e6000ae">
-				<munit:attributes value='#["queryParams":{"standingsby":"conference"}]' />
+				<munit:attributes value='#["queryParams":{"standingsBy":"conference"}]' />
 				<munit:variables >
 					<munit:variable key="season" value="2018" />
 				</munit:variables>
@@ -461,11 +455,10 @@ output application/json
 readUrl("classpath://mock/allgames.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allgames" doc:id="4efb5603-4e8d-4ffa-bbd5-22dbc89c1337" processor="flow-ref" >
+			<munit-tools:mock-when doc:name="flow ref allGames" doc:id="4efb5603-4e8d-4ffa-bbd5-22dbc89c1337" processor="flow-ref" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allgames" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allGames" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="7fd08f48-fbbe-4c9c-bbff-6db282f5337c" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allgames" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allGamesTest]" mediaType="application/json" />
@@ -480,11 +473,10 @@ output application/json
 readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<munit-tools:mock-when doc:name="flow ref allteams" doc:id="0a5ec1ba-de99-444a-8a76-432343ab9234" processor="flow-ref" >
+			<munit-tools:mock-when doc:name="flow ref allTeams" doc:id="0a5ec1ba-de99-444a-8a76-432343ab9234" processor="flow-ref" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="allteams" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="allTeams" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="d81cce55-a8bd-4c0d-9e36-0ac3bdf1c6b0" attributeName="doc:id" />
-					<munit-tools:with-attribute whereValue="allteams" attributeName="name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[vars.allTeamsTest]" mediaType="application/json" />
@@ -494,7 +486,7 @@ readUrl("classpath://mock/allteamsarray.json", "application/json")]]></ee:set-va
 		</munit:behavior>
 		<munit:execution>
 			<munit:set-event doc:name="Set queryParams  standingby an variable season" doc:id="29ab0eb9-8375-4cd9-92de-e6bc7aa056e1" >
-				<munit:attributes value='#["queryParams":{"standingsby":"division"}]' />
+				<munit:attributes value='#["queryParams":{"standingsBy":"division"}]' />
 				<munit:variables >
 					<munit:variable key="season" value="2018" />
 				</munit:variables>

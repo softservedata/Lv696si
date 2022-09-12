@@ -7,7 +7,7 @@ types:
   teamresult: !include /apitypes/teamresulttype.raml
   team: !include /apitypes/teamtype.raml
 
-/allteams:
+/allTeams:
   get:
     description: return all NBA teams
     responses:
@@ -36,7 +36,7 @@ types:
           displayName: Abbreeviatoin of the Team
           description: Abbreeviatoin of the Team (exmpl. GSW)
           required: false
-        teamname:
+        teamName:
           displayName: Name of the Team
           description: Name of the Team (exmpl. Lakers)
           required: false
@@ -63,7 +63,7 @@ types:
         description: NBA Season
         type: number
         required: true
-      standingsby:
+      standingsBy:
         displayName: Standings By(Division, Conference)
         description: Standings of Teams
         type: string

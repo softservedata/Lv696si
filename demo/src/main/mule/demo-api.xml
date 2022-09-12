@@ -27,8 +27,8 @@
         <apikit:console config-ref="demo-api-config" />
 		<error-handler ref="globalError_Handler" />
     </flow>
-    <flow name="get:\allteams:demo-api-config">
-        <flow-ref doc:name="allteams" doc:id="1cf9c979-c052-4f05-83a5-3b68f29d4b94" name="allteams"/>
+    <flow name="get:\allTeams:demo-api-config">
+        <flow-ref doc:name="allTeams" doc:id="1cf9c979-c052-4f05-83a5-3b68f29d4b94" name="allTeams"/>
     </flow>
     <flow name="get:\games:demo-api-config">
         <flow-ref doc:name="getGames" doc:id="4388b4fe-346d-445f-ac13-1e5ecfdcf9f5" name="getGames"/>
