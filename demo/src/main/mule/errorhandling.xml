@@ -98,7 +98,7 @@ teamname: vars.teamName
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="400" doc:name="httpStatus" doc:id="e92668b0-0aa9-478a-83ff-881a57d86f7c" variableName="httpStatus" />
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="e92668b0-0aa9-478a-83ff-881a57d86f7c" variableName="httpStatus" />
 		</on-error-propagate>
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="32cab24e-5863-44d3-82fc-fe89c518f622" type="APP:ABBRVALIDATION" >
 			<ee:transform doc:name="Transform Message" doc:id="92eeaa9e-5821-46c7-af45-aa369f6b9909" >
@@ -112,7 +112,7 @@ abbreviation: vars.teamAbr
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="400" doc:name="httpStatus" doc:id="b0dba486-afe2-495c-9d3f-28b436e241b9" variableName="httpStatus" />
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="b0dba486-afe2-495c-9d3f-28b436e241b9" variableName="httpStatus" />
 		</on-error-propagate>
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5080f074-0e75-46fe-b5b4-12e08c914eea" type="APP:SEASONVALIDATION" >
 			<ee:transform doc:name="Transform Message" doc:id="7e33330e-6b98-495b-b175-742e437eaa03" >
@@ -126,7 +126,7 @@ season: vars.season
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="400" doc:name="httpStatus" doc:id="4db55ace-1afd-4bc5-9117-1b2471f9d79a" variableName="httpStatus" />
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="4db55ace-1afd-4bc5-9117-1b2471f9d79a" variableName="httpStatus" />
 		</on-error-propagate>
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bf848729-f361-42d2-9b68-2f3a23fee82f" type="APP:STANDIGSBYVALIDATION" >
 			<ee:transform doc:name="Transform Message" doc:id="8389409d-786f-4774-afee-6034dea2f09b" >
@@ -140,7 +140,20 @@ standingsBy: vars.standingsBy
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="400" doc:name="httpStatus" doc:id="8fe9e506-0f18-4815-9c76-bb94ae64913e" variableName="httpStatus" />
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="8fe9e506-0f18-4815-9c76-bb94ae64913e" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9d6e314c-3075-47e6-95fe-8d0f040c4de2" type="APP:TWOQUERYPARAMS">
+			<ee:transform doc:name="Transform Message" doc:id="f9cd0c9a-2e3f-4767-8ce9-79cdf5543166" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "Choose Only One Query Parameter(teamName or abbreviation)"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[406]" doc:name="httpStatus" doc:id="773020b4-36a5-473a-91e4-6cb265071eef" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
 </mule>

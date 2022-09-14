@@ -65,7 +65,7 @@
 						<runCoverage>true</runCoverage>
 						<ignoreFiles>
 							<ignoreFile>/main/mule/demo-api.xml</ignoreFile>
-							<ignoreFile>/main/mule/global.xml</ignoreFile>
+							<ignoreFile>/main/mule/errorhandling.xml</ignoreFile>
 						</ignoreFiles>
 						<formats>
 							<format>html</format>
