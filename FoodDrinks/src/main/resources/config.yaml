@@ -1,0 +1,9 @@
+http:
+  port: "8081"
+
+drinksapi:
+  host: "www.thecocktaildb.com"
+  basepath: "/api/json/v1/1"
+foodapi:
+  host: "www.themealdb.com"
+  basepath: "/api/json/v1/1"

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b01e2b5c-dd91-4436-bf30-68837f9d329c" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="0a371aa6-f26e-4738-8cb9-fd460bb8e7c8" file="config.yaml" />
+	<http:request-config name="HTTP_Request_drinks_configuration" doc:name="HTTP Request configuration" doc:id="d21627e5-db98-4010-af5e-4a2891095ce0" basePath="${drinks.basepath}" >
+		<http:request-connection host="${drinksapi.host}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_food_configuration" doc:name="HTTP Request configuration" doc:id="8651c889-0329-46d6-8188-8414403a6382" basePath="${foodapi.basepath}" >
+		<http:request-connection host="${foodapi.host}" />
+	</http:request-config>
+</mule>
