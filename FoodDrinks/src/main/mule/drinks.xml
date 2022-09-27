@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="drinksSub_Flow" doc:id="087cc8ed-ebaf-4dd8-a1df-feededc7854a" >
+		<http:request method="GET" doc:name="Request" doc:id="74ee515d-e5e0-4312-80dc-da31883588d0" config-ref="HTTP_Request_drinks_configuration" path="/search.php">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"s" : attributes.queryParams.name
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
+</mule>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="foodSub_Flow" doc:id="61777375-1c16-404c-a134-21dcee068436" >
+		<http:request method="GET" doc:name="Request" doc:id="5c717f5c-947e-4b69-80f3-6917090f7711" config-ref="HTTP_Request_food_configuration" path="/search.php">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"s" : attributes.queryParams.name
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
+</mule>

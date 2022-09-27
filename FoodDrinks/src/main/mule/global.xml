@@ -8,10 +8,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="0a371aa6-f26e-4738-8cb9-fd460bb8e7c8" file="config.yaml" />
-	<http:request-config name="HTTP_Request_drinks_configuration" doc:name="HTTP Request configuration" doc:id="d21627e5-db98-4010-af5e-4a2891095ce0" basePath="${drinks.basepath}" >
-		<http:request-connection host="${drinksapi.host}" />
-	</http:request-config>
 	<http:request-config name="HTTP_Request_food_configuration" doc:name="HTTP Request configuration" doc:id="8651c889-0329-46d6-8188-8414403a6382" basePath="${foodapi.basepath}" >
 		<http:request-connection host="${foodapi.host}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_drinks_configuration" doc:name="HTTP Request configuration" doc:id="0bb75c22-4d41-4e35-94e6-21d906bd03ba" basePath="${drinksapi.basepath}" >
+		<http:request-connection host="${drinksapi.host}" />
 	</http:request-config>
 </mule>
