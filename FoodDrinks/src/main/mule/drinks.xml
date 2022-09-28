@@ -128,20 +128,5 @@ flatten(payload.drinks)]]></ee:set-payload>
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
-	<sub-flow name="apiiSub_Flow" doc:id="e62a62a1-2fce-4268-b6d6-08726e6a9be9" >
-		<ee:transform doc:name="leaveOnlyNameOfCocktail" doc:id="55110ca9-acb0-4e05-a738-0c23d762ef09" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
-		strDrink: drink.strDrink
-		
-	}
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-	</sub-flow>
 
 </mule>
