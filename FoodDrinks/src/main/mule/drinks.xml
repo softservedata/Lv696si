@@ -119,6 +119,9 @@ flatten(payload.drinks)]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="0adceb81-71a7-4e32-bc29-25964bea8dc1" />
 	</sub-flow>
+	<flow name="drinksFlow" doc:id="f6bfd3d5-ce15-4fcc-9616-a218ede99dd0" >
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="871bc860-e998-4c24-9d1b-39147b0f9670" />
+	</flow>
 	<sub-flow name="drinksSub_Flow" doc:id="087cc8ed-ebaf-4dd8-a1df-feededc7854a" >
 		<http:request method="GET" doc:name="Request" doc:id="74ee515d-e5e0-4312-80dc-da31883588d0" config-ref="HTTP_Request_drinks_configuration" path="/search.php">
 			<http:query-params ><![CDATA[#[output application/java
