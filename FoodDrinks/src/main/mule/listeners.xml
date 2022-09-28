@@ -8,9 +8,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="67197723-34dd-478d-8d93-800994169395" config-ref="HTTP_Listener_config" path="/food"/>
 		<flow-ref doc:name="Flow Reference" doc:id="8ed1bccc-159d-480d-a0ca-8feaf72cd951" name="foodSub_Flow"/>
 	</flow>
-	<flow name="listenersFlow1" doc:id="86be0554-b51d-4cd7-a75a-d30a6147e87c" >
-		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink"/>
-		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow"/>
+	<flow name="listenersFlow1" doc:id="86be0554-b51d-4cd7-a75a-d30a6147e87c">
+		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
+		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
 	</flow>
 
 </mule>
