@@ -1,9 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="searchCocktailsByName" doc:id="aa772b6d-f16c-4847-827d-47a3bf1df3b4" >
+		<set-variable value="#[attributes.queryParams.cocktailByName]" doc:name="cocktailByName" doc:id="8a011b6e-ee6f-49ba-8542-e4763147aee3" variableName="cocktailByName" />
+		<http:request method="GET" doc:name="GET /cocktailsByName" doc:id="380c82d9-01fd-45b9-9d5d-1ba165d99b28" config-ref="HTTP_Request_drinks_configuration" path="/search.php" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"s" : vars.cocktailByName
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="data to JSON" doc:id="42281178-aa06-41bb-be52-705f2ac1bba8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
+		"idDrink": drink.idDrink,
+		"name": drink.strDrink,
+		"DrinkAlternate": drink.strDrinkAlternate,
+		"Tags": drink.strTags,
+		"Video": drink.strVideo,
+		"Category": drink.strCategory,
+		"IBA": drink.strIBA,
+		"Alcoholic": drink.strAlcoholic,
+		"Glass": drink.strGlass,
+		"Instructions": drink.strInstructions,
+		"Ingredient": drink.strIngredient1,
+		"Ingredient": drink.strIngredient2,
+		"Ingredient": drink.strIngredient3,
+		"Ingredient": drink.strIngredient4,
+		"Ingredient": drink.strIngredient5,
+		"Ingredient": drink.strIngredient6,
+		"Ingredient": drink.strIngredient7,
+		"Measure1": drink.strMeasure1,
+		"Measure2": drink.strMeasure2,
+		"Measure3": drink.strMeasure3,
+		"Measure4": drink.strMeasure4,
+		"Measure5": drink.strMeasure5,
+		"Measure6": drink.strMeasure6,
+		"Measure7": drink.strMeasure7,
+		"ImageSource": drink.strImageSource,
+		"ImageAttribution": drink.strImageAttribution,
+		"CreativeCommonsConfirmed": drink.strCreativeCommonsConfirmed
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
+	</sub-flow>
+	<sub-flow name="listOfIngredient" doc:id="492e42fa-6db7-46af-8dd0-9be66a43bbc0" >
+		<set-variable value="#[attributes.queryParams.listOfIngredient]" doc:name="listOfIngredient" doc:id="3b8527e0-4e4c-439a-a6f5-ec45adf1b24a" variableName="listOfIngredient" />
+		<http:request method="GET" doc:name="GET /listOfIngredient" doc:id="a330c953-8200-4503-9bd3-fde560ab8ea0" config-ref="HTTP_Request_drinks_configuration" path="/list.php" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"i" : vars.listOfIngredient
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="listOfAllIngredient" doc:id="37464650-ec63-4ce5-b17d-81500a19b0a5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="0e7b4595-fe15-4731-817c-1a265d390606" />
+	</sub-flow>
+	<sub-flow name="listOfAllCocktails" doc:id="8b8a26e7-e204-4782-b08a-edcbb40a4c32" >
+		<logger level="INFO" doc:name="Logger" doc:id="ef72f982-c5c2-4397-b1a4-767c361417b5" />
+		<set-variable value='#[["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]]' doc:name="alfabet(A-Z)" doc:id="42174e90-4805-4422-aa56-16babf86b8fd" variableName="AZ" />
+		<set-variable value="#[[]]" doc:name="varsLetter" doc:id="8677bdb2-399c-4e3d-9ef4-cd45f0f410cd" variableName="varsLetter" />
+		<foreach doc:name="For Each Alfabet" doc:id="c6c05d44-0898-462d-9ab0-dcbf2928e5e5" collection="#[vars.AZ]" >
+			<logger level="INFO" doc:name="Logger" doc:id="530f62e8-3eac-45ab-9c9d-5210e3924813" />
+			<http:request method="GET" doc:name="GET /listCocktails" doc:id="f0882197-2646-45db-9dfe-7fc85e00cb5e" config-ref="HTTP_Request_drinks_configuration" path="/search.php" >
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"f" : payload
+}]]]></http:query-params>
+			</http:request>
+			<ee:transform doc:name="payload" doc:id="4294d8d0-fb45-4fee-9a7a-23cdda93cc85" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0 
+output application/json 
+--- 
+payload]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="varsLetter" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.varsLetter + payload]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</foreach>
+		<ee:transform doc:name="varsletter" doc:id="fcb7f0f6-5145-42f2-9220-bfd6c740becb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.varsLetter]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="collectInOneList" doc:id="8402364c-c541-4ae4-8ef7-057a11a2f346" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.drinks)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="0adceb81-71a7-4e32-bc29-25964bea8dc1" />
+	</sub-flow>
 	<sub-flow name="drinksSub_Flow" doc:id="087cc8ed-ebaf-4dd8-a1df-feededc7854a" >
 		<http:request method="GET" doc:name="Request" doc:id="74ee515d-e5e0-4312-80dc-da31883588d0" config-ref="HTTP_Request_drinks_configuration" path="/search.php">
 			<http:query-params ><![CDATA[#[output application/java
@@ -13,4 +128,20 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="apiiSub_Flow" doc:id="e62a62a1-2fce-4268-b6d6-08726e6a9be9" >
+		<ee:transform doc:name="leaveOnlyNameOfCocktail" doc:id="55110ca9-acb0-4e05-a738-0c23d762ef09" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
+		strDrink: drink.strDrink
+		
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+
 </mule>

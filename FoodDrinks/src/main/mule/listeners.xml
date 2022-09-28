@@ -12,5 +12,17 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
 		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
 	</flow>
+	<flow name="searchCocktailsByNameListener" doc:id="04269ab1-2cd1-4130-8f66-ad97b26e8f0e" >
+		<http:listener doc:name="Search.php" doc:id="128c367c-a769-442e-8efb-03e69961a58f" config-ref="HTTP_Listener_config" path="/cocktailsName" />
+		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="51f04f59-8263-48e9-a0ee-72bd2467dc60" name="searchCocktailsByName"/>
+	</flow>
+	<flow name="listOfIngredientListener" doc:id="b35ec305-1056-4e1b-98b9-9a69181ae6d3" >
+		<http:listener doc:name="List.php" doc:id="cb73f05d-9daf-4020-9215-9aae58b2407b" config-ref="HTTP_Listener_config" path="/list" />
+		<flow-ref doc:name="Flow Reference" doc:id="2f5c6f57-2076-4e54-8a5d-43668c1ac03f" name="listOfIngredient"/>
+	</flow>
+	<flow name="listOfAllCocktailsListener" doc:id="2fdac86e-f165-4e12-a006-456d98d08f5c" >
+		<http:listener doc:name="Filter.php" doc:id="5fe1f004-0922-4040-9da0-7664a4fcc190" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
+		<flow-ref doc:name="Flow Reference" doc:id="774753f9-fcef-4792-9410-950f6dd09c46" name="listOfAllCocktails"/>
+	</flow>
 
 </mule>
