@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
@@ -23,6 +24,22 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="listOfAllCocktailsListener" doc:id="2fdac86e-f165-4e12-a006-456d98d08f5c" >
 		<http:listener doc:name="Filter.php" doc:id="5fe1f004-0922-4040-9da0-7664a4fcc190" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
 		<flow-ref doc:name="Flow Reference" doc:id="774753f9-fcef-4792-9410-950f6dd09c46" name="listOfAllCocktails"/>
+	</flow>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+>>>>>>> 22dc678ec38ddcea80fe68d63c1979b3fdbaa5ba
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="listenersFlow" doc:id="1594c404-c6ff-4415-985b-fc23b609275c" >
+		<http:listener doc:name="Listener" doc:id="67197723-34dd-478d-8d93-800994169395" config-ref="HTTP_Listener_config" path="/food"/>
+		<flow-ref doc:name="Flow Reference" doc:id="8ed1bccc-159d-480d-a0ca-8feaf72cd951" name="foodSub_Flow"/>
+	</flow>
+	<flow name="listenersFlow1" doc:id="86be0554-b51d-4cd7-a75a-d30a6147e87c">
+		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
+		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
 	</flow>
 
 </mule>
