@@ -12,7 +12,4 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink"/>
 		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow"/>
 	</flow>
-	<flow name="listenersFlow2" doc:id="0d934f6d-6eef-4bf1-8bad-c8105ecfd067" >
-		<http:listener doc:name="Listener" doc:id="4d4ad3b0-5392-475c-9b01-f1f3d1ac4eca" config-ref="HTTP_Listener_config" path="/test"/>
-	</flow>
 </mule>
