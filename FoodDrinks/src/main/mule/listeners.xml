@@ -12,5 +12,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
 		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
 	</flow>
+	<flow name="listenersFlow2" doc:id="93069fbc-db48-4188-a00c-20ad40363853" >
+		<http:listener doc:name="Listener" doc:id="01174c2e-16c6-4cde-846f-3ba476330c37" config-ref="HTTP_Listener_config" path="/filter"/>
+	</flow>
 
 </mule>
