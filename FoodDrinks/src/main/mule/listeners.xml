@@ -1,45 +1,27 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="listenersFlow" doc:id="1594c404-c6ff-4415-985b-fc23b609275c" >
-		<http:listener doc:name="Listener" doc:id="67197723-34dd-478d-8d93-800994169395" config-ref="HTTP_Listener_config" path="/food"/>
-		<flow-ref doc:name="Flow Reference" doc:id="8ed1bccc-159d-480d-a0ca-8feaf72cd951" name="foodSub_Flow"/>
+	<flow name="listenersFlow" doc:id="99eb14d8-31c8-4c74-9fee-9b6db0c20a99" >
+		<http:listener doc:name="Listener" doc:id="c2413c30-40ac-4fbd-b82d-d10cdcaee59c" config-ref="HTTP_Listener_config" path="/food" />
+		<flow-ref doc:name="Flow Reference" doc:id="10ed1240-a181-44b1-bf56-a976d613ad10" name="foodSub_Flow" />
 	</flow>
-	<flow name="listenersFlow1" doc:id="86be0554-b51d-4cd7-a75a-d30a6147e87c">
-		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
-		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
+	<flow name="listenersFlow1" doc:id="b1d0446d-73d2-4d86-a82c-314a8fd68fe8" >
+		<http:listener doc:name="Listener" doc:id="ef1b6242-eb61-46a4-bee8-f340e1c618a5" config-ref="HTTP_Listener_config" path="/drink" />
+		<flow-ref doc:name="Flow Reference" doc:id="f786e1a7-6223-4147-b42b-8caf8693293a" name="drinksSub_Flow" />
 	</flow>
-	<flow name="searchCocktailsByNameListener" doc:id="04269ab1-2cd1-4130-8f66-ad97b26e8f0e" >
-		<http:listener doc:name="Search.php" doc:id="128c367c-a769-442e-8efb-03e69961a58f" config-ref="HTTP_Listener_config" path="/cocktailsName" />
-		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="51f04f59-8263-48e9-a0ee-72bd2467dc60" name="searchCocktailsByName"/>
+	<flow name="listOfIngredientListener" doc:id="55814ef3-666e-4491-a87d-1b68fa8b2bed" >
+		<http:listener doc:name="List.php" doc:id="4a32f8f0-336a-464c-b227-d8cb74585a78" config-ref="HTTP_Listener_config" path="/list" />
+		<flow-ref doc:name="Flow Reference" doc:id="908b9d69-e2e9-4970-bb91-510c4a171828" name="listOfIngredient" />
 	</flow>
-	<flow name="listOfIngredientListener" doc:id="b35ec305-1056-4e1b-98b9-9a69181ae6d3" >
-		<http:listener doc:name="List.php" doc:id="cb73f05d-9daf-4020-9215-9aae58b2407b" config-ref="HTTP_Listener_config" path="/list" />
-		<flow-ref doc:name="Flow Reference" doc:id="2f5c6f57-2076-4e54-8a5d-43668c1ac03f" name="listOfIngredient"/>
+	<flow name="searchCocktailsByNameListener" doc:id="f82533a5-1119-4826-bb8b-69b38a0209e5" >
+		<http:listener doc:name="Search.php" doc:id="5637e7ce-cfee-4e7d-aad3-6b5bdaddd361" config-ref="HTTP_Listener_config" path="/cocktailsName" />
+		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="f60cf082-6da1-4dcd-a89d-69d5da66903a" name="searchCocktailsByName" />
 	</flow>
-	<flow name="listOfAllCocktailsListener" doc:id="2fdac86e-f165-4e12-a006-456d98d08f5c" >
-		<http:listener doc:name="Filter.php" doc:id="5fe1f004-0922-4040-9da0-7664a4fcc190" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
-		<flow-ref doc:name="Flow Reference" doc:id="774753f9-fcef-4792-9410-950f6dd09c46" name="listOfAllCocktails"/>
+	<flow name="listOfAllCocktailsListener" doc:id="e3bdb470-878f-4bc0-a964-b7c8181d613b" >
+		<http:listener doc:name="Filter.php" doc:id="22020618-3077-43fe-9e2d-34d727c59c68" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
+		<flow-ref doc:name="Flow Reference" doc:id="9909232e-1fc0-479a-b25a-47ac1b3f50d5" name="listOfAllCocktails" />
 	</flow>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
->>>>>>> 22dc678ec38ddcea80fe68d63c1979b3fdbaa5ba
-
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="listenersFlow" doc:id="1594c404-c6ff-4415-985b-fc23b609275c" >
-		<http:listener doc:name="Listener" doc:id="67197723-34dd-478d-8d93-800994169395" config-ref="HTTP_Listener_config" path="/food"/>
-		<flow-ref doc:name="Flow Reference" doc:id="8ed1bccc-159d-480d-a0ca-8feaf72cd951" name="foodSub_Flow"/>
-	</flow>
-	<flow name="listenersFlow1" doc:id="86be0554-b51d-4cd7-a75a-d30a6147e87c">
-		<http:listener doc:name="Listener" doc:id="94165c59-d734-4650-ada0-ad45dcb22dce" config-ref="HTTP_Listener_config" path="/drink" />
-		<flow-ref doc:name="Flow Reference" doc:id="cb0d776d-db5e-4a0b-9034-61735fa1bae7" name="drinksSub_Flow" />
-	</flow>
-
 </mule>
