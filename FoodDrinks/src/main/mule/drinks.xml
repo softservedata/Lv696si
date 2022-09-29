@@ -54,6 +54,9 @@ output application/json
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
 	</sub-flow>
+	<flow name="drinksFlow" doc:id="19c4f9f5-eb82-4b33-8486-71335ce66f7a" >
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="9f354f4d-17b2-43e0-9226-c3ab98440171" />
+	</flow>
 	<sub-flow name="listOfIngredient" doc:id="492e42fa-6db7-46af-8dd0-9be66a43bbc0" >
 		<set-variable value="#[attributes.queryParams.listOfIngredient]" doc:name="listOfIngredient" doc:id="3b8527e0-4e4c-439a-a6f5-ec45adf1b24a" variableName="listOfIngredient" />
 		<http:request method="GET" doc:name="GET /listOfIngredient" doc:id="a330c953-8200-4503-9bd3-fde560ab8ea0" config-ref="HTTP_Request_drinks_configuration" path="/list.php" >
