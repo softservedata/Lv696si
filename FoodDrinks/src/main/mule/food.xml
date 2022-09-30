@@ -1,16 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<sub-flow name="foodSub_Flow" doc:id="61777375-1c16-404c-a134-21dcee068436" >
-		<http:request method="GET" doc:name="Request" doc:id="5c717f5c-947e-4b69-80f3-6917090f7711" config-ref="HTTP_Request_food_configuration" path="/search.php">
-			<http:query-params ><![CDATA[#[output application/java
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="Food_categories" doc:id="2d13912b-40b9-417f-9eb5-21d7bf0420cb" >
+		<set-variable value="#[attributes.queryParams.category]" doc:name="category" doc:id="27733f1c-301f-4399-964d-a5f4b4524f53" variableName="category" />
+		<choice doc:name="Choice" doc:id="1a1a9354-53c4-4881-a35a-50f6876bbc80" >
+			<when expression="#[(not isEmpty(vars.category))]" >
+				<http:request method="GET" doc:name="GET/ mealCategory" doc:id="937942f2-13db-4b49-a13e-d13ab047c3e1" config-ref="HTTP_Request_food_configuration" path="/list.php" >
+					<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"s" : attributes.queryParams.name
+	Authorization : "1"
+}]]]></http:headers>
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.category
 }]]]></http:query-params>
-		</http:request>
+				</http:request>
+				<logger level="INFO" doc:name="Log at the end meal" doc:id="99f06108-a68e-4de7-90ab-f11a50bff2e0" message="Log at the end of request mealCategory" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Is empty category" doc:id="23041add-9918-4172-94c6-46bf9842141f" message="If Category is empty customer gets no response" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="payload" doc:id="2afa35e2-8059-466e-a7b3-9b613e5f9fbb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger finished" doc:id="09e741e5-5f33-4cde-9cc1-a546e208c378" message="Finished logging to the request by categories" />
+	</sub-flow>
+	<sub-flow name="Filter_food" doc:id="fe5216f8-627d-4d5e-83c3-d347a758725a" >
+		<set-variable value="#[attributes.queryParams.foodType]" doc:name="foodType" doc:id="7b8def35-4853-4a71-9ddc-63e4fe665cf1" variableName="foodType" />
+		<set-variable value="#[attributes.queryParams.ingredient]" doc:name="ingredient" doc:id="a29db092-d93a-459c-84b1-b6d0c086f8f1" variableName="ingredient" />
+		<choice doc:name="Choice" doc:id="66c72beb-dcb0-4d00-8cc6-05a2841f5afc" >
+			<when expression="#[(not isEmpty(vars.foodType))]" >
+				<http:request method="GET" doc:name="GET/ foodType" doc:id="a558eccf-16fa-4635-8c79-ca0e4ed44789" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.foodType
+}]]]></http:query-params>
+				</http:request>
+				<logger level="INFO" doc:name="Log at the end foodType" doc:id="33fe4c5b-1ced-47df-a52e-bc3d08674bf3" message="Log at the end of foodType request" />
+			</when>
+			<when expression="#[(not isEmpty(vars.ingredient))]" >
+				<http:request method="GET" doc:name="GET/ ingredient" doc:id="6d066f59-fea6-4b8d-a6dd-eeb8b7632f53" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"i" : vars.ingredient
+}]]]></http:query-params>
+				</http:request>
+				<logger level="INFO" doc:name="Log at the end ingredient" doc:id="c0c45208-7307-4678-a315-3d16371c646b" message="log at the end of ingredient request" />
+			</when>
+			<otherwise >
+				<http:request method="GET" doc:name="GET/ Categories" doc:id="bafdded3-47c6-4247-b5c9-1a57be1627bd" config-ref="HTTP_Request_food_configuration" path="/categories.php" />
+				<logger level="INFO" doc:name="Log category" doc:id="d83f9bcd-3e30-405c-97bb-780afc3ff2a2" message="if request has no query customer gets the list of  all categories" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="payload" doc:id="361ce7af-6df0-461e-915f-f7946a285569" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[[]]" doc:name="ingredients" doc:id="4522eb4e-3c9a-4548-aa54-7ddb28032d95" variableName="ingredients" />
+		<foreach doc:name="Copy_of_Copy_of_For Each" doc:id="9910ec75-6ed7-421c-9105-62fc1384d0ce" >
+			<http:request method="GET" doc:name="GET/ foodType" doc:id="e2fc4d39-94b9-4198-a70f-3dc7bc13985f" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.foodType,
+	"i" : vars.ingredient
+}]]]></http:query-params>
+			</http:request>
+			<ee:transform doc:name="Payload" doc:id="d602f93f-38f8-438a-9472-63a0863535c1" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</foreach>
+		<logger level="INFO" doc:name="Logger finished" doc:id="04bf7b17-63ee-4c4f-95b3-c8df67c550fd" message="Finished logging to the request by foodType" />
 	</sub-flow>
 </mule>

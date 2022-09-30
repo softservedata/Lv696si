@@ -4,10 +4,6 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="listenersFlow" doc:id="99eb14d8-31c8-4c74-9fee-9b6db0c20a99" >
-		<http:listener doc:name="Listener" doc:id="c2413c30-40ac-4fbd-b82d-d10cdcaee59c" config-ref="HTTP_Listener_config" path="/food" />
-		<flow-ref doc:name="Flow Reference" doc:id="10ed1240-a181-44b1-bf56-a976d613ad10" name="foodSub_Flow" />
-	</flow>
 	<flow name="searchCocktailsByNameListener" doc:id="f82533a5-1119-4826-bb8b-69b38a0209e5" >
 		<http:listener doc:name="Search.php" doc:id="5637e7ce-cfee-4e7d-aad3-6b5bdaddd361" config-ref="HTTP_Listener_config" path="/cocktailsName" />
 		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="f60cf082-6da1-4dcd-a89d-69d5da66903a" name="searchCocktailsByName" />
@@ -15,5 +11,13 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="listOfAllCocktailsListener" doc:id="e3bdb470-878f-4bc0-a964-b7c8181d613b" >
 		<http:listener doc:name="Filter.php" doc:id="22020618-3077-43fe-9e2d-34d727c59c68" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
 		<flow-ref doc:name="Flow Reference" doc:id="9909232e-1fc0-479a-b25a-47ac1b3f50d5" name="listOfAllCocktails" />
+	</flow>
+	<flow name="Copy_of_listenersFlow" doc:id="171ee5ad-58d1-4180-a63e-a4fd3ca3a94a" >
+		<http:listener doc:name="Filter/ foodType" doc:id="82929686-b1dc-462e-b359-68e728c2e95d" config-ref="HTTP_Listener_config" path="/filter.php" />
+		<flow-ref doc:name="Flow Reference" doc:id="fddcdcf2-535c-4338-97e8-e04ea96555e7" name="Filter_food"/>
+	</flow>
+	<flow name="Copy_of_listenersFlow1" doc:id="fe7a5082-06d7-4318-9517-dd66ef41e08c" >
+		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/list.php" allowedMethods="GET" />
+		<flow-ref doc:name="Flow Reference" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
 	</flow>
 </mule>
