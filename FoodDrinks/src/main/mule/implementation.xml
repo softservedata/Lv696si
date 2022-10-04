@@ -59,19 +59,24 @@ output application/json
 				</ee:transform>
 				<telegram:send-message doc:name="Input cocktail Name" doc:id="6bdfc741-c76a-439c-9675-46ffa998503e" config-ref="Telegram_Connector_Config"/>
 			</when>
-			<otherwise >
-				<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="a11b5e41-d17f-4be1-a302-87c7bce7f30c" variableName="telegramPayload" />
-				<http:request method="GET" doc:name="Request" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName" >
-					<http:query-params ><![CDATA[#[output application/java
+			<otherwise>
+				<flow-ref doc:name="getDrinksByNameFlow" doc:id="ed5d8a46-03a5-4c92-8aed-2e2bbac78791" name="getDrinksByNameFlow"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="getDrinksByNameFlow" doc:id="fcc337c0-d588-464e-a4b0-e414c105669f" >
+		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="a11b5e41-d17f-4be1-a302-87c7bce7f30c" variableName="telegramPayload" />
+		<http:request method="GET" doc:name="GET //cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName">
+					<http:query-params><![CDATA[#[output application/java
 ---
 {
 	"cocktailByName" : payload.result[0].message.text
 }]]]></http:query-params>
 				</http:request>
-				<foreach doc:name="For Each" doc:id="19866f46-6191-4627-9878-b2f477c6c49d" collection="#[payload.drinks]" >
+		<foreach doc:name="For Each" doc:id="19866f46-6191-4627-9878-b2f477c6c49d" collection="#[payload.drinks]">
 					<set-variable value="#[payload]" doc:name="payloadVar" doc:id="12eeb843-3ca3-4bc6-817b-7b17197382a2" variableName="payloadVar" />
-					<telegram:send-message doc:name="Send coctail name" doc:id="37e69f7e-b326-4761-8b07-df66655d6912" config-ref="Telegram_Connector_Config" >
-						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+					<telegram:send-message doc:name="Send cocktail name" doc:id="37e69f7e-b326-4761-8b07-df66655d6912" config-ref="Telegram_Connector_Config">
+						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -79,9 +84,9 @@ output application/json
 	text: vars.payloadVar.name
 }]]]></telegram:send-text-message-request-content>
 					</telegram:send-message>
-					<choice doc:name="Choice" doc:id="54f7660a-e25b-41b0-9862-cd38fd646dab" >
+					<choice doc:name="Choice" doc:id="54f7660a-e25b-41b0-9862-cd38fd646dab">
 						<when expression="#[not isEmpty(vars.payloadVar.ImageSource)]">
-							<telegram:send-photo doc:name="Send coctail photo" doc:id="e98805ef-dd83-4805-8fd4-89fd85cb8bb2" config-ref="Telegram_Connector_Config">
+							<telegram:send-photo doc:name="Send cocktail photo" doc:id="e98805ef-dd83-4805-8fd4-89fd85cb8bb2" config-ref="Telegram_Connector_Config">
 						<telegram:send-photo-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
@@ -94,8 +99,8 @@ output application/json
 					</telegram:send-photo>
 						</when>
 					</choice>
-					<telegram:send-message doc:name="Send coctail Instructions" doc:id="d66cd538-b5dd-4340-bcd2-541060a35d43" config-ref="Telegram_Connector_Config" >
-						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+					<telegram:send-message doc:name="Send coctail Instructions" doc:id="d66cd538-b5dd-4340-bcd2-541060a35d43" config-ref="Telegram_Connector_Config">
+						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -104,8 +109,6 @@ output application/json
 }]]]></telegram:send-text-message-request-content>
 					</telegram:send-message>
 				</foreach>
-			</otherwise>
-		</choice>
 	</sub-flow>
 	<flow name="implementationFlow1" doc:id="679390cf-950f-4b59-b0a1-76ff550c4302" >
 		<http:listener doc:name="Listener" doc:id="0cdc0d85-2623-4687-8fd8-7c46eb05c69e" config-ref="HTTP_Listener_config" path="/test1"/>
