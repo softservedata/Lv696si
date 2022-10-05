@@ -121,7 +121,9 @@ output application/json
 	"cocktailByName" : payload.result[0].message.text
 }]]]></http:query-params>
 				</http:request>
-		<foreach doc:name="For Each" doc:id="19866f46-6191-4627-9878-b2f477c6c49d" collection="#[payload.drinks]">
+		<choice doc:name="Choice" doc:id="b335c312-a562-49db-ad2e-b164b4b4102c" >
+			<when expression="#[not isEmpty(payload.drinks)]">
+				<foreach doc:name="For Each" doc:id="19866f46-6191-4627-9878-b2f477c6c49d" collection="#[payload.drinks]">
 					<set-variable value="#[payload]" doc:name="payloadVar" doc:id="12eeb843-3ca3-4bc6-817b-7b17197382a2" variableName="payloadVar" />
 					<telegram:send-message doc:name="Send cocktail name" doc:id="37e69f7e-b326-4761-8b07-df66655d6912" config-ref="Telegram_Connector_Config">
 						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
@@ -132,7 +134,7 @@ output application/json
 	text: vars.payloadVar.name
 }]]]></telegram:send-text-message-request-content>
 					</telegram:send-message>
-					<choice doc:name="Choice" doc:id="54f7660a-e25b-41b0-9862-cd38fd646dab">
+			<choice doc:name="Choice" doc:id="54f7660a-e25b-41b0-9862-cd38fd646dab">
 						<when expression="#[not isEmpty(vars.payloadVar.ImageSource)]">
 							<telegram:send-photo doc:name="Send cocktail photo" doc:id="e98805ef-dd83-4805-8fd4-89fd85cb8bb2" config-ref="Telegram_Connector_Config">
 						<telegram:send-photo-message-request-content><![CDATA[#[%dw 2.0
@@ -156,7 +158,32 @@ output application/json
 	text: vars.payloadVar.Instructions
 }]]]></telegram:send-text-message-request-content>
 					</telegram:send-message>
+					<telegram:send-message doc:name="Message select" doc:id="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" config-ref="Telegram_Connector_Config" >
+						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "Select, what you want to get /drinksbyname, /foodbyname"
+}]]]></telegram:send-text-message-request-content>
+					</telegram:send-message>
 				</foreach>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="bed coaktailName  message" doc:id="b28bc7f1-226c-4eec-9f3b-1c05c8a65f43" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "There is no such cocktail, what you want to get /drinksbyname, /foodbyname"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<telegram:send-message doc:name="Send bed coaktailName message" doc:id="fd90602d-b868-46b8-81e7-c228d14fa4ee" config-ref="Telegram_Connector_Config" />
+			</otherwise>
+		</choice>
 		<os:store doc:name="Store last message" doc:id="65d0ec23-18ff-4c65-95d6-5a187c9328fe" key="#[vars.telegramPayload.result[0].message.from.id]" >
 			<os:value ><![CDATA[/start]]></os:value>
 		</os:store>
@@ -170,10 +197,12 @@ output application/json
 	"foodByName" : payload.result[0].message.text
 }]]]></http:query-params>
 		</http:request>
-		<foreach doc:name="For Each" doc:id="bd38bc5a-5b7b-4f12-88ce-1ef72a179f20" collection="#[payload.meals]" >
+		<choice doc:name="Choice" doc:id="9620c657-9ca1-4206-a5e8-0a86a2897d87" >
+			<when expression="#[not isEmpty(payload.meals)]">
+				<foreach doc:name="For Each" doc:id="bd38bc5a-5b7b-4f12-88ce-1ef72a179f20" collection="#[payload.meals]">
 			<set-variable value="#[payload]" doc:name="payloadVar" doc:id="c48636ff-cbda-47f7-afc1-4382bbba2579" variableName="payloadVar" />
-			<telegram:send-message doc:name="Send food name" doc:id="60ddfaf1-9ea3-4d2b-a072-670c872b7994" config-ref="Telegram_Connector_Config" >
-				<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+			<telegram:send-message doc:name="Send food name" doc:id="60ddfaf1-9ea3-4d2b-a072-670c872b7994" config-ref="Telegram_Connector_Config">
+				<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -181,10 +210,10 @@ output application/json
 	text: vars.payloadVar.Meal
 }]]]></telegram:send-text-message-request-content>
 			</telegram:send-message>
-			<choice doc:name="Choice" doc:id="e5c18cea-1d51-4997-a150-ead46732e42f" >
-				<when expression="#[not isEmpty(vars.payloadVar.ImageSource)]" >
-					<telegram:send-photo doc:name="Send food photo" doc:id="bbbb8f65-e4a3-4771-bf3f-4701ce4993fd" config-ref="Telegram_Connector_Config" >
-						<telegram:send-photo-message-request-content ><![CDATA[#[%dw 2.0
+			<choice doc:name="Choice" doc:id="e5c18cea-1d51-4997-a150-ead46732e42f">
+				<when expression="#[not isEmpty(vars.payloadVar.ImageSource)]">
+					<telegram:send-photo doc:name="Send food photo" doc:id="bbbb8f65-e4a3-4771-bf3f-4701ce4993fd" config-ref="Telegram_Connector_Config">
+						<telegram:send-photo-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -196,8 +225,8 @@ output application/json
 					</telegram:send-photo>
 				</when>
 			</choice>
-			<telegram:send-message doc:name="Send coctail Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config" >
-				<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+			<telegram:send-message doc:name="Send coctail Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config">
+				<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -205,7 +234,32 @@ output application/json
 	text: vars.payloadVar.Instructions
 }]]]></telegram:send-text-message-request-content>
 			</telegram:send-message>
+					<telegram:send-message doc:name="Message select" doc:id="d028bbe6-6756-414e-bceb-0c6330f31848" config-ref="Telegram_Connector_Config" >
+						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "Select, what you want to get /drinksbyname, /foodbyname"
+}]]]></telegram:send-text-message-request-content>
+					</telegram:send-message>
 		</foreach>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="bed foodName  message" doc:id="6aaf0b2c-6d58-43ba-9afe-be5e4ed42a35">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "There is no such meal, what you want to get /drinksbyname, /foodbyname"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<telegram:send-message doc:name="Send bed foodName  message" doc:id="e7d3c2cc-d61b-427a-a70a-e9e694e6d4cb" config-ref="Telegram_Connector_Config" />
+			</otherwise>
+		</choice>
 		<os:store doc:name="Store last message" doc:id="01c27de3-24a0-4e84-a73c-2d3b73c3c5bd" key="#[vars.telegramPayload.result[0].message.from.id]" >
 			<os:value ><![CDATA["/start"]]></os:value>
 		</os:store>
