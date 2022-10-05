@@ -32,6 +32,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<sub-flow name="answerFlow" doc:id="47d8a535-99df-484b-8e9f-3a55a8268d18" >
 		<choice doc:name="Choice" doc:id="a671b108-b398-4bc1-877a-55b43831e1cf" >
 			<when expression='#[payload.result[0].message.text == "/start"]' >
+				<os:store doc:name="Store last message" doc:id="8135b6fd-72e2-4780-b65c-40b6bd2587e1" key="#[payload.result[0].message.from.id]">
+					<os:value><![CDATA[#[payload.result[0].message.text]]]></os:value>
+				</os:store>
 				<ee:transform doc:name="set hello message" doc:id="9ff197ec-34c8-42f6-83b0-7222c7993f42" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -39,13 +42,16 @@ output application/json
 ---
 {
 	chat_id: payload.result[0].message.chat.id,
-	text: "Hi. Select, what you want to get /drinks, /food"
+	text: "Hi. Select, what you want to get /drinksbyname, /foodbyname"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 				<telegram:send-message doc:name="Say Hello" doc:id="7d7fc199-e0d4-4dd1-aefb-c569dea70034" config-ref="Telegram_Connector_Config" />
 			</when>
-			<when expression='#[payload.result[0].message.text == "/drinks"]' >
+			<when expression='#[payload.result[0].message.text == "/drinksbyname"]' >
+				<os:store doc:name="Store last message" doc:id="f6de7a9b-ad37-4f5f-a9ae-0935934c77cf" key="#[payload.result[0].message.from.id]">
+					<os:value><![CDATA[#[payload.result[0].message.text]]]></os:value>
+				</os:store>
 				<ee:transform doc:name="set input ingridient message" doc:id="157137fd-6bc4-45ca-b794-fea9410d7e30" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -59,14 +65,38 @@ output application/json
 				</ee:transform>
 				<telegram:send-message doc:name="Input cocktail Name" doc:id="6bdfc741-c76a-439c-9675-46ffa998503e" config-ref="Telegram_Connector_Config"/>
 			</when>
+			<when expression='#[payload.result[0].message.text == "/foodbyname"]'>
+				<os:store doc:name="Store" doc:id="c30d143f-7b1a-44a5-8667-7ffe91b89282" key="#[payload.result[0].message.from.id]">
+					<os:value ><![CDATA[#[payload.result[0].message.text]]]></os:value>
+				</os:store>
+			</when>
 			<otherwise>
-				<flow-ref doc:name="getDrinksByNameFlow" doc:id="ed5d8a46-03a5-4c92-8aed-2e2bbac78791" name="getDrinksByNameFlow"/>
+				<os:retrieve doc:name="lastMessage" doc:id="852f6e06-09ee-4ca9-882c-7fe206e312f4" key="#[payload.result[0].message.from.id]" target="lastMessage"/>
+				<choice doc:name="Choice" doc:id="4fd35c25-a1d2-45f3-bf67-f158cefe3b87" >
+					<when expression='#[vars.lastMessage == "/drinksbyname"]'>
+						<flow-ref doc:name="getDrinksByNameFlow" doc:id="ed5d8a46-03a5-4c92-8aed-2e2bbac78791" name="getDrinksByNameFlow" />
+					</when>
+					<otherwise >
+						<ee:transform doc:name="set bed request message" doc:id="71d1fc44-7964-4d4c-8886-d345ce2e37f5">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	chat_id: payload.result[0].message.chat.id,
+	text: "Bad commannd. Select, what you want to get /drinksbyname, /foodbyname"
+}]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+						<telegram:send-message doc:name="Send bed request message" doc:id="b9833390-8064-499b-bf72-974a8462c7e8" config-ref="Telegram_Connector_Config"/>
+					</otherwise>
+				</choice>
 			</otherwise>
 		</choice>
 	</sub-flow>
 	<sub-flow name="getDrinksByNameFlow" doc:id="fcc337c0-d588-464e-a4b0-e414c105669f" >
 		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="a11b5e41-d17f-4be1-a302-87c7bce7f30c" variableName="telegramPayload" />
-		<http:request method="GET" doc:name="GET //cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName">
+		<http:request method="GET" doc:name="GET /cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName">
 					<http:query-params><![CDATA[#[output application/java
 ---
 {
