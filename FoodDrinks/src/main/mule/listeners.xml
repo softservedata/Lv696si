@@ -8,15 +8,19 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Search.php" doc:id="5637e7ce-cfee-4e7d-aad3-6b5bdaddd361" config-ref="HTTP_Listener_config" path="/cocktailsName" />
 		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="f60cf082-6da1-4dcd-a89d-69d5da66903a" name="searchCocktailsByName" />
 	</flow>
+	<flow name="searchFoodByNameListener" doc:id="be3eb89c-baed-4775-8517-16367ae0f2a9" >
+		<http:listener doc:name="Listener" doc:id="3ba4441f-fcb2-4880-bdb0-6e11ac7224fa" config-ref="HTTP_Listener_config" path="/foodName"/>
+		<flow-ref doc:name="searchFoodByName" doc:id="7711f7e1-4aef-4c59-9dbc-be0e2cfc63af" name="searchFoodByName"/>
+	</flow>
 	<flow name="listOfAllCocktailsListener" doc:id="e3bdb470-878f-4bc0-a964-b7c8181d613b" >
 		<http:listener doc:name="Filter.php" doc:id="22020618-3077-43fe-9e2d-34d727c59c68" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
 		<flow-ref doc:name="Flow Reference" doc:id="9909232e-1fc0-479a-b25a-47ac1b3f50d5" name="listOfAllCocktails" />
 	</flow>
-	<flow name="Copy_of_listenersFlow" doc:id="171ee5ad-58d1-4180-a63e-a4fd3ca3a94a" >
+	<flow name="foodTypeListener" doc:id="171ee5ad-58d1-4180-a63e-a4fd3ca3a94a" >
 		<http:listener doc:name="Filter/ foodType" doc:id="82929686-b1dc-462e-b359-68e728c2e95d" config-ref="HTTP_Listener_config" path="/filter.php" />
 		<flow-ref doc:name="Flow Reference" doc:id="fddcdcf2-535c-4338-97e8-e04ea96555e7" name="Filter_food"/>
 	</flow>
-	<flow name="Copy_of_listenersFlow1" doc:id="fe7a5082-06d7-4318-9517-dd66ef41e08c" >
+	<flow name="foodCategoryListener" doc:id="fe7a5082-06d7-4318-9517-dd66ef41e08c" >
 		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/list.php" allowedMethods="GET" />
 		<flow-ref doc:name="Flow Reference" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
 	</flow>

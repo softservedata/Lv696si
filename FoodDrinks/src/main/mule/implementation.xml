@@ -52,7 +52,7 @@ output application/json
 				<os:store doc:name="Store last message" doc:id="f6de7a9b-ad37-4f5f-a9ae-0935934c77cf" key="#[payload.result[0].message.from.id]">
 					<os:value><![CDATA[#[payload.result[0].message.text]]]></os:value>
 				</os:store>
-				<ee:transform doc:name="set input ingridient message" doc:id="157137fd-6bc4-45ca-b794-fea9410d7e30" >
+				<ee:transform doc:name="set input cocktail name message" doc:id="157137fd-6bc4-45ca-b794-fea9410d7e30" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -69,12 +69,27 @@ output application/json
 				<os:store doc:name="Store" doc:id="c30d143f-7b1a-44a5-8667-7ffe91b89282" key="#[payload.result[0].message.from.id]">
 					<os:value ><![CDATA[#[payload.result[0].message.text]]]></os:value>
 				</os:store>
+				<ee:transform doc:name="set input food name message" doc:id="2cc4cd74-c71a-4761-affa-a931a1dfcb9c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	chat_id: payload.result[0].message.chat.id,
+	text: "Input Food Name"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<telegram:send-message doc:name="input food name" doc:id="cd72664a-1c66-49ae-8157-400037b04e59" config-ref="Telegram_Connector_Config"/>
 			</when>
 			<otherwise>
 				<os:retrieve doc:name="lastMessage" doc:id="852f6e06-09ee-4ca9-882c-7fe206e312f4" key="#[payload.result[0].message.from.id]" target="lastMessage"/>
 				<choice doc:name="Choice" doc:id="4fd35c25-a1d2-45f3-bf67-f158cefe3b87" >
 					<when expression='#[vars.lastMessage == "/drinksbyname"]'>
 						<flow-ref doc:name="getDrinksByNameFlow" doc:id="ed5d8a46-03a5-4c92-8aed-2e2bbac78791" name="getDrinksByNameFlow" />
+					</when>
+					<when expression='#[vars.lastMessage == "/foodbyname"]'>
+						<flow-ref doc:name="getFoodByNameFlow" doc:id="ab1e6972-07e9-4826-bdcd-d0008a7c1c0b" name="getFoodByNameFlow"/>
 					</when>
 					<otherwise >
 						<ee:transform doc:name="set bed request message" doc:id="71d1fc44-7964-4d4c-8886-d345ce2e37f5">
@@ -96,7 +111,7 @@ output application/json
 	</sub-flow>
 	<sub-flow name="getDrinksByNameFlow" doc:id="fcc337c0-d588-464e-a4b0-e414c105669f" >
 		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="a11b5e41-d17f-4be1-a302-87c7bce7f30c" variableName="telegramPayload" />
-		<http:request method="GET" doc:name="GET /cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName">
+		<http:request method="GET" doc:name="GET /cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/foodName">
 					<http:query-params><![CDATA[#[output application/java
 ---
 {
@@ -140,6 +155,52 @@ output application/json
 					</telegram:send-message>
 				</foreach>
 	</sub-flow>
+	<sub-flow name="getFoodByNameFlow" doc:id="c040cea1-f93d-4517-86d5-e68e16483193" >
+		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="de6f22de-a977-4b6b-a458-8520e663f24f" variableName="telegramPayload" />
+		<http:request method="GET" doc:name="GET /foodName" doc:id="19a86d97-d72f-44fb-84ac-78ba75dff16a" url="http://localhost:8081/foodName" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"foodByName" : payload.result[0].message.text
+}]]]></http:query-params>
+		</http:request>
+		<foreach doc:name="For Each" doc:id="bd38bc5a-5b7b-4f12-88ce-1ef72a179f20" collection="#[payload.meals]" >
+			<set-variable value="#[payload]" doc:name="payloadVar" doc:id="c48636ff-cbda-47f7-afc1-4382bbba2579" variableName="payloadVar" />
+			<telegram:send-message doc:name="Send food name" doc:id="60ddfaf1-9ea3-4d2b-a072-670c872b7994" config-ref="Telegram_Connector_Config" >
+				<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: vars.payloadVar.Meal
+}]]]></telegram:send-text-message-request-content>
+			</telegram:send-message>
+			<choice doc:name="Choice" doc:id="e5c18cea-1d51-4997-a150-ead46732e42f" >
+				<when expression="#[not isEmpty(vars.payloadVar.ImageSource)]" >
+					<telegram:send-photo doc:name="Send food photo" doc:id="bbbb8f65-e4a3-4771-bf3f-4701ce4993fd" config-ref="Telegram_Connector_Config" >
+						<telegram:send-photo-message-request-content ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	photo: vars.payloadVar.ImageSource
+
+}]]]></telegram:send-photo-message-request-content>
+					</telegram:send-photo>
+				</when>
+			</choice>
+			<telegram:send-message doc:name="Send coctail Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config" >
+				<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: vars.payloadVar.Instructions
+}]]]></telegram:send-text-message-request-content>
+			</telegram:send-message>
+		</foreach>
+	</sub-flow>
 	<flow name="implementationFlow1" doc:id="679390cf-950f-4b59-b0a1-76ff550c4302" >
 		<http:listener doc:name="Listener" doc:id="0cdc0d85-2623-4687-8fd8-7c46eb05c69e" config-ref="HTTP_Listener_config" path="/test1"/>
 		<file:read doc:name="Read" doc:id="f7dc02ce-94f6-48ea-b113-38d8d841e0e8" path="d:/AnypointStudio/1.jpg"/>
@@ -175,28 +236,5 @@ output multipart/form-data
 			</ee:message>
 		</ee:transform>
 		<http:request method="POST" doc:name="Request" doc:id="edbf457e-0728-42b7-8b48-dc95e1aeaba4" url="https://api.telegram.org/bot5563335015:AAHEZ49NA1faZXK8awvppOYKP_oYaT_tTgc/sendPhoto"/>
-	</flow>
-	<flow name="implementationFlow2" doc:id="0ac3be9b-99bc-4467-aa0c-f4f0df06d27e" >
-		<http:listener doc:name="Listener" doc:id="bfef3481-32af-448d-a01e-b3cafe23290c" config-ref="HTTP_Listener_config" path="/test3"/>
-		<telegram:send-message doc:name="Send text message" doc:id="34da44d3-bd0e-44ab-a41a-820d4e04d77c" config-ref="Telegram_Connector_Config">
-			<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	chat_id: "798006120",
-	text: "Hi"
-}]]]></telegram:send-text-message-request-content>
-		</telegram:send-message>
-	</flow>
-	<flow name="implementationFlow3" doc:id="a0de6d75-6693-4954-a9a9-6871569e6ba9" >
-		<http:listener doc:name="Listener" doc:id="01b4a18f-e8f3-4b6a-b4f7-fdca103de7b4" config-ref="HTTP_Listener_config" path="/test4"/>
-		<ee:transform doc:name="Transform Message" doc:id="5e10c06c-2d79-4692-867a-596293bf6d65" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/dw
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 	</flow>
 </mule>

@@ -75,7 +75,7 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<set-variable value="#[[]]" doc:name="ingredients" doc:id="4522eb4e-3c9a-4548-aa54-7ddb28032d95" variableName="ingredients" />
-		<foreach doc:name="Copy_of_Copy_of_For Each" doc:id="9910ec75-6ed7-421c-9105-62fc1384d0ce" >
+		<foreach doc:name="For Each" doc:id="9910ec75-6ed7-421c-9105-62fc1384d0ce" >
 			<http:request method="GET" doc:name="GET/ foodType" doc:id="e2fc4d39-94b9-4198-a70f-3dc7bc13985f" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
 				<http:query-params ><![CDATA[#[output application/java
 ---
@@ -94,5 +94,50 @@ payload]]></ee:set-payload>
 			</ee:transform>
 		</foreach>
 		<logger level="INFO" doc:name="Logger finished" doc:id="04bf7b17-63ee-4c4f-95b3-c8df67c550fd" message="Finished logging to the request by foodType" />
+	</sub-flow>
+	<sub-flow name="searchFoodByName" doc:id="b74923c7-d64c-4b44-800d-47b7a8a92cb0">
+		<set-variable value="#[attributes.queryParams.foodByName]" doc:name="foodByName" doc:id="4e24dbb0-d1d5-4815-9985-bf51093ae6b5" variableName="cocktailByName" />
+		<http:request method="GET" doc:name="GET /foodByName" doc:id="7defbf0c-5d37-409a-a6eb-c6709a43f372" config-ref="HTTP_Request_food_configuration" path="/search.php">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"s" : vars.cocktailByName
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="data to JSON" doc:id="52fec31b-bef9-43ff-97b4-39d1fdc386b1">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	meals: payload.meals map ( meal , indexOfMeal ) -> {
+		"idMeal": meal.idMeal,
+		"Meal": meal.strMeal,
+		"Category" : meal.strCategory,		
+		"Tags": meal.strTags,
+		"Video": meal.strYoutube,	
+		"ImageSource": meal.strMealThumb,
+		"Instructions": meal.strInstructions,
+		"Ingredient1": meal.strIngredient1,
+		"Ingredient2": meal.strIngredient2,
+		"Ingredient3": meal.strIngredient3,
+		"Ingredient4": meal.strIngredient4,
+		"Ingredient5": meal.strIngredient5,
+		"Ingredient6": meal.strIngredient6,
+		"Ingredient7": meal.strIngredient7,
+		"Ingredient8": meal.strIngredient8,
+		"Measure1": meal.strMeasure1,
+		"Measure2": meal.strMeasure2,
+		"Measure3": meal.strMeasure3,
+		"Measure4": meal.strMeasure4,
+		"Measure5": meal.strMeasure5,
+		"Measure6": meal.strMeasure6,
+		"Measure7": meal.strMeasure7,
+		"Measure8": meal.strMeasure8,		
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e6656fcf-2d47-4921-8004-00d8474d9519" />
 	</sub-flow>
 </mule>
