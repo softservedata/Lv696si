@@ -158,15 +158,6 @@ output application/json
 	text: vars.payloadVar.Instructions
 }]]]></telegram:send-text-message-request-content>
 					</telegram:send-message>
-					<telegram:send-message doc:name="Message select" doc:id="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" config-ref="Telegram_Connector_Config" >
-						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	chat_id: vars.telegramPayload.result[0].message.chat.id,
-	text: "Select, what you want to get /drinksbyname, /foodbyname"
-}]]]></telegram:send-text-message-request-content>
-					</telegram:send-message>
 				</foreach>
 			</when>
 			<otherwise >
@@ -184,6 +175,15 @@ output application/json
 				<telegram:send-message doc:name="Send bed coaktailName message" doc:id="fd90602d-b868-46b8-81e7-c228d14fa4ee" config-ref="Telegram_Connector_Config" />
 			</otherwise>
 		</choice>
+		<telegram:send-message doc:name="Message select" doc:id="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" config-ref="Telegram_Connector_Config">
+						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "Select, what you want to get /drinksbyname, /foodbyname"
+}]]]></telegram:send-text-message-request-content>
+					</telegram:send-message>
 		<os:store doc:name="Store last message" doc:id="65d0ec23-18ff-4c65-95d6-5a187c9328fe" key="#[vars.telegramPayload.result[0].message.from.id]" >
 			<os:value ><![CDATA[/start]]></os:value>
 		</os:store>
@@ -234,15 +234,6 @@ output application/json
 	text: vars.payloadVar.Instructions
 }]]]></telegram:send-text-message-request-content>
 			</telegram:send-message>
-					<telegram:send-message doc:name="Message select" doc:id="d028bbe6-6756-414e-bceb-0c6330f31848" config-ref="Telegram_Connector_Config" >
-						<telegram:send-text-message-request-content ><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	chat_id: vars.telegramPayload.result[0].message.chat.id,
-	text: "Select, what you want to get /drinksbyname, /foodbyname"
-}]]]></telegram:send-text-message-request-content>
-					</telegram:send-message>
 		</foreach>
 			</when>
 			<otherwise >
@@ -260,6 +251,15 @@ output application/json
 				<telegram:send-message doc:name="Send bed foodName  message" doc:id="e7d3c2cc-d61b-427a-a70a-e9e694e6d4cb" config-ref="Telegram_Connector_Config" />
 			</otherwise>
 		</choice>
+		<telegram:send-message doc:name="Message select" doc:id="d028bbe6-6756-414e-bceb-0c6330f31848" config-ref="Telegram_Connector_Config">
+						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	chat_id: vars.telegramPayload.result[0].message.chat.id,
+	text: "Select, what you want to get /drinksbyname, /foodbyname"
+}]]]></telegram:send-text-message-request-content>
+					</telegram:send-message>
 		<os:store doc:name="Store last message" doc:id="01c27de3-24a0-4e84-a73c-2d3b73c3c5bd" key="#[vars.telegramPayload.result[0].message.from.id]" >
 			<os:value ><![CDATA["/start"]]></os:value>
 		</os:store>
