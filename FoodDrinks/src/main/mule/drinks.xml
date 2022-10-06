@@ -18,6 +18,11 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
+fun findKey(key)
+= key match {
+  case is String -> key
+  else -> "null"
+}
 ---
 {
 	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
@@ -31,20 +36,15 @@ output application/json
 		"Alcoholic": drink.strAlcoholic,
 		"Glass": drink.strGlass,
 		"Instructions": drink.strInstructions,
-		"Ingredient": drink.strIngredient1,
-		"Ingredient": drink.strIngredient2,
-		"Ingredient": drink.strIngredient3,
-		"Ingredient": drink.strIngredient4,
-		"Ingredient": drink.strIngredient5,
-		"Ingredient": drink.strIngredient6,
-		"Ingredient": drink.strIngredient7,
-		"Measure1": drink.strMeasure1,
-		"Measure2": drink.strMeasure2,
-		"Measure3": drink.strMeasure3,
-		"Measure4": drink.strMeasure4,
-		"Measure5": drink.strMeasure5,
-		"Measure6": drink.strMeasure6,
-		"Measure7": drink.strMeasure7,
+		"Ingredients": {
+			(findKey(drink.strIngredient1)): drink.strMeasure1,
+			(findKey(drink.strIngredient2)): drink.strMeasure2,
+			(findKey(drink.strIngredient3)): drink.strMeasure3,	
+			(findKey(drink.strIngredient4)): drink.strMeasure4,
+			(findKey(drink.strIngredient5)): drink.strMeasure5,
+			(findKey(drink.strIngredient6)): drink.strMeasure6,	
+			(findKey(drink.strIngredient7)): drink.strMeasure7
+		},
 		"ImageSource": drink.strImageSource,
 		"ImageAttribution": drink.strImageAttribution,
 		"CreativeCommonsConfirmed": drink.strCreativeCommonsConfirmed

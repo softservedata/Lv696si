@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<flow name="implementationFlow" doc:id="62f7a9aa-b497-4414-8b07-8d7bfe3106b3" >
 		<scheduler doc:name="Scheduler" doc:id="a7c7f22b-b3cb-4933-b919-3904dddfd464" >
 			<scheduling-strategy >
-				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+				<fixed-frequency frequency="5" timeUnit="DAYS"/>
 			</scheduling-strategy>
 		</scheduler>
 		<os:retrieve doc:name="updateId" doc:id="9d037029-dc3f-445a-9edb-2e819ff6927d" key="updateId" target="updateId">
@@ -95,14 +95,14 @@ output application/json
 						<os:store doc:name="Store last message" doc:id="e83fbd4e-e77b-43db-a88d-44665fcc3c7d" key="#[payload.result[0].message.from.id]">
 							<os:value><![CDATA[/start]]></os:value>
 						</os:store>
-						<ee:transform doc:name="set bed request message" doc:id="71d1fc44-7964-4d4c-8886-d345ce2e37f5">
+						<ee:transform doc:name="set bad request message" doc:id="71d1fc44-7964-4d4c-8886-d345ce2e37f5">
 							<ee:message>
 								<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
 	chat_id: payload.result[0].message.chat.id,
-	text: "Bad commannd. Select, what you want to get /drinksbyname, /foodbyname"
+	text: "Bad command. Select, what you want to get /drinksbyname, /foodbyname"
 }]]></ee:set-payload>
 							</ee:message>
 						</ee:transform>
@@ -161,7 +161,7 @@ output application/json
 				</foreach>
 			</when>
 			<otherwise >
-				<ee:transform doc:name="bed coaktailName  message" doc:id="b28bc7f1-226c-4eec-9f3b-1c05c8a65f43" >
+				<ee:transform doc:name="bad coaktailName  message" doc:id="b28bc7f1-226c-4eec-9f3b-1c05c8a65f43" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -172,7 +172,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<telegram:send-message doc:name="Send bed coaktailName message" doc:id="fd90602d-b868-46b8-81e7-c228d14fa4ee" config-ref="Telegram_Connector_Config" />
+				<telegram:send-message doc:name="Send bad coaktailName message" doc:id="fd90602d-b868-46b8-81e7-c228d14fa4ee" config-ref="Telegram_Connector_Config" />
 			</otherwise>
 		</choice>
 		<telegram:send-message doc:name="Message select" doc:id="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" config-ref="Telegram_Connector_Config">
@@ -237,7 +237,7 @@ output application/json
 		</foreach>
 			</when>
 			<otherwise >
-				<ee:transform doc:name="bed foodName  message" doc:id="6aaf0b2c-6d58-43ba-9afe-be5e4ed42a35">
+				<ee:transform doc:name="bad foodName  message" doc:id="6aaf0b2c-6d58-43ba-9afe-be5e4ed42a35">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -248,7 +248,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<telegram:send-message doc:name="Send bed foodName  message" doc:id="e7d3c2cc-d61b-427a-a70a-e9e694e6d4cb" config-ref="Telegram_Connector_Config" />
+				<telegram:send-message doc:name="Send bad foodName  message" doc:id="e7d3c2cc-d61b-427a-a70a-e9e694e6d4cb" config-ref="Telegram_Connector_Config" />
 			</otherwise>
 		</choice>
 		<telegram:send-message doc:name="Message select" doc:id="d028bbe6-6756-414e-bceb-0c6330f31848" config-ref="Telegram_Connector_Config">
