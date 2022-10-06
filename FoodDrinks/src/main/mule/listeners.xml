@@ -24,4 +24,20 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/list.php" allowedMethods="GET" />
 		<flow-ref doc:name="Flow Reference" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
 	</flow>
+	<flow name="cocktailsByCategoryListener" doc:id="7d811445-3a5a-4599-b216-c698b27cac52" >
+		<http:listener doc:name="GET /byCategory" doc:id="b29895ea-b2cb-420f-a0ad-52a756d78af7" config-ref="HTTP_Listener_config" path="/category" />
+		<flow-ref doc:name="categoryCocktails" doc:id="9fde9399-b2d6-4856-a7dc-d24277270f17" name="categoryCocktails" />
+	</flow>
+	<flow name="randomCocktailListener" doc:id="630c6cca-84db-4820-944e-6bfbb540d6e9" >
+		<http:listener doc:name="GET /randomCocktail" doc:id="6a03841f-958b-466d-8b8a-add98ac839ea" config-ref="HTTP_Listener_config" path="/randomCocktail" />
+		<flow-ref doc:name="randomCoctail" doc:id="cc695567-e1d2-4045-8640-e4e8eaf04290" name="randomCoctail" />
+	</flow>
+	<flow name="ingridientListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
+		<http:listener doc:name="GET /ingridient" doc:id="e212d16c-f0d2-4b99-8320-90a924ffc6ce" config-ref="HTTP_Listener_config" path="c" />
+		<flow-ref doc:name="ingridients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="ingridients" />
+	</flow>
+	<flow name="searchRecipe" doc:id="badb33f1-e6ec-4ae0-a7cc-c6a6b37fa6de" >
+		<http:listener doc:name="GET /recipe" doc:id="99bcaa7a-fdfd-430f-a588-fc3e31cc178c" config-ref="HTTP_Listener_config" path="/recipe" />
+		<flow-ref doc:name="recipeFlow" doc:id="dfda9402-65ef-4ab7-9cd3-83340624cea6" name="recipe" />
+	</flow>
 </mule>

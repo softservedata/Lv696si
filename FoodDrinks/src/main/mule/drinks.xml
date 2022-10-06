@@ -24,8 +24,7 @@ fun findKey(key)
   else -> "null"
 }
 ---
-{
-	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
+drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 		"idDrink": drink.idDrink,
 		"name": drink.strDrink,
 		"DrinkAlternate": drink.strDrinkAlternate,
@@ -48,30 +47,20 @@ fun findKey(key)
 		"ImageSource": drink.strImageSource,
 		"ImageAttribution": drink.strImageAttribution,
 		"CreativeCommonsConfirmed": drink.strCreativeCommonsConfirmed
-	}
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
 	</sub-flow>
-	<sub-flow name="listOfIngredient" doc:id="492e42fa-6db7-46af-8dd0-9be66a43bbc0" >
-		<set-variable value="#[attributes.queryParams.listOfIngredient]" doc:name="listOfIngredient" doc:id="3b8527e0-4e4c-439a-a6f5-ec45adf1b24a" variableName="listOfIngredient" />
-		<http:request method="GET" doc:name="GET /listOfIngredient" doc:id="a330c953-8200-4503-9bd3-fde560ab8ea0" config-ref="HTTP_Request_drinks_configuration" path="/list.php" >
+	<sub-flow name="categoryCocktails" doc:id="7ced9d43-a9e2-4176-92e7-7fefb155455c" >
+		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="a025f58c-591c-4111-9cf9-b92d78f19351" variableName="category" />
+		<http:request method="GET" doc:name="GET /CocktailsbyCategory" doc:id="6d220a33-3d70-490e-8647-2fd51bf15c79" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"i" : vars.listOfIngredient
+	"c" : vars.category
 }]]]></http:query-params>
 		</http:request>
-		<ee:transform doc:name="listOfAllIngredient" doc:id="37464650-ec63-4ce5-b17d-81500a19b0a5" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="0e7b4595-fe15-4731-817c-1a265d390606" />
 	</sub-flow>
 	<sub-flow name="listOfAllCocktails" doc:id="8b8a26e7-e204-4782-b08a-edcbb40a4c32" >
 		<logger level="INFO" doc:name="Logger" doc:id="ef72f982-c5c2-4397-b1a4-767c361417b5" />
@@ -118,6 +107,60 @@ flatten(payload.drinks)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="0adceb81-71a7-4e32-bc29-25964bea8dc1" />
+	</sub-flow>
+	<sub-flow name="randomCoctail" doc:id="d9131e04-4f4e-494a-8d02-661073c3db50" >
+		<http:request method="GET" doc:name="GET /randomCoctail" doc:id="d911bf9d-5d9e-4745-ae55-0b9e3b7c339c" config-ref="HTTP_Request_drinks_configuration" path="/random.php" />
+		<logger level="INFO" doc:name="Logger" doc:id="c1132de9-8d49-4aa6-ae88-5be1782d7df2" />
+	</sub-flow>
+	<sub-flow name="ingridients" doc:id="f77ad222-5cbf-4213-ba1e-4ee95ada0691" >
+		<set-variable value="#[message.attributes.queryParams.ingridient]" doc:name="ingridient" doc:id="5342b1c4-ddae-463a-a741-c932162dec5f" variableName="ingridient" />
+		<http:request method="GET" doc:name="GET /ingridient" doc:id="59cd0483-9411-41b5-82ce-c7665ae39018" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"i" : vars.ingridient
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="listOfAllIngredient" doc:id="14a2c65f-f0ab-4c6b-a911-a96267de4524" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="recipe" doc:id="4031a47f-146f-485c-97fa-6672d3e36cc4" >
+		<flow-ref doc:name="searchCocktailsByName" doc:id="f38db36d-7949-49f4-abdf-3aa6eb3b69ad" name="searchCocktailsByName" />
+		<logger level="INFO" doc:name="Logger" doc:id="d333e9b7-cc02-471f-9aad-811807bcadd0" />
+		<ee:transform doc:name="ingridient and measure" doc:id="280ae952-20b5-44ea-b9fa-845c639afce7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+fun findKey(key)
+= key match {
+  case is String -> key
+  else -> "null"
+}
+---
+
+	drinks: payload.drinks map ( drink , indexOfDrink ) -> {
+		"name": drink.strDrink,
+		"Ingredients": {
+			(findKey(drink.strIngredient1)): drink.strMeasure1,
+			(findKey(drink.strIngredient2)): drink.strMeasure2,
+			(findKey(drink.strIngredient3)): drink.strMeasure3,	
+			(findKey(drink.strIngredient4)): drink.strMeasure4,
+			(findKey(drink.strIngredient5)): drink.strMeasure5,
+			(findKey(drink.strIngredient6)): drink.strMeasure6,	
+			(findKey(drink.strIngredient7)): drink.strMeasure7
+		}
+		
+		
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="logger" doc:id="fb6ffa0d-13b7-4559-8355-dcbd2ebd1856" />
 	</sub-flow>
 
 </mule>
