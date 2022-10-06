@@ -32,9 +32,13 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="GET /randomCocktail" doc:id="6a03841f-958b-466d-8b8a-add98ac839ea" config-ref="HTTP_Listener_config" path="/randomCocktail" />
 		<flow-ref doc:name="randomCoctail" doc:id="cc695567-e1d2-4045-8640-e4e8eaf04290" name="randomCoctail" />
 	</flow>
-	<flow name="ingridientListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
+	<flow name="searchByIngridientsListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
 		<http:listener doc:name="GET /ingridient" doc:id="e212d16c-f0d2-4b99-8320-90a924ffc6ce" config-ref="HTTP_Listener_config" path="c" />
-		<flow-ref doc:name="ingridients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="ingridients" />
+		<flow-ref doc:name="searchByIngridients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="searchByIngridients" />
+	</flow>
+	<flow name="listOfIngridientListener" doc:id="e52a3d82-6a9a-489f-bcf7-00e705e000b5" >
+		<http:listener doc:name="GET /listOfIngridient" doc:id="31898b84-8974-4903-8cb5-9218a7e06761" config-ref="HTTP_Listener_config" path="/listOfIngridient"/>
+		<flow-ref doc:name="listOfIngridient" doc:id="a17f6c1c-2620-4f45-b810-7473d5628430" name="listOfIngridient"/>
 	</flow>
 	<flow name="searchRecipe" doc:id="badb33f1-e6ec-4ae0-a7cc-c6a6b37fa6de" >
 		<http:listener doc:name="GET /recipe" doc:id="99bcaa7a-fdfd-430f-a588-fc3e31cc178c" config-ref="HTTP_Listener_config" path="/recipe" />

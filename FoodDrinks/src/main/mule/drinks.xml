@@ -112,7 +112,26 @@ flatten(payload.drinks)]]></ee:set-payload>
 		<http:request method="GET" doc:name="GET /randomCoctail" doc:id="d911bf9d-5d9e-4745-ae55-0b9e3b7c339c" config-ref="HTTP_Request_drinks_configuration" path="/random.php" />
 		<logger level="INFO" doc:name="Logger" doc:id="c1132de9-8d49-4aa6-ae88-5be1782d7df2" />
 	</sub-flow>
-	<sub-flow name="ingridients" doc:id="f77ad222-5cbf-4213-ba1e-4ee95ada0691" >
+	<sub-flow name="listOfIngridient" doc:id="7816ef9e-a5e2-4500-badb-fd7a5121d567" >
+		<set-variable value="#[message.attributes.queryParams.listOfIngridient]" doc:name="listOfIngridient" doc:id="9b7464c4-c389-480a-92c8-0d4c58b0ebcc" variableName="listOfIngridient"/>
+		<http:request method="GET" doc:name="GET /listOfIngridient" doc:id="1cda5948-9ab4-43a4-895f-6edc189a6fe6" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"i" : vars.listOfIngridient
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="listOfAllIngredient" doc:id="14a2c65f-f0ab-4c6b-a911-a96267de4524">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="eb42ae1e-978f-4c4f-9e60-744178c61720" />
+	</sub-flow>
+	<sub-flow name="searchByIngridients" doc:id="f77ad222-5cbf-4213-ba1e-4ee95ada0691" >
 		<set-variable value="#[message.attributes.queryParams.ingridient]" doc:name="ingridient" doc:id="5342b1c4-ddae-463a-a741-c932162dec5f" variableName="ingridient" />
 		<http:request method="GET" doc:name="GET /ingridient" doc:id="59cd0483-9411-41b5-82ce-c7665ae39018" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
 			<http:query-params ><![CDATA[#[output application/java
@@ -121,14 +140,6 @@ flatten(payload.drinks)]]></ee:set-payload>
 	"i" : vars.ingridient
 }]]]></http:query-params>
 		</http:request>
-		<ee:transform doc:name="listOfAllIngredient" doc:id="14a2c65f-f0ab-4c6b-a911-a96267de4524" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 	</sub-flow>
 	<sub-flow name="recipe" doc:id="4031a47f-146f-485c-97fa-6672d3e36cc4" >
 		<flow-ref doc:name="searchCocktailsByName" doc:id="f38db36d-7949-49f4-abdf-3aa6eb3b69ad" name="searchCocktailsByName" />
