@@ -108,6 +108,11 @@ payload]]></ee:set-payload>
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
+fun findKey(key)
+= key match {
+  case is String -> key
+  else -> "null"
+}
 ---
 {
 	meals: payload.meals map ( meal , indexOfMeal ) -> {
@@ -118,22 +123,16 @@ output application/json
 		"Video": meal.strYoutube,	
 		"ImageSource": meal.strMealThumb,
 		"Instructions": meal.strInstructions,
-		"Ingredient1": meal.strIngredient1,
-		"Ingredient2": meal.strIngredient2,
-		"Ingredient3": meal.strIngredient3,
-		"Ingredient4": meal.strIngredient4,
-		"Ingredient5": meal.strIngredient5,
-		"Ingredient6": meal.strIngredient6,
-		"Ingredient7": meal.strIngredient7,
-		"Ingredient8": meal.strIngredient8,
-		"Measure1": meal.strMeasure1,
-		"Measure2": meal.strMeasure2,
-		"Measure3": meal.strMeasure3,
-		"Measure4": meal.strMeasure4,
-		"Measure5": meal.strMeasure5,
-		"Measure6": meal.strMeasure6,
-		"Measure7": meal.strMeasure7,
-		"Measure8": meal.strMeasure8,		
+		"Ingredients": {
+			(findKey(meal.strIngredient1)): meal.strMeasure1,
+			(findKey(meal.strIngredient2)): meal.strMeasure2,
+			(findKey(meal.strIngredient3)): meal.strMeasure3,	
+			(findKey(meal.strIngredient4)): meal.strMeasure4,
+			(findKey(meal.strIngredient5)): meal.strMeasure5,
+			(findKey(meal.strIngredient6)): meal.strMeasure6,	
+			(findKey(meal.strIngredient7)): meal.strMeasure7,
+			(findKey(meal.strIngredient8)): meal.strMeasure8
+		},	
 	}
 }]]></ee:set-payload>
 			</ee:message>
