@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<flow name="implementationFlow" doc:id="62f7a9aa-b497-4414-8b07-8d7bfe3106b3" >
 		<scheduler doc:name="Scheduler" doc:id="a7c7f22b-b3cb-4933-b919-3904dddfd464" >
 			<scheduling-strategy >
-				<fixed-frequency frequency="1" timeUnit="SECONDS"/>
+				<fixed-frequency frequency="5" timeUnit="DAYS"/>
 			</scheduling-strategy>
 		</scheduler>
 		<os:retrieve doc:name="updateId" doc:id="9d037029-dc3f-445a-9edb-2e819ff6927d" key="updateId" target="updateId">
