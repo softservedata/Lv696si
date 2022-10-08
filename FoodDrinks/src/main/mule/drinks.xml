@@ -275,7 +275,6 @@ vars.array]]></ee:set-payload>
 			</when>
 			<when expression="#[sizeOf(payload) == 3]">
 				<logger level="INFO" doc:name="Logger" doc:id="c14f322d-3df5-44bf-adbe-170ef4241bfa" />
-				<set-variable value='#["Category"]' doc:name="category" doc:id="ad4076fa-28be-4090-b86c-729f6e608af0" variableName="category"/>
 				<choice doc:name="Choice" doc:id="21075ae8-30a4-4d5c-aea6-859e22437bb5" >
 					<when expression="#[payload.drinks[0].Category == payload.drinks[1].Category]">
 						<logger level="INFO" doc:name="Logger" doc:id="a93ffca8-1018-46f0-85aa-e34d6126a6e0" />
