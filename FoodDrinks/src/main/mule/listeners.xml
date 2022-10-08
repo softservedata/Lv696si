@@ -4,6 +4,10 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="randomDrinkArrayListener" doc:id="f77fbfcb-b2d7-42e1-8544-dedba6cfe351" >
+		<http:listener doc:name="GET /randomArray" doc:id="c886fe4f-505b-44f1-9c9c-7c7f548c669a" config-ref="HTTP_Listener_config" path="/randomThree"/>
+		<flow-ref doc:name="Flow Reference" doc:id="88a3645e-0729-47fc-aa5e-04c6231d8230" name="randomDrinkArray"/>
+	</flow>
 	<flow name="searchCocktailsByNameListener" doc:id="f82533a5-1119-4826-bb8b-69b38a0209e5" >
 		<http:listener doc:name="Search.php" doc:id="5637e7ce-cfee-4e7d-aad3-6b5bdaddd361" config-ref="HTTP_Listener_config" path="/cocktailsName" />
 		<flow-ref doc:name="referenceTosearchCocktailsByName" doc:id="f60cf082-6da1-4dcd-a89d-69d5da66903a" name="searchCocktailsByName" />

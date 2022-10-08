@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<sub-flow name="searchCocktailsByName" doc:id="aa772b6d-f16c-4847-827d-47a3bf1df3b4" >
 		<set-variable value="#[attributes.queryParams.cocktailByName]" doc:name="cocktailByName" doc:id="8a011b6e-ee6f-49ba-8542-e4763147aee3" variableName="cocktailByName" />
 		<http:request method="GET" doc:name="GET /cocktailsByName" doc:id="380c82d9-01fd-45b9-9d5d-1ba165d99b28" config-ref="HTTP_Request_drinks_configuration" path="/search.php" >
@@ -54,6 +55,7 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 	</sub-flow>
 	<sub-flow name="threeCategoryCocktails" doc:id="7ced9d43-a9e2-4176-92e7-7fefb155455c" >
 		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="a025f58c-591c-4111-9cf9-b92d78f19351" variableName="category" />
+		<validation:is-not-null doc:name="Is not null" doc:id="ff7df086-fc9d-4ffe-9284-ebe0e450ef49" value="#[vars.category]" message='#["Please write some cocktail category"]'/>
 		<http:request method="GET" doc:name="GET /CocktailsbyCategory" doc:id="6d220a33-3d70-490e-8647-2fd51bf15c79" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
 			<http:query-params ><![CDATA[#[output application/java
 ---
@@ -196,11 +198,19 @@ flatten(payload.drinks.strCategory)]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="03e10803-5c48-4bf4-acda-a54806318dd2" />
 	</sub-flow>
-	<flow name="drinksFlow" doc:id="76367982-1748-4761-955e-0d894789717b" >
-		<http:listener doc:name="Listener" doc:id="b3612b8e-4f68-4620-bb57-fb28b0cf6797" config-ref="HTTP_Listener_config" path="/randomThree"/>
-		<set-variable value="#[[]]" doc:name="array" doc:id="f345b23a-227d-4090-82a8-92cd7190a61c" variableName="array" />
-		<http:request method="GET" doc:name="Request" doc:id="0736db17-1b8c-4d78-9828-bf76d367b5f8" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
-		<ee:transform doc:name="Copy_of_data to JSON" doc:id="c4a3aa36-9e88-4720-943d-5150c04f58d2">
+	<flow name="randomDrinkArray" doc:id="76367982-1748-4761-955e-0d894789717b" >
+		<logger level="INFO" doc:name="Logger" doc:id="8e769826-ca88-493f-8ca8-13328b6f86e6" />
+		<set-variable value="" doc:name="emptyPayload" doc:id="199241df-6342-48bb-9fc6-f1934c3287aa" variableName="emptyPayload"/>
+		<choice doc:name="Choice" doc:id="69e8eee9-f1cc-4c86-93fa-8605023cbb2b" >
+			<when expression="#[isEmpty (payload)]">
+				<set-variable value="#[[]]" doc:name="array" doc:id="f345b23a-227d-4090-82a8-92cd7190a61c" variableName="array" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="15c39998-f5a3-4893-872b-3f9e9a14a7b2" />
+			</otherwise>
+		</choice>
+		<http:request method="GET" doc:name="GET /randomCocktail" doc:id="0736db17-1b8c-4d78-9828-bf76d367b5f8" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
+		<ee:transform doc:name="data to JSON" doc:id="c4a3aa36-9e88-4720-943d-5150c04f58d2">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -236,7 +246,7 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<ee:transform doc:name="Transform Message" doc:id="4f11e595-34ad-4bdc-b4d0-63662598c122" >
+		<ee:transform doc:name="payload + varsArray" doc:id="4f11e595-34ad-4bdc-b4d0-63662598c122" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -250,7 +260,7 @@ output application/java
 vars.array + payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<ee:transform doc:name="Transform Message" doc:id="e4b2ce80-298c-4e8b-b2c6-0f9473cb3eeb" >
+		<ee:transform doc:name="varsArray" doc:id="e4b2ce80-298c-4e8b-b2c6-0f9473cb3eeb" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
@@ -260,18 +270,59 @@ vars.array]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="4269c2de-33a5-4bb3-ac0a-58e9c806e0ba" />
 		<choice doc:name="Choice" doc:id="1620339a-896b-4688-a9cd-f4911f30bf30" >
-			<when expression="#[sizeOf(vars.array) &lt; 3]">
-				<flow-ref doc:name="Flow Reference" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="drinksFlow"/>
+			<when expression="#[sizeOf(payload) &lt; 3]">
+				<flow-ref doc:name="randomDrinkArray" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="randomDrinkArray"/>
 			</when>
-			<when expression="#[sizeOf(vars.array1) == 3]">
+			<when expression="#[sizeOf(payload) == 3]">
 				<logger level="INFO" doc:name="Logger" doc:id="c14f322d-3df5-44bf-adbe-170ef4241bfa" />
 				<set-variable value='#["Category"]' doc:name="category" doc:id="ad4076fa-28be-4090-b86c-729f6e608af0" variableName="category"/>
 				<choice doc:name="Choice" doc:id="21075ae8-30a4-4d5c-aea6-859e22437bb5" >
 					<when expression="#[payload.drinks[0].Category == payload.drinks[1].Category]">
 						<logger level="INFO" doc:name="Logger" doc:id="a93ffca8-1018-46f0-85aa-e34d6126a6e0" />
+						<ee:transform doc:name="emptyPayload" doc:id="7e666561-85ff-40d4-999e-f3fd957f40b9" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+vars.emptyPayload]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+						<flow-ref doc:name="randomDrinkArray" doc:id="eaf23059-361f-4fbd-a297-7e1b456fca47" name="randomDrinkArray"/>
+					</when>
+					<when expression="#[payload.drinks[0].Category == payload.drinks[2].Category]">
+						<logger level="INFO" doc:name="Logger" doc:id="87f6de56-99ee-4d0e-a224-c242e6e07d3b" />
+						<ee:transform doc:name="emptyPayload" doc:id="f766e524-28b6-4831-a8f6-bb79f3129d6f" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+vars.emptyPayload]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+						<flow-ref doc:name="randomDrinkArray" doc:id="338bdb53-31e9-4cbc-ab44-b86d2b24c6cb" name="randomDrinkArray" />
+					</when>
+					<when expression="#[payload.drinks[1].Category == payload.drinks[2].Category]">
+						<logger level="INFO" doc:name="Logger" doc:id="be684a28-6f6a-4500-a616-048557034332" />
+						<ee:transform doc:name="emptyPayload" doc:id="1e978dfb-d6b2-4195-a037-5d51aabca2d2" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+vars.emptyPayload]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+						<flow-ref doc:name="randomDrinkArray" doc:id="9076dea7-4d34-4edb-ad08-ee070a3ec5d2" name="randomDrinkArray" />
 					</when>
 					<otherwise >
 						<logger level="INFO" doc:name="Logger" doc:id="95435599-8cce-46a3-9fde-4a7618aa46f4" />
+						<ee:transform doc:name="payload" doc:id="589e57ff-9695-4656-8c4d-f8c24374e961" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload	]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
 					</otherwise>
 				</choice>
 			</when>
