@@ -33,10 +33,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="GET /byCategory" doc:id="b29895ea-b2cb-420f-a0ad-52a756d78af7" config-ref="HTTP_Listener_config" path="/threeCategory" />
 		<flow-ref doc:name="threeCategoryCocktails" doc:id="9fde9399-b2d6-4856-a7dc-d24277270f17" name="threeCategoryCocktails" />
 	</flow>
-	<flow name="arraysOfRandomCoctails" doc:id="630c6cca-84db-4820-944e-6bfbb540d6e9" >
-		<http:listener doc:name="GET /randomCocktail" doc:id="6a03841f-958b-466d-8b8a-add98ac839ea" config-ref="HTTP_Listener_config" path="/threeRandomCocktail" />
-		<flow-ref doc:name="arrayOfRandomCoctails" doc:id="cc695567-e1d2-4045-8640-e4e8eaf04290" name="arrayOfRandomCoctails" />
-	</flow>
 	<flow name="searchCocktailsByIngridientsListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
 		<http:listener doc:name="GET /ingridient" doc:id="e212d16c-f0d2-4b99-8320-90a924ffc6ce" config-ref="HTTP_Listener_config" path="/searchByIngrid" />
 		<flow-ref doc:name="searchByIngridients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="searchByIngridients" />

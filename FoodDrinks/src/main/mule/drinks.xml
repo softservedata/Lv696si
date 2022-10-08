@@ -177,13 +177,30 @@ flatten(payload.drinks)]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="0adceb81-71a7-4e32-bc29-25964bea8dc1" />
 	</sub-flow>
-	<sub-flow name="arrayOfRandomCoctails" doc:id="d9131e04-4f4e-494a-8d02-661073c3db50" >
-		<set-variable value='#[["Ordinary Drink", "Cocktail", "Shake", "Other/Unknown", "Cocoa", "Shot", "Coffee / Tea", "Homemade Liqueur", "Punch / Party Drink", "Beer", "Soft Drink"]]' doc:name="listCategory" doc:id="0af10f01-da5c-48bd-a5c1-92238f35f188" variableName="listCategory"/>
-		<set-variable value="#[[]]" doc:name="array" doc:id="37931d63-631d-4a43-8895-33056026051b" variableName="array"/>
-		<foreach doc:name="For Each" doc:id="0ba1001a-94ff-4887-98bd-6a252d54d52b" batchSize="4" collection="#[vars.listCategory]">
-			<http:request method="GET" doc:name="GET /randomCoctail" doc:id="d911bf9d-5d9e-4745-ae55-0b9e3b7c339c" config-ref="HTTP_Request_drinks_configuration" path="/random.php" >
-			</http:request>
-			<ee:transform doc:name="data to JSON" doc:id="bc54819b-a391-4e97-bf62-589b81cdd506">
+	<sub-flow name="listOfCategory" doc:id="a944583f-72bf-4f45-8912-d5ad47759d9a" >
+		<set-variable value="#[message.attributes.queryParams.list]" doc:name="list" doc:id="9d5ec55a-0041-428f-8058-c1f20afccd1f" variableName="list"/>
+		<http:request method="GET" doc:name="GET /listOfCategory" doc:id="03508da4-372c-4f5e-8d7d-5916254e1178" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.list
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="listOfAllCategory" doc:id="0e52e233-304f-4b0d-b07e-5a4b3558b2fd">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.drinks.strCategory)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="03e10803-5c48-4bf4-acda-a54806318dd2" />
+	</sub-flow>
+	<flow name="drinksFlow" doc:id="76367982-1748-4761-955e-0d894789717b" >
+		<http:listener doc:name="Listener" doc:id="b3612b8e-4f68-4620-bb57-fb28b0cf6797" config-ref="HTTP_Listener_config" path="/randomThree"/>
+		<set-variable value="#[[]]" doc:name="array" doc:id="f345b23a-227d-4090-82a8-92cd7190a61c" variableName="array" />
+		<http:request method="GET" doc:name="Request" doc:id="0736db17-1b8c-4d78-9828-bf76d367b5f8" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
+		<ee:transform doc:name="Copy_of_data to JSON" doc:id="c4a3aa36-9e88-4720-943d-5150c04f58d2">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -219,66 +236,50 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-			<ee:transform doc:name="payload" doc:id="03e27688-2f1c-490f-b1e8-3e5e2d83465c">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0 
-output application/json 
---- 
+		<ee:transform doc:name="Transform Message" doc:id="4f11e595-34ad-4bdc-b4d0-63662598c122" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
 payload]]></ee:set-payload>
 			</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="array" ><![CDATA[%dw 2.0
+			<ee:variables >
+				<ee:set-variable variableName="array" ><![CDATA[%dw 2.0
 output application/java
 ---
 vars.array + payload]]></ee:set-variable>
-				</ee:variables>
+			</ee:variables>
 		</ee:transform>
-		</foreach>
-		<ee:transform doc:name="varsArray" doc:id="3ae680b7-e8c6-4e25-b214-6fc50128f3b9">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
+		<ee:transform doc:name="Transform Message" doc:id="e4b2ce80-298c-4e8b-b2c6-0f9473cb3eeb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
 ---
 vars.array]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<choice doc:name="Choice" doc:id="e601cb1e-9c88-4698-9564-13316de2e242" >
-			<when expression="#[payload.array.drinks[0].Category == payload.array.drinks[1].Category]">
-				<logger level="INFO" doc:name="Logger" doc:id="2e765676-f27e-46c0-8c78-2feabbd8e3ed" />
-				<flow-ref doc:name="Copy_of_Flow Reference" doc:id="4750ca8d-4ec9-44c3-a99d-bdc894a7f750" name="arrayOfRandomCoctails" />
+		<logger level="INFO" doc:name="Logger" doc:id="4269c2de-33a5-4bb3-ac0a-58e9c806e0ba" />
+		<choice doc:name="Choice" doc:id="1620339a-896b-4688-a9cd-f4911f30bf30" >
+			<when expression="#[sizeOf(vars.array) &lt; 3]">
+				<flow-ref doc:name="Flow Reference" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="drinksFlow"/>
 			</when>
-			<when expression="#[payload.array.drinks[0].Category == payload.array.drinks[2].Category]">
-				<logger level="INFO" doc:name="Logger" doc:id="2d058e08-8f2d-4255-8264-2ee94be5a676" />
-				<flow-ref doc:name="Copy_of_Flow Reference" doc:id="59e96c31-e579-4955-aa43-a692a8406b6c" name="arrayOfRandomCoctails" />
-			</when>
-			<when expression="#[(payload.array.drinks[0].Category == payload.array.drinks[2].Category)]">
-				<flow-ref doc:name="Flow Reference" doc:id="e4038636-3732-441a-a4e5-8a9bd2fff19b" name="arrayOfRandomCoctails"/>
+			<when expression="#[sizeOf(vars.array1) == 3]">
+				<logger level="INFO" doc:name="Logger" doc:id="c14f322d-3df5-44bf-adbe-170ef4241bfa" />
+				<set-variable value='#["Category"]' doc:name="category" doc:id="ad4076fa-28be-4090-b86c-729f6e608af0" variableName="category"/>
+				<choice doc:name="Choice" doc:id="21075ae8-30a4-4d5c-aea6-859e22437bb5" >
+					<when expression="#[payload.drinks[0].Category == payload.drinks[1].Category]">
+						<logger level="INFO" doc:name="Logger" doc:id="a93ffca8-1018-46f0-85aa-e34d6126a6e0" />
+					</when>
+					<otherwise >
+						<logger level="INFO" doc:name="Logger" doc:id="95435599-8cce-46a3-9fde-4a7618aa46f4" />
+					</otherwise>
+				</choice>
 			</when>
 			<otherwise >
-				<logger level="INFO" doc:name="Logger" doc:id="ecc1a375-de1c-4f40-b584-c785ccf6350d" />
+				<logger level="INFO" doc:name="Logger" doc:id="a104bab5-e58f-451f-a5d6-6a77bee8ef8d" />
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger" doc:id="c1132de9-8d49-4aa6-ae88-5be1782d7df2" />
-	</sub-flow>
-	<sub-flow name="listOfCategory" doc:id="a944583f-72bf-4f45-8912-d5ad47759d9a" >
-		<set-variable value="#[message.attributes.queryParams.list]" doc:name="list" doc:id="9d5ec55a-0041-428f-8058-c1f20afccd1f" variableName="list"/>
-		<http:request method="GET" doc:name="GET /listOfCategory" doc:id="03508da4-372c-4f5e-8d7d-5916254e1178" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
-			<http:query-params ><![CDATA[#[output application/java
----
-{
-	"c" : vars.list
-}]]]></http:query-params>
-		</http:request>
-		<ee:transform doc:name="listOfAllCategory" doc:id="0e52e233-304f-4b0d-b07e-5a4b3558b2fd">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-flatten(payload.drinks.strCategory)]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="03e10803-5c48-4bf4-acda-a54806318dd2" />
-	</sub-flow>
+	</flow>
 	<sub-flow name="listOfIngridient" doc:id="7816ef9e-a5e2-4500-badb-fd7a5121d567" >
 		<set-variable value="#[message.attributes.queryParams.listIngrid]" doc:name="listIngrid" doc:id="9b7464c4-c389-480a-92c8-0d4c58b0ebcc" variableName="listIngrid"/>
 		<http:request method="GET" doc:name="GET /listOfIngridient" doc:id="1cda5948-9ab4-43a4-895f-6edc189a6fe6" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
