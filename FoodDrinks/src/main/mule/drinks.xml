@@ -53,9 +53,60 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
 	</sub-flow>
-	<sub-flow name="threeCategoryCocktails" doc:id="7ced9d43-a9e2-4176-92e7-7fefb155455c" >
+	<flow name="drinksFlow" doc:id="dab40277-8c07-43b3-9fb5-8e1061424437" >
+		<http:listener doc:name="Listener" doc:id="4da2e4a4-f3b0-42ba-87d3-2d5ca9ee20c5" config-ref="HTTP_Listener_config" path="/dailyMenu"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="246fa83f-542b-4e6b-8bb1-1bbbeade8ab7" >
+			<route >
+				<set-variable value='#["Homemade Liqueur"]' doc:name="homemadeLiqueur" doc:id="b41a5848-b190-424b-a86a-331e23dbc7a6" variableName="homemadeLiqueur"/>
+				<set-payload value="#[vars.homemadeLiqueur]" doc:name="varsHomemadeLiqueur" doc:id="3818fc2e-0703-4e2c-8912-487bb7469087" />
+				<http:request method="GET" doc:name="GET /drinkForMenu" doc:id="6374fd83-9dbf-4833-8705-1b6a59d3080d" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.homemadeLiqueur
+}]]]></http:query-params>
+				</http:request>
+			</route>
+			<route >
+				<set-variable value='#["Punch / Party Drink"]' doc:name="punch/PartyDrink" doc:id="5f876fa0-7c1a-4952-ab92-770f27b9274b" variableName="punchPartyDrink"/>
+				<set-payload value="#[vars.punchPartyDrink]" doc:name="varsPunchPartyDrink" doc:id="dd2c7198-40e5-4ef8-945a-e1aaaf794f60" />
+				<http:request method="GET" doc:name="GET /drinkForMenu" doc:id="abaa586c-68ab-4334-8e3e-f4c915d05e91" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.punchPartyDrink
+}]]]></http:query-params>
+				</http:request>
+			</route>
+			<route >
+				<set-variable value='#["Shake"]' doc:name="shake" doc:id="0dec8e8b-0603-48d2-9ca5-432b205a4af4" variableName="shake"/>
+				<set-payload value="#[vars.shake]" doc:name="varsShake" doc:id="36b55730-3b4c-4f1d-b9fd-244d9460ace9" />
+				<http:request method="GET" doc:name="GET /drinkForMenu" doc:id="e23ddd77-3b10-4467-86ac-e2e1e050da4b" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.shake
+}]]]></http:query-params>
+				</http:request>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Menu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload."0".payload.drinks[1].strDrink ++
+ ", " ++ payload."1".payload.drinks[6].strDrink ++ 
+ "," ++ payload."2".payload.drinks[3].strDrink]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1ab95b3a-4f35-40a1-9a8b-43b2ecc369da" />
+	</flow>
+	<sub-flow name="fiveCategoryCocktails" doc:id="7ced9d43-a9e2-4176-92e7-7fefb155455c" >
 		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="a025f58c-591c-4111-9cf9-b92d78f19351" variableName="category" />
-		<validation:is-not-null doc:name="Is not null vars category" doc:id="ff7df086-fc9d-4ffe-9284-ebe0e450ef49" value="#[vars.category]" message='#["Please write some cocktail category"]'/>
+		<validation:is-not-null doc:name="Is not null vars category" doc:id="ff7df086-fc9d-4ffe-9284-ebe0e450ef49" value="#[vars.category]" message='#["Please write some cocktail category"]'>
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:CATEGORYNULL" />
+		</validation:is-not-null>
 		<http:request method="GET" doc:name="GET /CocktailsbyCategory" doc:id="6d220a33-3d70-490e-8647-2fd51bf15c79" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
 			<http:query-params ><![CDATA[#[output application/java
 ---
@@ -172,7 +223,13 @@ payload]]></ee:set-payload>
 			<otherwise >
 				<logger level="INFO" doc:name="Logger" doc:id="03cf04b9-9cbf-4745-8962-67393982fc59" />
 				<validation:is-true doc:name="Is true" doc:id="671f4a90-2dcb-49d8-8a79-33b36755c884" expression='#[["Other/Unknown", "Cocoa", "Shake", "Homemade Liqueur", "Punch / Party Drink", "Soft Drink"]contains vars.category]' message='#["Good choice. Enjoy your cocktail"]'/>
-				<http:request method="GET" doc:name="randomCocktail" doc:id="a3bfa2ea-901a-4bd9-b5aa-53ffe8bd708f" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
+				<http:request method="GET" doc:name="randomCocktail" doc:id="a3bfa2ea-901a-4bd9-b5aa-53ffe8bd708f" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.category
+}]]]></http:query-params>
+				</http:request>
 			</otherwise>
 		</choice>
 	</sub-flow>
@@ -314,7 +371,9 @@ vars.array]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="4269c2de-33a5-4bb3-ac0a-58e9c806e0ba" />
 		<choice doc:name="Choice" doc:id="1620339a-896b-4688-a9cd-f4911f30bf30" >
 			<when expression="#[sizeOf(payload) &lt; 3]">
-				<validation:is-true doc:name="If size of payload less then three" doc:id="1b2010fc-225d-4709-a0ae-cd4a084f73cd" expression="#[sizeOf(payload) &lt; 3]" message='" Wait a little beat "'/>
+				<validation:is-true doc:name="If size of payload less then three" doc:id="1b2010fc-225d-4709-a0ae-cd4a084f73cd" expression="#[sizeOf(payload) &lt; 3]" message='" Wait a little beat "'>
+					<error-mapping sourceType="STREAM_MAXIMUM_SIZE_EXCEEDED" targetType="APP:PAYLOADSIZE" />
+				</validation:is-true>
 				<flow-ref doc:name="randomDrinkArray" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="randomDrinkArray"/>
 			</when>
 			<when expression="#[sizeOf(payload) == 3]">
@@ -374,16 +433,16 @@ payload	]]></ee:set-payload>
 			</otherwise>
 		</choice>
 	</flow>
-	<sub-flow name="listOfIngridient" doc:id="7816ef9e-a5e2-4500-badb-fd7a5121d567" >
-		<set-variable value="#[message.attributes.queryParams.listIngrid]" doc:name="listIngrid" doc:id="9b7464c4-c389-480a-92c8-0d4c58b0ebcc" variableName="listIngrid"/>
-		<http:request method="GET" doc:name="GET /listOfIngridient" doc:id="1cda5948-9ab4-43a4-895f-6edc189a6fe6" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
+	<sub-flow name="listOfIngredient" doc:id="7816ef9e-a5e2-4500-badb-fd7a5121d567" >
+		<set-variable value="#[message.attributes.queryParams.listIngred]" doc:name="listIngred" doc:id="9b7464c4-c389-480a-92c8-0d4c58b0ebcc" variableName="listIngred"/>
+		<http:request method="GET" doc:name="GET /listOfIngredient" doc:id="1cda5948-9ab4-43a4-895f-6edc189a6fe6" config-ref="HTTP_Request_drinks_configuration" path="/list.php">
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"i" : vars.listIngrid
+	"i" : vars.listIngred
 }]]]></http:query-params>
 		</http:request>
-		<ee:transform doc:name="listOfAllCategory" doc:id="235c2938-0ed3-45bf-9db6-b4935e905cf5">
+		<ee:transform doc:name="listOfAllIngredient" doc:id="235c2938-0ed3-45bf-9db6-b4935e905cf5">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -393,21 +452,25 @@ flatten(payload.drinks.strIngredient1)]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="eb42ae1e-978f-4c4f-9e60-744178c61720" />
 	</sub-flow>
-	<sub-flow name="searchByIngridients" doc:id="f77ad222-5cbf-4213-ba1e-4ee95ada0691" >
-		<set-variable value="#[message.attributes.queryParams.ingridient]" doc:name="ingridient" doc:id="5342b1c4-ddae-463a-a741-c932162dec5f" variableName="ingridient" />
-		<validation:is-not-null doc:name="Is not null vars ingridient" doc:id="82189705-7e46-4fbd-a500-c40f7a039425" value="#[vars.ingridient]" message='#["Please write some ingridient"]'/>
-		<http:request method="GET" doc:name="GET /ingridient" doc:id="59cd0483-9411-41b5-82ce-c7665ae39018" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+	<sub-flow name="searchByIngredient" doc:id="f77ad222-5cbf-4213-ba1e-4ee95ada0691" >
+		<set-variable value="#[message.attributes.queryParams.ingredient]" doc:name="ingredient" doc:id="5342b1c4-ddae-463a-a741-c932162dec5f" variableName="ingredient" />
+		<validation:is-not-null doc:name="Is not null vars ingridient" doc:id="82189705-7e46-4fbd-a500-c40f7a039425" value="#[vars.ingredient]" message='#["Please write some ingridient"]'>
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:INGREDIENTNOTNULL" />
+		</validation:is-not-null>
+		<http:request method="GET" doc:name="GET /ingredient" doc:id="59cd0483-9411-41b5-82ce-c7665ae39018" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"i" : vars.ingridient
+	"i" : vars.ingredient
 }]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="d1ec4a06-0dd8-49e9-94db-7a3c17cd1951" />
 	</sub-flow>
 	<sub-flow name="recipe" doc:id="4031a47f-146f-485c-97fa-6672d3e36cc4" >
 		<set-variable value="#[message.attributes.queryParams.cocktailName]" doc:name="cocktailName" doc:id="e2d56a53-a9d5-4013-9453-39ce9bffe11b" variableName="cocktailName"/>
-		<validation:is-not-null doc:name="Is not null vars cocktailName" doc:id="fa1c7824-98a7-42ba-a161-c8b03940cd17" value="#[vars.cocktailName]" message='" Hi , you forgot write cocktail name"'/>
+		<validation:is-not-null doc:name="Is not null vars cocktailName" doc:id="fa1c7824-98a7-42ba-a161-c8b03940cd17" value="#[vars.cocktailName]" message='" Hi , you forgot write cocktail name"'>
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:COCTAILNAMENOTNULL" />
+		</validation:is-not-null>
 		<http:request method="GET" doc:name="GET /recipeCocktail" doc:id="c7cb7beb-a04c-452b-9f39-8da21fff704d" config-ref="HTTP_Request_drinks_configuration" path="/search.php">
 			<http:query-params ><![CDATA[#[output application/java
 ---

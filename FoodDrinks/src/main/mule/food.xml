@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="Food_categories" doc:id="2d13912b-40b9-417f-9eb5-21d7bf0420cb" >
-		<set-variable value="#[attributes.queryParams.category]" doc:name="category" doc:id="27733f1c-301f-4399-964d-a5f4b4524f53" variableName="category" />
+		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="27733f1c-301f-4399-964d-a5f4b4524f53" variableName="category" />
 		<choice doc:name="Choice" doc:id="1a1a9354-53c4-4881-a35a-50f6876bbc80" >
 			<when expression="#[(not isEmpty(vars.category))]" >
 				<http:request method="GET" doc:name="GET/ mealCategory" doc:id="937942f2-13db-4b49-a13e-d13ab047c3e1" config-ref="HTTP_Request_food_configuration" path="/list.php" >
