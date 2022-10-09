@@ -74,25 +74,6 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<set-variable value="#[[]]" doc:name="ingredients" doc:id="4522eb4e-3c9a-4548-aa54-7ddb28032d95" variableName="ingredients" />
-		<foreach doc:name="For Each" doc:id="9910ec75-6ed7-421c-9105-62fc1384d0ce" >
-			<http:request method="GET" doc:name="GET/ foodType" doc:id="e2fc4d39-94b9-4198-a70f-3dc7bc13985f" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
-				<http:query-params ><![CDATA[#[output application/java
----
-{
-	"c" : vars.foodType,
-	"i" : vars.ingredient
-}]]]></http:query-params>
-			</http:request>
-			<ee:transform doc:name="Payload" doc:id="d602f93f-38f8-438a-9472-63a0863535c1" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-		</foreach>
 		<logger level="INFO" doc:name="Logger finished" doc:id="04bf7b17-63ee-4c4f-95b3-c8df67c550fd" message="Finished logging to the request by foodType" />
 	</sub-flow>
 	<sub-flow name="searchFoodByName" doc:id="b74923c7-d64c-4b44-800d-47b7a8a92cb0">
@@ -138,5 +119,47 @@ fun findKey(key)
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="e6656fcf-2d47-4921-8004-00d8474d9519" />
+	</sub-flow>
+	<sub-flow name="CategoryList" doc:id="9dcf589b-e45e-4738-869d-6e5a7ebc9135" >
+		<logger level="INFO" doc:name="Starting to log the list of categories" doc:id="18f8dc5e-0db0-493c-a63f-32b6c02fef66" message="Logger started at the flow list of categories"/>
+		<set-variable value='#[["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]]' doc:name="alphabet" doc:id="888e9cb9-2976-432c-a537-9235e957ac0f" variableName="alphabet"/>
+		<set-variable value="#[[]]" doc:name="varsLetter" doc:id="2a20827a-a489-40d8-8292-76206df278e1" variableName="varsLetter"/>
+		<foreach doc:name="For Each by Alphabet" doc:id="4b817eb6-10c5-452f-a285-4db9ead8c41d" collection="#[vars.alphabet]">
+			<logger level="INFO" doc:name="Logging is started" doc:id="ed2115b8-fdfb-4174-a182-f5f1de340893" message="Started to log the request"/>
+			<http:request method="GET" doc:name="GET /FoodList" doc:id="0cc6acdb-5b5a-4fe3-b6c4-b7993f80a6aa" config-ref="HTTP_Request_food_configuration" path="/search.php">
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"s" : payload
+}]]]></http:query-params>
+			</http:request>
+			<ee:transform doc:name="Transform to payload" doc:id="b96b6bb0-9d74-4105-8796-ff43f32384cb" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="varsLetter" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.varsLetter + payload]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</foreach>
+		<ee:transform doc:name="varsletter" doc:id="438c5791-f512-4885-8805-11d0c9a4f81f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.varsLetter]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="ListofCollection" doc:id="48d14092-4bf7-4123-8d2e-84a9445f01a8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.meals)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log at the end" doc:id="d520edcc-f0a5-45b3-b13c-78b293665b0e" message="Logging is finished"/>
 	</sub-flow>
 </mule>

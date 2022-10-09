@@ -49,4 +49,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="GET /recipe" doc:id="99bcaa7a-fdfd-430f-a588-fc3e31cc178c" config-ref="HTTP_Listener_config" path="/recipe" />
 		<flow-ref doc:name="recipeFlow" doc:id="dfda9402-65ef-4ab7-9cd3-83340624cea6" name="recipe" />
 	</flow>
+	<flow name="SearchFoodByAlphabet" doc:id="7ac3e8c0-1278-4330-89ba-2501023bd013" >
+		<http:listener doc:name="Listener" doc:id="a8a9e5e7-56ab-4ef7-8307-baf64c351a9c" config-ref="HTTP_Listener_config" path="/allMeals"/>
+		<flow-ref doc:name="Flow Reference" doc:id="88495244-3554-4daf-8516-649e638e5136" name="CategoryList"/>
+	</flow>
+	<sub-flow name="listenersSub_Flow" doc:id="8555646a-35ab-4485-96a9-476b5ef42feb" />
 </mule>
