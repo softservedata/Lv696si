@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_8b8a26e7_e204_4782_b08a_edcbb40a4c32_Output_Variables_AZ = Array<"a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z">
+

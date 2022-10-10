@@ -7,3 +7,12 @@ drinksapi:
 foodapi:
   host: "www.themealdb.com"
   basepath: "/api/json/v1/1"
+  
+  
+
+  
+validation:
+    checkRecipe: " Hi , you forgot write cocktail name"
+    checkQueryIngredient: "Please write some ingredient"
+    ifTrueSizeOfVars: " Wait a little beat, we check if size valid "
+    checkQueryCategory: "Please write some cocktail category"     
