@@ -89,7 +89,7 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger finished" doc:id="04bf7b17-63ee-4c4f-95b3-c8df67c550fd" message="Finished logging to the request by foodType" />
+		<logger level="INFO" doc:name="Logger finished" doc:id="357c6556-6d1e-45d4-8a8d-6a588b5896ad" message="Finished logging to the request by foodType" />
 	</sub-flow>
 	<sub-flow name="searchFoodByName" doc:id="b74923c7-d64c-4b44-800d-47b7a8a92cb0">
 		<set-variable value="#[attributes.queryParams.foodByName]" doc:name="foodByName" doc:id="4e24dbb0-d1d5-4815-9985-bf51093ae6b5" variableName="cocktailByName" />
