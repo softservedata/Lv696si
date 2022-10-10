@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="randomDrinkArrayListener" doc:id="f77fbfcb-b2d7-42e1-8544-dedba6cfe351" >
 		<http:listener doc:name="GET /randomArray" doc:id="c886fe4f-505b-44f1-9c9c-7c7f548c669a" config-ref="HTTP_Listener_config" path="/randomThree"/>
-		<flow-ref doc:name="Flow Reference" doc:id="88a3645e-0729-47fc-aa5e-04c6231d8230" name="randomDrinkArray"/>
+		<flow-ref doc:name="randomDrinkArray" doc:id="88a3645e-0729-47fc-aa5e-04c6231d8230" name="randomDrinkArray"/>
 	</flow>
 	<flow name="searchCocktailsByNameListener" doc:id="f82533a5-1119-4826-bb8b-69b38a0209e5" >
 		<http:listener doc:name="Search.php" doc:id="5637e7ce-cfee-4e7d-aad3-6b5bdaddd361" config-ref="HTTP_Listener_config" path="/cocktailsName" />
@@ -18,32 +18,32 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="listOfAllCocktailsListener" doc:id="e3bdb470-878f-4bc0-a964-b7c8181d613b" >
 		<http:listener doc:name="Filter.php" doc:id="22020618-3077-43fe-9e2d-34d727c59c68" config-ref="HTTP_Listener_config" path="/listOfCocktails" />
-		<flow-ref doc:name="Flow Reference" doc:id="9909232e-1fc0-479a-b25a-47ac1b3f50d5" name="listOfAllCocktails" />
+		<flow-ref doc:name="listOfAllCocktails" doc:id="9909232e-1fc0-479a-b25a-47ac1b3f50d5" name="listOfAllCocktails" />
 	</flow>
 	<flow name="foodTypeListener" doc:id="171ee5ad-58d1-4180-a63e-a4fd3ca3a94a" >
-		<http:listener doc:name="Filter/ foodType" doc:id="82929686-b1dc-462e-b359-68e728c2e95d" config-ref="HTTP_Listener_config" path="/filter.php" />
+		<http:listener doc:name="Filter/ foodType" doc:id="82929686-b1dc-462e-b359-68e728c2e95d" config-ref="HTTP_Listener_config" path="/filterFoodByTypeAndIngridient" />
 		<flow-ref doc:name="Flow Reference" doc:id="fddcdcf2-535c-4338-97e8-e04ea96555e7" name="Filter_food"/>
 	</flow>
 	<flow name="foodCategoryListener" doc:id="fe7a5082-06d7-4318-9517-dd66ef41e08c" >
-		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/list.php" allowedMethods="GET" >
+		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/foodByCategory" allowedMethods="GET" >
 		</http:listener>
 		<flow-ref doc:name="Flow Reference" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
 	</flow>
 	<flow name="listOfCategoryCocktailsListener" doc:id="b60a9fed-e46b-4c61-92c1-853ef454b3d9" >
 		<http:listener doc:name="GET /listOfCategory" doc:id="9c967628-5117-4518-b2c6-d2bce6ae8799" config-ref="HTTP_Listener_config" path="/listOfCategory"/>
-		<flow-ref doc:name="Flow Reference" doc:id="ce7519a2-9e72-48b0-83fd-8fbdc27eaf49" name="listOfCategory"/>
+		<flow-ref doc:name="listOfCategory" doc:id="ce7519a2-9e72-48b0-83fd-8fbdc27eaf49" name="listOfCategory"/>
 	</flow>
 	<flow name="cocktailsByCategoryListener" doc:id="7d811445-3a5a-4599-b216-c698b27cac52" >
-		<http:listener doc:name="GET /byCategory" doc:id="b29895ea-b2cb-420f-a0ad-52a756d78af7" config-ref="HTTP_Listener_config" path="/threeCategory" />
-		<flow-ref doc:name="threeCategoryCocktails" doc:id="9fde9399-b2d6-4856-a7dc-d24277270f17" name="threeCategoryCocktails" />
+		<http:listener doc:name="GET /byCategory" doc:id="b29895ea-b2cb-420f-a0ad-52a756d78af7" config-ref="HTTP_Listener_config" path="/fiveCategory" />
+		<flow-ref doc:name="fiveCategoryCocktails " doc:id="9fde9399-b2d6-4856-a7dc-d24277270f17" name="fiveCategoryCocktails" />
 	</flow>
-	<flow name="searchCocktailsByIngridientsListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
-		<http:listener doc:name="GET /ingridient" doc:id="e212d16c-f0d2-4b99-8320-90a924ffc6ce" config-ref="HTTP_Listener_config" path="/searchByIngrid" />
-		<flow-ref doc:name="searchByIngridients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="searchByIngridients" />
+	<flow name="searchCocktailsByIngredientsListener" doc:id="9e56672e-3a59-4a05-b3d4-e172635a5f44" >
+		<http:listener doc:name="GET /ingredient" doc:id="e212d16c-f0d2-4b99-8320-90a924ffc6ce" config-ref="HTTP_Listener_config" path="/searchByIngred" />
+		<flow-ref doc:name="searchByIngredients" doc:id="7dca62d8-1679-45bc-96e3-3d9192e9be68" name="searchByIngredient" />
 	</flow>
-	<flow name="listOfIngridientCocktailsListener" doc:id="e52a3d82-6a9a-489f-bcf7-00e705e000b5" >
-		<http:listener doc:name="GET /listOfIngridient" doc:id="31898b84-8974-4903-8cb5-9218a7e06761" config-ref="HTTP_Listener_config" path="/listOfIngridient"/>
-		<flow-ref doc:name="listOfIngridient" doc:id="a17f6c1c-2620-4f45-b810-7473d5628430" name="listOfIngridient"/>
+	<flow name="listOfIngredientCocktailsListener" doc:id="e52a3d82-6a9a-489f-bcf7-00e705e000b5" >
+		<http:listener doc:name="GET /listOfIngredient" doc:id="31898b84-8974-4903-8cb5-9218a7e06761" config-ref="HTTP_Listener_config" path="/listOfIngredient"/>
+		<flow-ref doc:name="listOfIngredient" doc:id="a17f6c1c-2620-4f45-b810-7473d5628430" name="listOfIngredient"/>
 	</flow>
 	<flow name="searchCocktailsRecipe" doc:id="badb33f1-e6ec-4ae0-a7cc-c6a6b37fa6de" >
 		<http:listener doc:name="GET /recipe" doc:id="99bcaa7a-fdfd-430f-a588-fc3e31cc178c" config-ref="HTTP_Listener_config" path="/recipe" />
@@ -51,6 +51,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="SearchFoodByAlphabet" doc:id="7ac3e8c0-1278-4330-89ba-2501023bd013" >
 		<http:listener doc:name="Listener" doc:id="a8a9e5e7-56ab-4ef7-8307-baf64c351a9c" config-ref="HTTP_Listener_config" path="/allMeals"/>
-		<flow-ref doc:name="Flow Reference" doc:id="88495244-3554-4daf-8516-649e638e5136" name="CategoryList"/>
+		<flow-ref doc:name="CategoryList" doc:id="88495244-3554-4daf-8516-649e638e5136" name="CategoryList"/>
 	</flow>
 </mule>
