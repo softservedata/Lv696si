@@ -22,12 +22,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="foodTypeListener" doc:id="171ee5ad-58d1-4180-a63e-a4fd3ca3a94a" >
 		<http:listener doc:name="Filter/ foodType" doc:id="82929686-b1dc-462e-b359-68e728c2e95d" config-ref="HTTP_Listener_config" path="/filterFoodByTypeAndIngridient" />
-		<flow-ref doc:name="Flow Reference" doc:id="fddcdcf2-535c-4338-97e8-e04ea96555e7" name="Filter_food"/>
+		<flow-ref doc:name="Filter_food" doc:id="fddcdcf2-535c-4338-97e8-e04ea96555e7" name="Filter_food"/>
 	</flow>
 	<flow name="foodCategoryListener" doc:id="fe7a5082-06d7-4318-9517-dd66ef41e08c" >
-		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/foodByCategory" allowedMethods="GET" >
+		<http:listener doc:name="/list_categories" doc:id="d13ef811-c66e-432f-b5ff-e5d9b8ead0d1" config-ref="HTTP_Listener_config" path="/listCategories" allowedMethods="GET" >
 		</http:listener>
-		<flow-ref doc:name="Flow Reference" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
+		<flow-ref doc:name="Food_categories" doc:id="b871c184-dd97-49b0-9bf8-8590b66feab4" name="Food_categories"/>
 	</flow>
 	<flow name="listOfCategoryCocktailsListener" doc:id="b60a9fed-e46b-4c61-92c1-853ef454b3d9" >
 		<http:listener doc:name="GET /listOfCategory" doc:id="9c967628-5117-4518-b2c6-d2bce6ae8799" config-ref="HTTP_Listener_config" path="/listOfCategory"/>
@@ -52,5 +52,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="SearchFoodByAlphabet" doc:id="7ac3e8c0-1278-4330-89ba-2501023bd013" >
 		<http:listener doc:name="Listener" doc:id="a8a9e5e7-56ab-4ef7-8307-baf64c351a9c" config-ref="HTTP_Listener_config" path="/allMeals"/>
 		<flow-ref doc:name="CategoryList" doc:id="88495244-3554-4daf-8516-649e638e5136" name="CategoryList"/>
+	</flow>
+	<flow name="MenuFood" doc:id="88db5491-d532-4e1a-bbfe-b830aa7a71d7" >
+		<http:listener doc:name="GET /menu" doc:id="285fbf33-2c3f-4d80-a792-3ec6a3919c41" config-ref="HTTP_Listener_config" path="/menu"/>
+		<flow-ref doc:name="Filter_food" doc:id="fb3d8b77-f2c3-4b62-b919-946044fdb375" name="MenuByCategories"/>
 	</flow>
 </mule>

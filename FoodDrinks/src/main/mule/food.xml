@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<sub-flow name="Food_categories" doc:id="2d13912b-40b9-417f-9eb5-21d7bf0420cb" >
 		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="27733f1c-301f-4399-964d-a5f4b4524f53" variableName="category" />
+		<http:request method="GET" doc:name="GET/ mealCategory" doc:id="94fa30ac-f68f-4ee3-8036-8ee89bf0ff33" config-ref="HTTP_Request_food_configuration" path="/list.php">
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	Authorization : "1"
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"c" : vars.category
+}]]]></http:query-params>
+		</http:request>
 		<choice doc:name="Choice" doc:id="1a1a9354-53c4-4881-a35a-50f6876bbc80" >
 			<when expression="#[(not isEmpty(vars.category))]" >
 				<http:request method="GET" doc:name="GET/ mealCategory" doc:id="937942f2-13db-4b49-a13e-d13ab047c3e1" config-ref="HTTP_Request_food_configuration" path="/list.php" >
@@ -21,20 +34,22 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	"c" : vars.category
 }]]]></http:query-params>
 				</http:request>
+				<ee:transform doc:name="payload" doc:id="2afa35e2-8059-466e-a7b3-9b613e5f9fbb">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="vars.category"><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
 				<logger level="INFO" doc:name="Log at the end meal" doc:id="99f06108-a68e-4de7-90ab-f11a50bff2e0" message="Log at the end of request mealCategory" />
 			</when>
 			<otherwise >
 				<logger level="INFO" doc:name="Is empty category" doc:id="23041add-9918-4172-94c6-46bf9842141f" message="If Category is empty customer gets no response" />
 			</otherwise>
 		</choice>
-		<ee:transform doc:name="payload" doc:id="2afa35e2-8059-466e-a7b3-9b613e5f9fbb" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 		<logger level="INFO" doc:name="Logger finished" doc:id="09e741e5-5f33-4cde-9cc1-a546e208c378" message="Finished logging to the request by categories" />
 	</sub-flow>
 	<sub-flow name="Filter_food" doc:id="fe5216f8-627d-4d5e-83c3-d347a758725a" >
@@ -161,5 +176,137 @@ flatten(payload.meals)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Log at the end" doc:id="d520edcc-f0a5-45b3-b13c-78b293665b0e" message="Logging is finished"/>
+	</sub-flow>
+	<sub-flow name="MenuByCategories" doc:id="78bee59e-21b9-45b0-ba78-d805dd0bfbaf" >
+		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="c3e171d8-4ef2-4c74-a45f-240d4aa743a7" variableName="category" />
+		<validation:is-not-null doc:name="Is not null vars category" doc:id="8ef50967-cc38-4ddc-9a5b-bfa6bf086dec" value="#[vars.category]" message='#["Add the category of any meal types"]' >
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:CATEGORYNULL" />
+		</validation:is-not-null>
+		<http:request method="GET" doc:name="GET/ mealCategory" doc:id="b2b5f2b4-f955-4ab1-a8ad-ca0b2517222c" config-ref="HTTP_Request_food_configuration" path="/list.php" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	Authorization : "1"
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.category
+}]]]></http:query-params>
+		</http:request>
+		<choice doc:name="Choice" doc:id="e26f02aa-547a-4955-a771-86392bd3913f" >
+			<when expression='#[vars.category == "Chicken"]'>
+				<logger level="INFO" doc:name="Logger started at category Chicken" doc:id="7ae9654c-d5ca-4040-883c-e7d153f1ede3" message="Started to log the category Chicken for the meal types"/>
+				<set-variable value='#["Shake"]' doc:name="Shake" doc:id="a0a81b9f-c369-4050-985e-d11c04f58548" variableName="Shake"/>
+				<set-payload value="#[vars.shake]" doc:name="varsShake" doc:id="f2c4ea76-c64d-4823-afd7-3e9eb591ef26" />
+				<http:request method="GET" doc:name="GEt /Shake" doc:id="7e540fdd-6be4-4dd7-9f36-348a719f36d2" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.shake
+}]]]></http:query-params>
+				</http:request>
+				<ee:transform doc:name="payload" doc:id="b081e502-103b-4cd5-b596-07348ed29129" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.category == "Pasta"]'>
+				<logger level="INFO" doc:name="Logger started at category Pasta" doc:id="cc33574e-6941-47bc-8928-b839cf69bf9d" message="Started to log the category Pasta for the meal types"/>
+				<set-variable value='#["Soft Drink"]' doc:name="soft Drink" doc:id="163ccf63-af0f-471f-8f4f-d920bf484c5d" variableName="softDrink" />
+				<set-payload value="#[vars.softDrink]" doc:name="varsSoftDrink" doc:id="c90b4c58-300d-4491-9683-5042d6c2447b" />
+				<http:request method="GET" doc:name="Get /SoftDrink" doc:id="a9f8e529-28be-4a2d-9ae4-9ed80c842f45" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"c" : vars.softDrink
+}]]]></http:query-params>
+				</http:request>
+				<ee:transform doc:name="payload" doc:id="5eedf87e-33d7-4622-9409-cd14aac5e4b0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.category == "Breakfast"]'>
+				<logger level="INFO" doc:name="Logger started at category Breakfast" doc:id="57042379-77b6-49e4-adc2-2894f407e31c" message="Started to log the category Breakfast for the meal types"/>
+				<set-variable value='#["Cocoa"]' doc:name="Cocoa" doc:id="fb08757d-ae34-4234-b2e9-aaaf6c75186b" variableName="cocoa" />
+				<set-payload value="#[vars.cocoa]" doc:name="varsCocoa" doc:id="d9c81fb4-6d86-49c3-8410-4b7404cba7df" />
+				<http:request method="GET" doc:name="GEt /Cocoa" doc:id="998c04ab-5510-4851-a112-796fad85e0cc" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"c" : vars.cocoa
+}]]]></http:query-params>
+				</http:request>
+				<ee:transform doc:name="payload" doc:id="64e42714-57f9-4811-abfb-5975c291ba9b" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.category == "Pork"]'>
+				<logger level="INFO" doc:name="Logger started at category Pork" doc:id="cdabe04d-4c55-4f30-a86c-3d46513ec753" message="Started to log the category Pork for the meal types"/>
+				<set-variable value='#["Homemade Liqueur"]' doc:name="homemadeLiqueur" doc:id="5ea48e92-1457-4a80-8266-4e0f40b4846e" variableName="homemadeLiqueur" />
+				<set-payload value="#[vars.homemadeLiqueur]" doc:name="varsHomemadeLiqueur" doc:id="3db56565-cc49-40f6-ab6d-54081b143df7" />
+				<http:request method="GET" doc:name="Get /HomemadeLiqueur" doc:id="971e3b30-9905-47ce-8217-9bb3230cf888" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.homemadeLiqueur
+}]]]></http:query-params>
+				</http:request>
+				<ee:transform doc:name="payload" doc:id="c77fb152-7eae-4bb4-8157-a9954aebddb8" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.category == "Miscellaneous"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="6c010001-ded6-47bf-8ee1-db5fa0718ef0" />
+				<set-variable value='#["Punch / Party Drink"]' doc:name="punch/PartyDrink" doc:id="f6191a6c-9869-4066-9832-4bd6be318373" variableName="punchPartyDrink" />
+				<set-payload value="#[vars.punchPartyDrink]" doc:name="varsPunchPartyDrink" doc:id="2681c021-32e5-4e21-ae05-109ba28b9bef" />
+				<http:request method="GET" doc:name="Get /punchPartyDrink" doc:id="f956bfca-ceea-4b4c-adec-a0d8d29486e3" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"c" : vars.punchPartyDrink
+}]]]></http:query-params>
+				</http:request>
+				<ee:transform doc:name="payload" doc:id="2310e649-48d9-431e-af87-9af6fe7c0a4a" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Log other meal categories" doc:id="b5bd758a-7af9-40ec-86d3-67a12d7a594b" message="Started to log other meal categories"/>
+				<validation:is-true doc:name="Is true" doc:id="c54abcea-c896-424c-b9be-b88b3d704ca6" expression='#[["Beef", "Chicken", "Dessert", "Lamb", "Miscellaneous", "Pasta","Pork","Seafood","Side","Starter","Vegan","Vegetarian","Breakfast","Goat"]contains vars.category]' message='#["Thank you for your order! Enjoy your meal!"]' />
+				<http:request method="GET" doc:name="GET /meal_categories" doc:id="99238ea2-3b06-4df9-9c48-41c1897df313" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.category
+}]]]></http:query-params>
+				</http:request>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logging is finished for the request" doc:id="43bab35e-6062-4995-8056-d6df00d07816" message="Finished logging to the meal categories"/>
 	</sub-flow>
 </mule>
