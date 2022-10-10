@@ -55,6 +55,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="MenuFood" doc:id="88db5491-d532-4e1a-bbfe-b830aa7a71d7" >
 		<http:listener doc:name="GET /menu" doc:id="285fbf33-2c3f-4d80-a792-3ec6a3919c41" config-ref="HTTP_Listener_config" path="/menu"/>
-		<flow-ref doc:name="Filter_food" doc:id="fb3d8b77-f2c3-4b62-b919-946044fdb375" name="MenuByCategories"/>
+		<flow-ref doc:name="filterFood" doc:id="fb3d8b77-f2c3-4b62-b919-946044fdb375" name="MenuByCategories"/>
 	</flow>
 </mule>

@@ -50,7 +50,7 @@ payload]]></ee:set-variable>
 				<logger level="INFO" doc:name="Is empty category" doc:id="23041add-9918-4172-94c6-46bf9842141f" message="If Category is empty customer gets no response" />
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger finished" doc:id="09e741e5-5f33-4cde-9cc1-a546e208c378" message="Finished logging to the request by categories" />
+		<logger level="INFO" doc:name="Logger finished" doc:id="4ba3468e-d438-481b-a032-f7494b5c25e9" message="Finished logging to the request by categories" />
 	</sub-flow>
 	<sub-flow name="Filter_food" doc:id="fe5216f8-627d-4d5e-83c3-d347a758725a" >
 		<set-variable value="#[attributes.queryParams.foodType]" doc:name="foodType" doc:id="7b8def35-4853-4a71-9ddc-63e4fe665cf1" variableName="foodType" />
