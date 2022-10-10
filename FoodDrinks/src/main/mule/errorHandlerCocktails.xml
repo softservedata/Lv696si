@@ -64,4 +64,19 @@ output application/json
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="93a3d606-f9cc-4c4a-be75-e5bfd4aba1ee" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="VALIDATION_DAYLIMENU" doc:id="2bd73e4d-31e7-49a8-983f-5bb85b9bf37a" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d7cfae12-8f86-4e60-9f92-b01c8f802aaf" type="APP:DAYNOTNULL" >
+			<ee:transform doc:name="day" doc:id="7f16f733-8a40-401e-beb2-7ef98f269c61" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Hi, if you want daily menu please write some day"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="4a031e09-edde-4aba-b3b0-cd6a8dca86ba" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
 </mule>

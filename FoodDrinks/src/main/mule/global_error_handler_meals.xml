@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<error-handler name="FoodTypeNull" doc:id="6e1d307b-0dd0-49ad-ba32-384e3578f65e" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="28709b19-c27e-432c-b9fe-d8a057fd3222" type="APP:FoofTypeNull" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="28709b19-c27e-432c-b9fe-d8a057fd3222" type="APP:FOODTYPENULL" >
 			<ee:transform doc:name="foodType" doc:id="e6bb2a6d-2b40-493b-b7b9-700c976f7416" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0

@@ -1,4 +1,0 @@
-%dw 2.0
-
-type auto_b74923c7_d64c_4b44_800d_47b7a8a92cb0_Output_Payload = {| meals: Any |}
-
