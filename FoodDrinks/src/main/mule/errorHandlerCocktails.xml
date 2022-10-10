@@ -16,7 +16,7 @@ output application/json
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="d5ff7f6d-4611-436d-b9fd-bb82102337a4" variableName="httpStatus"/>
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="d5ff7f6d-4611-436d-b9fd-bb82102337a4" variableName="httpStatus"/>
 		</on-error-propagate>
 	</error-handler>
 	<error-handler doc:id="f0a8b93a-788a-4924-b79f-4c22414bdba3" name="VALIDATION_RANDOM_FLOW_ARRAY">
@@ -31,7 +31,7 @@ output application/json
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="3cbef703-fb2c-4b8f-a82a-a7b3156f1c2f" variableName="httpStatus" />
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="3cbef703-fb2c-4b8f-a82a-a7b3156f1c2f" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
 	<error-handler name="VALIDATION_SEARCH_INGRIDIENT" doc:id="9bcd4ae0-3457-46be-9c23-b4cc12160a20" >

@@ -1,0 +1,240 @@
+#%RAML 1.0
+title: CocktailsAndFood API
+baseUri: https://www.thecocktaildb.com/api.php ,https://www.themealdb.com/api.php
+mediaType: 
+- application/json
+
+description: 
+
+types:
+  Drink: !include/DataTypes/DrinkApi.raml
+  Food: !include/DataTypes/FoodApi.raml
+
+/cocktailsName:
+  get:
+    description: Give cocltail by his name.
+    queryParameters:
+      cocktailByName:
+        description: Filter cocktails by name
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Drink[]
+            examples:
+              output: !include/Examples/CocktailByNameapi.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
+/listOfCategory:
+  get:
+    description: Give list of all category cocktails .
+    queryParameters:
+      list:
+        description:  Give list of all category cocktails
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/listOfCategoryapi.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
+/listOfCocktails:
+  get:
+    description: Give list of all  cocktails .
+    
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/listOfAllCocktails.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request           
+
+/randomThree:
+  get:
+    description: Give array with three random cocktails .
+   
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/threeRandomCocktails.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request     
+                 
+/recipe:
+  get:
+    description: Give recipe to all cocktails by name .
+    queryParameters:
+      cocktailName:
+        description:  Write name of cocktail to get recipe 
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/recipeByCocktailName.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request 
+
+      404:
+        body:
+          application/json:
+            examples:
+              message: Bad request                         
+
+              
+/fiveCategory:
+  get:
+    description: Give five menu by category cocktails .
+    queryParameters:
+      category:
+        description:  Give category cocktails
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/fiveCategory.raml
+
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
+      404:
+        body:
+          application/json:
+            examples:
+              message: Bad request
+
+
+/foodByCategory:
+  get:
+    description: Give food by his category.
+    queryParameters:
+      category:
+        description: Filter food by category
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Food[]
+            examples:
+              output: !include/Examples/foodByCategory.raml
+
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+              
+/allMeals:
+  get:
+    description: Give list of all meals .
+    queryParameters:
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/listOfAllFoodapi.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request 
+
+/foodName:
+  get:
+    description: Give food by his name.
+    queryParameters:
+      cocktailByName:
+        description: Filter food by name
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Drink[]
+            examples:
+              output: !include/Examples/foodByName.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
+/filterFoodByTypeAndIngridient:
+  get:
+    description: Filter food by type or ingridient
+    queryParameters:
+      foodType:
+        description: Filter food by type
+        required: false
+        type: string
+      ingridient:
+        description: Filter food by ingridient
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Drink[]
+            examples:
+              output: !include/Examples/filterFoodByTypeAndIngridient.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request   
+
+           
