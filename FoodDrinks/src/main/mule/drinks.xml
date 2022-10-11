@@ -101,7 +101,22 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 }]]]></http:query-params>
 				</http:request>
 			</route>
+			<route >
+				<set-variable value='#["Side"]' doc:name="side" doc:id="16bae1f1-d144-4970-9584-0d1d623f4a9d" variableName="side"/>
+				<set-payload value="#[vars.side]" doc:name="varsSide" doc:id="5aeb0f76-3fb8-407e-80aa-938d25bdc08f" />
+				<http:request method="GET" doc:name="GET /starterForMenu" doc:id="1ec5f390-caac-45d9-80e3-5eb7e16ce3cb" config-ref="HTTP_Request_food_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.side
+}]]]></http:query-params>
+				</http:request>
+			</route>
 		</scatter-gather>
+		<logger level="INFO" doc:name="Logger" doc:id="133208cf-bb10-4269-8f82-01d8a2b1d132" />
+		<validation:is-not-null doc:name="Is not null payload" doc:id="4433add5-fe12-41d4-a374-64128fa742f6" value="#[payload]" message="${validation.payloadDailyMenu}">
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:PAYLOADNOTNULL" />
+		</validation:is-not-null>
 		<choice doc:name="Choice" doc:id="1294c767-b156-43ab-a5c4-eee8fd920d02" >
 			<when expression='#[vars.day == "monday"]'>
 				<ee:transform doc:name="mondayMenu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895">
@@ -109,9 +124,9 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[1].strDrink ++
- ", " ++ payload."1".payload.drinks[1].strDrink ++ 
- "," ++ payload."2".payload.drinks[1].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[1].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[1].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[1].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[1].strMeal]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 			</when>
@@ -121,9 +136,9 @@ payload."0".payload.drinks[1].strDrink ++
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[2].strDrink ++
- ", " ++ payload."1".payload.drinks[2].strDrink ++ 
- "," ++ payload."2".payload.drinks[2].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[2].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[2].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[2].strMeal]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 			</when>
@@ -133,9 +148,9 @@ payload."0".payload.drinks[2].strDrink ++
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[3].strDrink ++
- ", " ++ payload."1".payload.drinks[3].strDrink ++ 
- "," ++ payload."2".payload.drinks[3].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[3].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[5].strMeal]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
@@ -145,9 +160,9 @@ payload."0".payload.drinks[3].strDrink ++
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[4].strDrink ++
- ", " ++ payload."1".payload.drinks[4].strDrink ++ 
- "," ++ payload."2".payload.drinks[4].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[4].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[4].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[4].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[9].strMeal]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
@@ -157,23 +172,23 @@ payload."0".payload.drinks[4].strDrink ++
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[5].strDrink ++
- ", " ++ payload."1".payload.drinks[5].strDrink ++ 
- "," ++ payload."2".payload.drinks[5].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[5].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[5].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[12].strMeal]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
 			<when expression='#[vars.day == "weekend"]'>
-				<ee:transform doc:name="weekendMenu" doc:id="ad9c63b2-d4f0-4bb0-8c5d-ce7984fc75ad" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+				<ee:transform doc:name="weekendMenu" doc:id="ad9c63b2-d4f0-4bb0-8c5d-ce7984fc75ad">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[2].strDrink ++
- ", " ++ payload."1".payload.drinks[3].strDrink ++ 
- "," ++ payload."2".payload.drinks[4].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[7].strMeal]]></ee:set-payload>
 					</ee:message>
-					<ee:variables >
+					<ee:variables>
 					</ee:variables>
 				</ee:transform>
 			</when>

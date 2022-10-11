@@ -19,6 +19,21 @@ output application/json
 			<set-variable value="#[404]" doc:name="httpStatus" doc:id="d5ff7f6d-4611-436d-b9fd-bb82102337a4" variableName="httpStatus"/>
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="VALIDATION_PAYLOAD_DAILY_MENU" doc:id="9bce519e-21d8-4993-b905-ae66a1b2dd0d" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="00cb89d2-4934-4fdc-b2bb-007e9fd2b5b4" type="APP:PAYLOADNOTNULL">
+			<ee:transform doc:name="payloadDailyMenu" doc:id="e79ae435-7c0f-42a6-891b-f4337f0d509a" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"Something wrong with host"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[500]" doc:name="httpStatus" doc:id="8d323e34-51e2-40fb-882d-a159d9b388a1" variableName="httpStatus"/>
+		</on-error-propagate>
+	</error-handler>
 	<error-handler doc:id="f0a8b93a-788a-4924-b79f-4c22414bdba3" name="VALIDATION_RANDOM_FLOW_ARRAY">
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="66cb8a59-85a0-4f64-85ac-9d01df091e47" type="APP:PAYLOADSIZE">
 			<ee:transform doc:name="sizeOfArray" doc:id="4698fb1a-4f1a-4562-a5bb-dd0a8835323e" >

@@ -16,4 +16,5 @@ validation:
     checkQueryIngredient: "Please write some ingredient"
     ifTrueSizeOfVars: " Wait a little beat, we check if size valid "
     checkQueryCategory: "Please write some cocktail category"
-    day: "Please write the day you are interested in"     
+    day: "Please write the day you are interested in"  
+    payloadDailyMenu: "Sorry, something went wrong, try again please"   
