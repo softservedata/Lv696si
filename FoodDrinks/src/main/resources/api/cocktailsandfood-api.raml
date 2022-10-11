@@ -32,6 +32,36 @@ types:
             examples:
               message: Invalid request
 
+/theBestCoctail:
+  get:
+    description: You can get one or few the best cocktails
+    queryParameters:
+      first:
+        description:  Write first ingridient
+        required: false
+        type: string
+      second:
+        description:  Write second ingridient
+        required: false
+        type: string
+      third:
+        description:  Write third ingridient
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/listOfCategoryapi.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request          
+
 /listOfCategory:
   get:
     description: Give list of all category cocktails .

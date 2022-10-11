@@ -4,51 +4,6 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<error-handler name="VALIDATION_FIVE_CATEGORY" doc:id="2790ae63-1249-4ff8-b41a-ed3c61d1a201" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1ff6b52b-afe1-47e2-b998-729b2fa78754" type="APP:CATEGORYNULL" >
-			<ee:transform doc:name="category" doc:id="d48c3361-b30a-4552-af8f-20dea1f19d02" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Invalid category"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[404]" doc:name="httpStatus" doc:id="d676d276-0370-439c-ac86-f3f541a456d4" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
-	<error-handler name="VALIDATION_RANDOM_FLOW_ARRAY" doc:id="f7e88bf5-6905-460a-92f0-d8e86d98c721" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="fe46d9ed-776a-45e4-8f92-34eb6a54ce35" type="APP:PAYLOADSIZE" >
-			<ee:transform doc:name="sizeOfArray" doc:id="af862a7a-9b34-4ebc-a157-6c690cb85f44" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Not valid size of array"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[404]" doc:name="httpStatus" doc:id="0826a612-bbdc-4ab4-9ff6-42bbe3225dfb" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
-	<error-handler name="VALIDATION_SEARCH_INGRIDIENT" doc:id="bb4cd9ed-e40e-46a0-b446-af6a002814f5" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e983eccb-b048-4ab2-bbde-cf6d48ad44fd" type="APP:INGREDIENTNOTNULL" >
-			<ee:transform doc:name="ingredient" doc:id="bf8f0ef4-9ff6-40d2-9669-443e3db7cb97" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Please write some ingredient"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="584ad83d-35b9-4745-bb9c-9c5188a8d570" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
 	<error-handler name="VALIDATION_RECIPE" doc:id="1dc8ecae-8952-4996-acd4-e4606c03f844" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a289c578-46f8-4dbc-b332-41357987a186" type="APP:COCTAILNAMENOTNULL" >
 			<ee:transform doc:name="Transform Message" doc:id="02f691fd-a386-4d63-9f77-56b75447aaba" >
@@ -87,14 +42,28 @@ output application/json
 output application/json
 ---
 {
-	message: "Hi, if you want daily menu please write some day"
+	message: " Hi, if you want daily menu please write some day"
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="737b35cf-e49e-4c43-8a4b-b8a2c21995d3" variableName="httpStatus" />
 		</on-error-propagate>
-<<<<<<< HEAD
-	</error-handler>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ba06eafd-09b8-49ac-bfb9-81b23b7e38e0" type="APP:PAYLOADNOTNULL">
+			<ee:transform doc:name="payloadDailyMenu" doc:id="48471997-7872-44e8-9366-9a4f366b17a0">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"Something wrong with host"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="b4310c1f-21f6-45de-a69b-c3558e2f6c88" variableName="httpStatus" />
+		</on-error-propagate>
+
+	
+</error-handler>
 	<error-handler name="addFoodCategory" doc:id="24920fc8-87b4-40f7-b149-a444df7c03a7" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9fb127f7-0a73-4ee8-89c1-6a21ed0054e9" type="APP:ADDCATEGORY" >
 			<ee:transform doc:name="byCategories" doc:id="d27e246a-c922-4489-a505-b2b76b9424ff" >
@@ -110,21 +79,51 @@ output application/json
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="165872b9-830c-47a6-bcae-d28654c1f074" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
-=======
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ba06eafd-09b8-49ac-bfb9-81b23b7e38e0" type="APP:PAYLOADNOTNULL" >
-			<ee:transform doc:name="payloadDailyMenu" doc:id="48471997-7872-44e8-9366-9a4f366b17a0" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
+	<error-handler name="VALIDATION_FIVE_CATEGORY" doc:id="2790ae63-1249-4ff8-b41a-ed3c61d1a201">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1ff6b52b-afe1-47e2-b998-729b2fa78754" type="APP:CATEGORYNULL">
+			<ee:transform doc:name="category" doc:id="d48c3361-b30a-4552-af8f-20dea1f19d02">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-	message:"Something wrong with host"
+	message: "Invalid category"
 }]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
-			<set-variable value="#[404]" doc:name="httpStatus" doc:id="b4310c1f-21f6-45de-a69b-c3558e2f6c88" variableName="httpStatus" />
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="d676d276-0370-439c-ac86-f3f541a456d4" variableName="httpStatus" />
 		</on-error-propagate>
-	
-</error-handler>
->>>>>>> branch 'AsyaOlegRostyk' of https://github.com/softservedata/Lv696si
+	</error-handler>
+	<error-handler name="VALIDATION_RANDOM_FLOW_ARRAY" doc:id="f7e88bf5-6905-460a-92f0-d8e86d98c721">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="fe46d9ed-776a-45e4-8f92-34eb6a54ce35" type="APP:PAYLOADSIZE">
+			<ee:transform doc:name="sizeOfArray" doc:id="af862a7a-9b34-4ebc-a157-6c690cb85f44">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Not valid size of array"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="0826a612-bbdc-4ab4-9ff6-42bbe3225dfb" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="VALIDATION_SEARCH_INGRIDIENT" doc:id="bb4cd9ed-e40e-46a0-b446-af6a002814f5">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e983eccb-b048-4ab2-bbde-cf6d48ad44fd" type="APP:INGREDIENTNOTNULL">
+			<ee:transform doc:name="ingredient" doc:id="bf8f0ef4-9ff6-40d2-9669-443e3db7cb97">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Please write some ingredient"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="584ad83d-35b9-4745-bb9c-9c5188a8d570" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
+
+
 </mule>

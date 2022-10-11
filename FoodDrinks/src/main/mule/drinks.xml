@@ -53,6 +53,128 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
 	</sub-flow>
+	<flow name="theBestCocktails" doc:id="99512824-f3a4-4502-aa62-768d6132961b" >
+		<logger level="INFO" doc:name="Logger" doc:id="13729910-8708-4e08-8437-4517f89355f0" />
+		<set-variable value="#[message.attributes.queryParams.first]" doc:name="first" doc:id="315fb4bd-7d98-4622-9d73-723b0cb4b92a" variableName="first"/>
+		<set-variable value="#[message.attributes.queryParams.second]" doc:name="second" doc:id="f25bf29b-d3ff-40bb-a45b-045c919de5f6" variableName="second"/>
+		<set-variable value="#[message.attributes.queryParams.third]" doc:name="third" doc:id="b323ee18-afc6-40fc-8c27-9bf02957f907" variableName="third"/>
+		<choice doc:name="Choice" doc:id="ec6242ac-0c57-4a83-bca5-307d3a21d47a" >
+			<when expression="#[(not isEmpty(vars.first)) and (not isEmpty(vars.second)) and(isEmpty(vars.third))]">
+				<scatter-gather doc:name="Scatter-Gather" doc:id="f6086a89-05e5-4011-9d24-0c58ed5d1271" >
+					<route >
+						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="e6be9a7b-db2d-4619-ade1-3c7f4da22614" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"i" : vars.first
+}]]]></http:query-params>
+				</http:request>
+					</route>
+					<route >
+						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="1ef13719-718c-4ac7-a126-a61a72d78810" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"i" : vars.second
+}]]]></http:query-params>
+				</http:request>
+					</route>
+				</scatter-gather>
+			</when>
+			<when expression="#[(not isEmpty(vars.first)) and (not isEmpty(vars.second)) and(not isEmpty(vars.third))]">
+				<scatter-gather doc:name="Scatter-Gather" doc:id="6d45c477-3e9c-44b7-be8b-a354ae4d90b0" >
+					<route >
+						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="ee423581-6842-4fb9-9f2f-21a11c242a19" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"i" : vars.first
+}]]]></http:query-params>
+				</http:request>
+					</route>
+					<route >
+						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="39b4d880-ec34-4b66-afd0-73145db74def" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"i" : vars.second
+}]]]></http:query-params>
+				</http:request>
+					</route>
+					<route >
+						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="696b0074-e4dd-46d6-bb65-77debdba2bb0" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+							<http:query-params><![CDATA[#[output application/java
+---
+{
+	"i" : vars.third
+}]]]></http:query-params>
+						</http:request>
+					</route>
+				</scatter-gather>
+			</when>
+			<when expression="#[(not isEmpty(vars.first)) and ( isEmpty(vars.second)) and( isEmpty(vars.third))]">
+				<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="169ea3e2-8284-4ac6-965f-4da35edd7d14" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"i" : vars.first
+}]]]></http:query-params>
+				</http:request>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="f59412e8-9b8c-4689-8af9-138da9281691" />
+			</otherwise>
+		</choice>
+		<set-variable value="#[payload]" doc:name="sizeOfpayload" doc:id="d5fdf3d6-2453-4b96-b40f-b5e389f19870" variableName="sizeOfpayload"/>
+		<choice doc:name="Choice" doc:id="57163bcc-5621-4003-beb0-d583037c782a" >
+			<when expression="#[sizeOf(payload) == 2]">
+				<ee:transform doc:name="twoBestCocktails" doc:id="861491b8-c3c7-4c9f-8a9e-012df0992a89" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++ " - " ++ " It`s deliciousness" ++
+ "," ++ " 2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ " - " ++ " Good choice"
+ ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression="#[sizeOf(payload) == 3]">
+				<ee:transform doc:name="threeBestCocktails" doc:id="ab125474-6972-4a4e-ad09-fec6507ed684" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++ " - " ++ " It`s deliciousness" ++
+ "," ++ " 2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ " - " ++ " Good choice"
+ ++ ", " ++ " 3.drink - " ++ payload."2".payload.drinks[3].strDrink ++ " - " ++ " Enjoy"]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression="#[sizeOf(payload) == 1]">
+				<ee:transform doc:name="theBestCocktails" doc:id="ee44e2f9-a8c8-40b6-a397-9a361506b767">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload.drinks[3].strDrink ++ " - " ++ " It`s deliciousness! Enjoy"  ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="fa2a0397-81b6-4631-912f-85d8a65b2064" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="payload" doc:id="c90e4bfe-3f34-4029-8c4b-08882c6d6bd9">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="593b0dd5-067a-432c-9346-79ca718ddfa9" />
+	</flow>
 	<flow name="dailyMenu" doc:id="dab40277-8c07-43b3-9fb5-8e1061424437" >
 		<logger level="INFO" doc:name="Logger" doc:id="155c9f01-8ee3-452c-a7cb-62a268f6b816" />
 		<set-variable value="#[message.attributes.queryParams.day]" doc:name="day" doc:id="89fc0feb-50d9-4cac-b16a-f6fbccb4eaaf" variableName="day"/>
