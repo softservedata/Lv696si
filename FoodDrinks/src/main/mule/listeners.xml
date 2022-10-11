@@ -4,6 +4,10 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="dailyMenuListener" doc:id="6f06b5ec-9d06-4a25-a1f6-9fbed31745cb" >
+		<http:listener doc:name="Listener" doc:id="98223fbd-cbbf-4d92-bf2c-cce39158da1f" config-ref="HTTP_Listener_config" path="/dailyMenu"/>
+		<flow-ref doc:name="dailyMenu" doc:id="0a57018e-d890-47de-b838-c4a1fe690137" name="dailyMenu"/>
+	</flow>
 	<flow name="randomDrinkArrayListener" doc:id="f77fbfcb-b2d7-42e1-8544-dedba6cfe351" >
 		<http:listener doc:name="GET /randomArray" doc:id="c886fe4f-505b-44f1-9c9c-7c7f548c669a" config-ref="HTTP_Listener_config" path="/randomThree"/>
 		<flow-ref doc:name="randomDrinkArray" doc:id="88a3645e-0729-47fc-aa5e-04c6231d8230" name="randomDrinkArray"/>

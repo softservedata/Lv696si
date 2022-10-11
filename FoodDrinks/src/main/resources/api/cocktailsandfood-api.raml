@@ -117,7 +117,29 @@ types:
             examples:
               message: Bad request                         
 
-              
+/dailyMenu:
+  get:
+    description: Give you a daily menu in our pub .
+    queryParameters:
+      day:
+        description:  Day of week which interesting
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            examples:
+              output: !include/Examples/dailyMenu.raml
+
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
 /fiveCategory:
   get:
     description: Give five menu by category cocktails .

@@ -53,8 +53,12 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="cd74031b-1d06-456d-9d36-3f06fb93238e" />
 	</sub-flow>
-	<flow name="drinksFlow" doc:id="dab40277-8c07-43b3-9fb5-8e1061424437" >
-		<http:listener doc:name="Listener" doc:id="4da2e4a4-f3b0-42ba-87d3-2d5ca9ee20c5" config-ref="HTTP_Listener_config" path="/dailyMenu"/>
+	<flow name="dailyMenu" doc:id="dab40277-8c07-43b3-9fb5-8e1061424437" >
+		<logger level="INFO" doc:name="Logger" doc:id="155c9f01-8ee3-452c-a7cb-62a268f6b816" />
+		<set-variable value="#[message.attributes.queryParams.day]" doc:name="day" doc:id="89fc0feb-50d9-4cac-b16a-f6fbccb4eaaf" variableName="day"/>
+		<validation:is-not-null doc:name="Is not null vars Day" doc:id="2223bce8-675e-497e-bdb8-08a355b37ab2" value="#[vars.day]" message="${validation.day}">
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:DAYNOTNULL" />
+		</validation:is-not-null>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="246fa83f-542b-4e6b-8bb1-1bbbeade8ab7" >
 			<route >
 				<set-variable value='#["Homemade Liqueur"]' doc:name="homemadeLiqueur" doc:id="b41a5848-b190-424b-a86a-331e23dbc7a6" variableName="homemadeLiqueur"/>
@@ -63,7 +67,8 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 					<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"c" : vars.homemadeLiqueur
+	"c" : vars.homemadeLiqueur,
+	"day" : vars.day
 }]]]></http:query-params>
 				</http:request>
 			</route>
@@ -71,10 +76,16 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 				<set-variable value='#["Punch / Party Drink"]' doc:name="punch/PartyDrink" doc:id="5f876fa0-7c1a-4952-ab92-770f27b9274b" variableName="punchPartyDrink"/>
 				<set-payload value="#[vars.punchPartyDrink]" doc:name="varsPunchPartyDrink" doc:id="dd2c7198-40e5-4ef8-945a-e1aaaf794f60" />
 				<http:request method="GET" doc:name="GET /drinkForMenu" doc:id="abaa586c-68ab-4334-8e3e-f4c915d05e91" config-ref="HTTP_Request_drinks_configuration" path="/filter.php" >
+					<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"Key" : "Value"
+}]]]></http:uri-params>
 					<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"c" : vars.punchPartyDrink
+	"c" : vars.punchPartyDrink,
+	"day" : vars.day
 }]]]></http:query-params>
 				</http:request>
 			</route>
@@ -85,21 +96,106 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 					<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"c" : vars.shake
+	"c" : vars.shake,
+	"day" : vars.day
+}]]]></http:query-params>
+				</http:request>
+			</route>
+			<route >
+				<set-variable value='#["Side"]' doc:name="side" doc:id="16bae1f1-d144-4970-9584-0d1d623f4a9d" variableName="side"/>
+				<set-payload value="#[vars.side]" doc:name="varsSide" doc:id="5aeb0f76-3fb8-407e-80aa-938d25bdc08f" />
+				<http:request method="GET" doc:name="GET /starterForMenu" doc:id="1ec5f390-caac-45d9-80e3-5eb7e16ce3cb" config-ref="HTTP_Request_food_configuration" path="/filter.php">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"c" : vars.side
 }]]]></http:query-params>
 				</http:request>
 			</route>
 		</scatter-gather>
-		<ee:transform doc:name="Menu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<logger level="INFO" doc:name="Logger" doc:id="133208cf-bb10-4269-8f82-01d8a2b1d132" />
+		<validation:is-not-null doc:name="Is not null payload" doc:id="4433add5-fe12-41d4-a374-64128fa742f6" value="#[payload]" message="${validation.payloadDailyMenu}">
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:PAYLOADNOTNULL" />
+		</validation:is-not-null>
+		<choice doc:name="Choice" doc:id="1294c767-b156-43ab-a5c4-eee8fd920d02" >
+			<when expression='#[vars.day == "monday"]'>
+				<ee:transform doc:name="mondayMenu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-payload."0".payload.drinks[1].strDrink ++
- ", " ++ payload."1".payload.drinks[6].strDrink ++ 
- "," ++ payload."2".payload.drinks[3].strDrink]]></ee:set-payload>
+"1.drink - " ++ payload."0".payload.drinks[1].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[1].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[1].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[1].strMeal]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+			</when>
+			<when expression='#[vars.day == "thusday"]'>
+				<ee:transform doc:name="tuesdayMenu" doc:id="78941d61-8dcb-446f-977f-14bfb2296ba0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[2].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[2].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[2].strMeal]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</when>
+			<when expression='#[vars.day == "wednesday"]'>
+				<ee:transform doc:name="wednesdayMenu" doc:id="f8908115-1e7e-4f00-9a2f-fa72ddf15017" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[3].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[5].strMeal]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.day == "thursday"]'>
+				<ee:transform doc:name="thursdayMenu" doc:id="24f50010-aad3-4b36-b838-a3dd856f6217" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[4].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[4].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[4].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[9].strMeal]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='vars.day == "friday"'>
+				<ee:transform doc:name="fridayMenu" doc:id="10d95ddf-2883-4f0d-960b-eefd27ded6c0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[5].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[5].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[12].strMeal]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[vars.day == "weekend"]'>
+				<ee:transform doc:name="weekendMenu" doc:id="ad9c63b2-d4f0-4bb0-8c5d-ce7984fc75ad">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
+ ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
+ ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Starter today - " ++ payload."3".payload.meals[7].strMeal]]></ee:set-payload>
+					</ee:message>
+					<ee:variables>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="ba302ba3-8929-49be-a33d-e59434059e92" />
+			</otherwise>
+		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="1ab95b3a-4f35-40a1-9a8b-43b2ecc369da" />
 	</flow>
 	<sub-flow name="fiveCategoryCocktails" doc:id="7ced9d43-a9e2-4176-92e7-7fefb155455c" >

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <apikit:config name="cocktailsandfood-api-config" api="cocktailsandfood-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="cocktailsandfood-api-main">
         <http:listener config-ref="HTTP_Listener_config" path="/api/*">
@@ -131,7 +131,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\cocktailsName:cocktailsandfood-api-config">
-		<flow-ref doc:name="searchCocktailsByName" doc:id="ce59c3b6-c8ba-41c4-a531-98ebc17f8eee" name="searchCocktailsByName"/>
+        <flow-ref doc:name="searchCocktailsByName" doc:id="ce59c3b6-c8ba-41c4-a531-98ebc17f8eee" name="searchCocktailsByName" />
     </flow>
     <flow name="get:\filterFoodByTypeAndIngridient:cocktailsandfood-api-config">
         <ee:transform>
@@ -144,8 +144,8 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\fiveCategory:cocktailsandfood-api-config">
-		<flow-ref doc:name="fiveCategoryCocktails" doc:id="3e3883a2-1b61-4ac9-b071-ba698cb55638" name="fiveCategoryCocktails"/>
-		<error-handler ref="VALIDATION_CATEGORY" />
+        <flow-ref doc:name="fiveCategoryCocktails" doc:id="3e3883a2-1b61-4ac9-b071-ba698cb55638" name="fiveCategoryCocktails" />
+        <error-handler ref="VALIDATION_CATEGORY" />
     </flow>
     <flow name="get:\foodByCategory:cocktailsandfood-api-config">
         <ee:transform>
@@ -168,17 +168,21 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\listOfCategory:cocktailsandfood-api-config">
-		<flow-ref doc:name="listOfCategoryCoctails" doc:id="19230195-4e23-4d4a-ba28-6dc1e8181c74" name="listOfCategory"/>
+        <flow-ref doc:name="listOfCategoryCoctails" doc:id="19230195-4e23-4d4a-ba28-6dc1e8181c74" name="listOfCategory" />
     </flow>
     <flow name="get:\listOfCocktails:cocktailsandfood-api-config">
-		<flow-ref doc:name="listOfAllCocktails" doc:id="00369a3b-fc58-485f-adcb-6d4216d743d7" name="listOfAllCocktails"/>
+        <flow-ref doc:name="listOfAllCocktails" doc:id="00369a3b-fc58-485f-adcb-6d4216d743d7" name="listOfAllCocktails" />
     </flow>
     <flow name="get:\randomThree:cocktailsandfood-api-config">
-		<flow-ref doc:name="randomDrinkArrayCocktails" doc:id="5a2a4c2b-cd9a-41c3-be5b-e0e66358096e" name="randomDrinkArray"/>
-		<error-handler ref="VALIDATION_RANDOM_FLOW_ARRAY" />
+        <flow-ref doc:name="randomDrinkArrayCocktails" doc:id="5a2a4c2b-cd9a-41c3-be5b-e0e66358096e" name="randomDrinkArray" />
+        <error-handler ref="VALIDATION_RANDOM_FLOW_ARRAY" />
     </flow>
     <flow name="get:\recipe:cocktailsandfood-api-config">
-		<flow-ref doc:name="recipeCocktails" doc:id="8c235a37-4b7e-4e64-b77a-b0e1f85a077c" name="recipe"/>
-		<error-handler ref="VALIDATION_RANDOM_FLOW_ARRAY" />
+        <flow-ref doc:name="recipeCocktails" doc:id="8c235a37-4b7e-4e64-b77a-b0e1f85a077c" name="recipe" />
+        <error-handler ref="VALIDATION_RECIPE" />
+    </flow>
+    <flow name="get:\dailyMenu:cocktailsandfood-api-config">
+		<flow-ref doc:name="dailyMenu" doc:id="07ca8d3a-6708-4b2c-b091-405f00ef6a9a" name="dailyMenu"/>
+		<error-handler ref="VALIDATION_PAYLOAD_DAILY_MENU" />
     </flow>
 </mule>
