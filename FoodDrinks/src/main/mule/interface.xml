@@ -131,7 +131,7 @@ output application/json
     </flow>
     <flow name="get:\fiveCategory:cocktailsandfood-api-config">
         <flow-ref doc:name="fiveCategoryCocktails" doc:id="3e3883a2-1b61-4ac9-b071-ba698cb55638" name="fiveCategoryCocktails" />
-        <error-handler ref="VALIDATION_CATEGORY" />
+        <error-handler ref="VALIDATION_FIVE_CATEGORY" />
     </flow>
     <flow name="get:\foodByCategory:cocktailsandfood-api-config">
 		<flow-ref doc:name="MenuByCategories" doc:id="185df988-8b35-4c8a-9de9-f9dfdb4564c1" name="MenuByCategories"/>
@@ -155,6 +155,6 @@ output application/json
     </flow>
     <flow name="get:\dailyMenu:cocktailsandfood-api-config">
 		<flow-ref doc:name="dailyMenu" doc:id="07ca8d3a-6708-4b2c-b091-405f00ef6a9a" name="dailyMenu"/>
-		<error-handler ref="VALIDATION_PAYLOAD_DAILY_MENU" />
+		<error-handler ref="VALIDATION_DAYLIMENU" />
     </flow>
 </mule>
