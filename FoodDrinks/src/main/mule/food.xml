@@ -7,6 +7,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<sub-flow name="Food_categories" doc:id="2d13912b-40b9-417f-9eb5-21d7bf0420cb" >
+		<flow-ref doc:name="CategoryList" doc:id="37da45dc-5e09-478e-877f-b3b197008872" name="CategoryList"/>
 		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="27733f1c-301f-4399-964d-a5f4b4524f53" variableName="category" />
 		<http:request method="GET" doc:name="GET/ mealCategory" doc:id="94fa30ac-f68f-4ee3-8036-8ee89bf0ff33" config-ref="HTTP_Request_food_configuration" path="/list.php">
 			<http:headers><![CDATA[#[output application/java
@@ -34,14 +35,15 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	"c" : vars.category
 }]]]></http:query-params>
 				</http:request>
-				<ee:transform doc:name="payload" doc:id="2afa35e2-8059-466e-a7b3-9b613e5f9fbb">
+				<ee:transform doc:name="payload filter" doc:id="2afa35e2-8059-466e-a7b3-9b613e5f9fbb">
 			<ee:message>
-			</ee:message>
-			<ee:variables>
-				<ee:set-variable variableName="vars.category"><![CDATA[%dw 2.0
+						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload]]></ee:set-variable>
+payload filter ((object,index) -> object.category == vars.Seafood
+)]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
 			</ee:variables>
 		</ee:transform>
 				<logger level="INFO" doc:name="Log at the end meal" doc:id="99f06108-a68e-4de7-90ab-f11a50bff2e0" message="Log at the end of request mealCategory" />
@@ -179,8 +181,8 @@ flatten(payload.meals)]]></ee:set-payload>
 	</sub-flow>
 	<sub-flow name="MenuByCategories" doc:id="78bee59e-21b9-45b0-ba78-d805dd0bfbaf" >
 		<set-variable value="#[message.attributes.queryParams.category]" doc:name="category" doc:id="c3e171d8-4ef2-4c74-a45f-240d4aa743a7" variableName="category" />
-		<validation:is-not-null doc:name="Is not null vars category" doc:id="8ef50967-cc38-4ddc-9a5b-bfa6bf086dec" value="#[vars.category]" message='#["Add the category of any meal types"]' >
-			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:CATEGORYNULL" />
+		<validation:is-not-null doc:name="Is not null vars category" doc:id="8ef50967-cc38-4ddc-9a5b-bfa6bf086dec" value="#[vars.category]">
+			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:FOODCATEGORYNULL" />
 		</validation:is-not-null>
 		<http:request method="GET" doc:name="GET/ mealCategory" doc:id="b2b5f2b4-f955-4ab1-a8ad-ca0b2517222c" config-ref="HTTP_Request_food_configuration" path="/list.php" >
 			<http:headers ><![CDATA[#[output application/java

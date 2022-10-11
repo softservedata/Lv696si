@@ -4,53 +4,8 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<error-handler name="FoodTypeNull" doc:id="6e1d307b-0dd0-49ad-ba32-384e3578f65e" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="28709b19-c27e-432c-b9fe-d8a057fd3222" type="APP:FoofTypeNull" >
-			<ee:transform doc:name="foodType" doc:id="e6bb2a6d-2b40-493b-b7b9-700c976f7416" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Unable to resolve"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="4461d316-ab68-4561-b488-a85d3f6d063f" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
-	<error-handler name="FoodByName" doc:id="7e23e005-22ce-4996-84f8-b15d9b75a501" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="14958151-868c-4017-a907-e241f1b44ee7" type="APP:FoofByNameIsNull" >
-			<ee:transform doc:name="foodByName" doc:id="b84c424b-3674-4501-9a9a-c244b49dc658" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Unable to resolve your request without Food Name"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="52d0f266-26b9-469a-a2aa-da2f1375436c" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
-	<error-handler name="categoryList" doc:id="7ae83180-cc00-4bca-a0df-61c93e2411e3" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d459cbd4-5f97-40f4-88c6-53ba36250274" type="APP:categoryListIsEmpty" >
-			<ee:transform doc:name="categoryList" doc:id="bd92b426-3759-4bdf-bfa3-994c6111a0bd" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: "Add the name of the category"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[400]" doc:name="httpStatus" doc:id="621a70c3-cb2a-4c6f-8215-b8bb5e50c55d" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
 	<error-handler name="menuByCategories" doc:id="6f55a73e-873c-4ccf-b7ad-b99977efdcc6" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="86e55029-e64f-43ef-8f3e-c35ca219955b" type="APP:CategoriesAreEmpty" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="86e55029-e64f-43ef-8f3e-c35ca219955b" type="APP:CATEGORYNULL" >
 			<ee:transform doc:name="byCategories" doc:id="cbbaa759-b993-4ab1-bc86-57bc0c0f6ccf" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0

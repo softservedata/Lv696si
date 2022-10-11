@@ -64,4 +64,19 @@ output application/json
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="93a3d606-f9cc-4c4a-be75-e5bfd4aba1ee" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="CategoryNull" doc:id="ace02c5c-fef3-47f9-90a2-9b61b72cef75" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="acec7231-ec2e-4303-a133-e59f18f874e1" type="APP:FOODCATEGORYNULL" >
+			<ee:transform doc:name="byCategories" doc:id="5843ecc5-691e-48f2-b222-f1ff5bfdb09a" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Invalid data. Add some categories"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="82c7cbb0-b39f-4b6f-9782-6414142fc310" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
 </mule>
