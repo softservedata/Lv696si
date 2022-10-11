@@ -299,7 +299,9 @@ payload]]></ee:set-payload>
 			</when>
 			<otherwise >
 				<logger level="INFO" doc:name="Log other meal categories" doc:id="b5bd758a-7af9-40ec-86d3-67a12d7a594b" message="Started to log other meal categories"/>
-				<validation:is-true doc:name="Is true" doc:id="c54abcea-c896-424c-b9be-b88b3d704ca6" expression='#[["Beef", "Chicken", "Dessert", "Lamb", "Miscellaneous", "Pasta","Pork","Seafood","Side","Starter","Vegan","Vegetarian","Breakfast","Goat"]contains vars.category]' message='#["Thank you for your order! Enjoy your meal!"]' />
+				<validation:is-true doc:name="Is true" doc:id="c54abcea-c896-424c-b9be-b88b3d704ca6" expression='#[["Beef", "Chicken", "Dessert", "Lamb", "Miscellaneous", "Pasta","Pork","Seafood","Side","Starter","Vegan","Vegetarian","Breakfast","Goat"]contains vars.category]' message='#["Thank you for your order! Enjoy your meal!"]' >
+					<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:ADDCATEGORY" />
+				</validation:is-true>
 				<http:request method="GET" doc:name="GET /meal_categories" doc:id="99238ea2-3b06-4df9-9c48-41c1897df313" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
 					<http:query-params ><![CDATA[#[output application/java
 ---

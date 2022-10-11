@@ -109,4 +109,19 @@ output application/json
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="737b35cf-e49e-4c43-8a4b-b8a2c21995d3" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="addFoodCategory" doc:id="24920fc8-87b4-40f7-b149-a444df7c03a7" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9fb127f7-0a73-4ee8-89c1-6a21ed0054e9" type="APP:ADDCATEGORY" >
+			<ee:transform doc:name="byCategories" doc:id="d27e246a-c922-4489-a505-b2b76b9424ff" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Add some categories"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[400]" doc:name="httpStatus" doc:id="165872b9-830c-47a6-bcae-d28654c1f074" variableName="httpStatus" />
+		</on-error-propagate>
+	</error-handler>
 </mule>

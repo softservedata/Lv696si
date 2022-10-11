@@ -121,51 +121,23 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\allMeals:cocktailsandfood-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Invalid request"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="categoryList" doc:id="de9f3245-454e-47dd-8100-2a1b4361424e" name="CategoryList"/>
     </flow>
     <flow name="get:\cocktailsName:cocktailsandfood-api-config">
         <flow-ref doc:name="searchCocktailsByName" doc:id="ce59c3b6-c8ba-41c4-a531-98ebc17f8eee" name="searchCocktailsByName" />
     </flow>
     <flow name="get:\filterFoodByTypeAndIngridient:cocktailsandfood-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Invalid request"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="filter_food" doc:id="e4437b85-6563-45b0-b57f-911abddc79b4" name="Filter_food"/>
     </flow>
     <flow name="get:\fiveCategory:cocktailsandfood-api-config">
         <flow-ref doc:name="fiveCategoryCocktails" doc:id="3e3883a2-1b61-4ac9-b071-ba698cb55638" name="fiveCategoryCocktails" />
         <error-handler ref="VALIDATION_CATEGORY" />
     </flow>
     <flow name="get:\foodByCategory:cocktailsandfood-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Invalid request"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="MenuByCategories" doc:id="185df988-8b35-4c8a-9de9-f9dfdb4564c1" name="MenuByCategories"/>
     </flow>
     <flow name="get:\foodName:cocktailsandfood-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Invalid request"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="searchFoodByName" doc:id="8b9a2584-cbd0-4752-b272-cdd360c02ae4" name="searchFoodByName"/>
     </flow>
     <flow name="get:\listOfCategory:cocktailsandfood-api-config">
         <flow-ref doc:name="listOfCategoryCoctails" doc:id="19230195-4e23-4d4a-ba28-6dc1e8181c74" name="listOfCategory" />

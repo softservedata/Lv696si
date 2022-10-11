@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_9dcf589b_e45e_4738_869d_6e5a7ebc9135_Output_Variables_varsLetter = Array<Nothing>
+
