@@ -4,7 +4,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<error-handler name="VALIDATION_CATEGORY" doc:id="2790ae63-1249-4ff8-b41a-ed3c61d1a201" >
+	<error-handler name="VALIDATION_FIVE_CATEGORY" doc:id="2790ae63-1249-4ff8-b41a-ed3c61d1a201" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1ff6b52b-afe1-47e2-b998-729b2fa78754" type="APP:CATEGORYNULL" >
 			<ee:transform doc:name="category" doc:id="d48c3361-b30a-4552-af8f-20dea1f19d02" >
 				<ee:message >
@@ -17,21 +17,6 @@ output application/json
 				</ee:message>
 			</ee:transform>
 			<set-variable value="#[404]" doc:name="httpStatus" doc:id="d676d276-0370-439c-ac86-f3f541a456d4" variableName="httpStatus" />
-		</on-error-propagate>
-	</error-handler>
-	<error-handler name="VALIDATION_PAYLOAD_DAILY_MENU" doc:id="2b3bf97d-060f-45d8-a10d-8abac16fffe1" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="59d23cf7-2c0b-4150-af2a-3e53cb9c285d" type="APP:PAYLOADNOTNULL" >
-			<ee:transform doc:name="payloadDailyMenu" doc:id="46f8578d-fca1-49ca-8bc0-87c2a0948eec" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	message:"Something wrong with host"
-}]]></ee:set-payload>
-				</ee:message>
-			</ee:transform>
-			<set-variable value="#[500]" doc:name="httpStatus" doc:id="bfe0dc99-e91c-4328-a700-49353b399375" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
 	<error-handler name="VALIDATION_RANDOM_FLOW_ARRAY" doc:id="f7e88bf5-6905-460a-92f0-d8e86d98c721" >
@@ -108,5 +93,19 @@ output application/json
 			</ee:transform>
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="737b35cf-e49e-4c43-8a4b-b8a2c21995d3" variableName="httpStatus" />
 		</on-error-propagate>
-	</error-handler>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ba06eafd-09b8-49ac-bfb9-81b23b7e38e0" type="APP:PAYLOADNOTNULL" >
+			<ee:transform doc:name="payloadDailyMenu" doc:id="48471997-7872-44e8-9366-9a4f366b17a0" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"Something wrong with host"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="b4310c1f-21f6-45de-a69b-c3558e2f6c88" variableName="httpStatus" />
+		</on-error-propagate>
+	
+</error-handler>
 </mule>
