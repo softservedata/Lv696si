@@ -55,8 +55,8 @@ payload filter ((object,index) -> object.category == vars.Seafood
 		<logger level="INFO" doc:name="Logger finished" doc:id="4ba3468e-d438-481b-a032-f7494b5c25e9" message="Finished logging to the request by categories" />
 	</sub-flow>
 	<sub-flow name="Filter_food" doc:id="fe5216f8-627d-4d5e-83c3-d347a758725a" >
-		<set-variable value="#[attributes.queryParams.foodType]" doc:name="foodType" doc:id="7b8def35-4853-4a71-9ddc-63e4fe665cf1" variableName="foodType" />
-		<set-variable value="#[attributes.queryParams.ingredient]" doc:name="ingredient" doc:id="a29db092-d93a-459c-84b1-b6d0c086f8f1" variableName="ingredient" />
+		<set-variable value="#[message.attributes.queryParams.foodType]" doc:name="foodType" doc:id="7b8def35-4853-4a71-9ddc-63e4fe665cf1" variableName="foodType" />
+		<set-variable value="#[message.attributes.queryParams.ingredient]" doc:name="ingredient" doc:id="a29db092-d93a-459c-84b1-b6d0c086f8f1" variableName="ingredient" />
 		<choice doc:name="Choice" doc:id="66c72beb-dcb0-4d00-8cc6-05a2841f5afc" >
 			<when expression="#[(not isEmpty(vars.foodType))]" >
 				<http:request method="GET" doc:name="GET/ foodType" doc:id="a558eccf-16fa-4635-8c79-ca0e4ed44789" config-ref="HTTP_Request_food_configuration" path="/filter.php" >
