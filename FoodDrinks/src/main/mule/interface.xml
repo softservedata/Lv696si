@@ -135,6 +135,7 @@ output application/json
     </flow>
     <flow name="get:\foodByCategory:cocktailsandfood-api-config">
         <flow-ref doc:name="MenuByCategories" doc:id="185df988-8b35-4c8a-9de9-f9dfdb4564c1" name="MenuByCategories" />
+		<error-handler ref="addFoodCategory" />
     </flow>
     <flow name="get:\foodName:cocktailsandfood-api-config">
         <flow-ref doc:name="searchFoodByName" doc:id="8b9a2584-cbd0-4752-b272-cdd360c02ae4" name="searchFoodByName" />
