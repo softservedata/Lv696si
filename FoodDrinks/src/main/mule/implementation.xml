@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<flow name="implementationFlow" doc:id="62f7a9aa-b497-4414-8b07-8d7bfe3106b3" initialState="stopped">
 		<scheduler doc:name="Scheduler" doc:id="a7c7f22b-b3cb-4933-b919-3904dddfd464" >
 			<scheduling-strategy >
-				<fixed-frequency frequency="5" timeUnit="DAYS"/>
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
 			</scheduling-strategy>
 		</scheduler>
 		<os:retrieve doc:name="updateId" doc:id="9d037029-dc3f-445a-9edb-2e819ff6927d" key="updateId" target="updateId">
@@ -114,7 +114,7 @@ output application/json
 	</sub-flow>
 	<sub-flow name="getDrinksByNameFlow" doc:id="fcc337c0-d588-464e-a4b0-e414c105669f" >
 		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="a11b5e41-d17f-4be1-a302-87c7bce7f30c" variableName="telegramPayload" />
-		<http:request method="GET" doc:name="GET /cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/cocktailsName">
+		<http:request method="GET" doc:name="GET /cocktailsName" doc:id="6cbf8bef-91a5-423c-8cba-6c8f69697737" url="http://localhost:8081/api/cocktailsName">
 					<http:query-params><![CDATA[#[output application/java
 ---
 {
@@ -190,7 +190,7 @@ output application/json
 	</sub-flow>
 	<sub-flow name="getFoodByNameFlow" doc:id="c040cea1-f93d-4517-86d5-e68e16483193" >
 		<set-variable value="#[payload]" doc:name="telegramPayload" doc:id="de6f22de-a977-4b6b-a458-8520e663f24f" variableName="telegramPayload" />
-		<http:request method="GET" doc:name="GET /foodName" doc:id="19a86d97-d72f-44fb-84ac-78ba75dff16a" url="http://localhost:8081/foodName" >
+		<http:request method="GET" doc:name="GET /foodName" doc:id="19a86d97-d72f-44fb-84ac-78ba75dff16a" url="http://localhost:8081/api/foodName" >
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
