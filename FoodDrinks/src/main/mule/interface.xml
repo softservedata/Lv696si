@@ -158,7 +158,6 @@ output application/json
         <error-handler ref="VALIDATION_DAYLIMENU" />
     </flow>
     <flow name="get:\theBestCoctail:cocktailsandfood-api-config">
-		<flow-ref doc:name="theBestCocktails" doc:id="530a600e-f21f-4e77-848f-e79d1fec5ca4" name="theBestCocktails"/>
-		<error-handler ref="VALIDATION_THE_BEST_COCKTAILS" />
+		<flow-ref doc:name="Flow Reference" doc:id="d529413f-f8dd-48ec-ae1e-757e6b3b68e5" name="theBestCocktails"/>
     </flow>
 </mule>
