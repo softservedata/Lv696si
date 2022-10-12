@@ -18,3 +18,4 @@ validation:
     checkQueryCategory: "Please write some cocktail category"
     day: "Please write the day you are interested in"  
     payloadDailyMenu: "Sorry, something went wrong, try again please"   
+    selectIngredient: "If want see the best cocktails in category you need select at least one ingredient"

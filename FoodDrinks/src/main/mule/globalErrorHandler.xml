@@ -19,6 +19,22 @@ output application/json
 			<set-variable value="#[400]" doc:name="httpStatus" doc:id="34ec666c-7f3d-411e-92f7-7200b6997c80" variableName="httpStatus" />
 		</on-error-propagate>
 	</error-handler>
+	<error-handler name="VALIDATION_THE_BEST_COCKTAILS" doc:id="87176905-cf83-4a62-a8a1-4e99c287a11b" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="249d09eb-1675-4548-a0aa-b54267290cd3" type="APP:SELECTSOMEINGREDIENT">
+			<ee:transform doc:name="Transform Message" doc:id="f058c410-8741-4835-bad3-73c003c5658a" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "If want see the best cocktails in category you need select at least one ingredient"
+}
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="#[404]" doc:name="httpStatus" doc:id="4bdc0210-f532-417e-a5fc-f144b29c53f0" variableName="httpStatus"/>
+		</on-error-propagate>
+	</error-handler>
 	<error-handler name="CategoryNull" doc:id="39cfd77d-567a-4e1f-9bd2-d915f1b507a2" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="019e035f-8e5e-43af-a1ca-8e50c295d81f" type="APP:FOODCATEGORYNULL" >
 			<ee:transform doc:name="byCategories" doc:id="d49c7660-eff7-469f-8d59-7756ed0956e2" >

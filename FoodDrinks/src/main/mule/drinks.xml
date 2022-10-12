@@ -55,7 +55,7 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 	</sub-flow>
 	<flow name="theBestCocktails" doc:id="99512824-f3a4-4502-aa62-768d6132961b" >
 		<logger level="INFO" doc:name="Logger" doc:id="13729910-8708-4e08-8437-4517f89355f0" />
-		<set-variable value="#[message.attributes.queryParams.first]" doc:name="first" doc:id="315fb4bd-7d98-4622-9d73-723b0cb4b92a" variableName="first"/>
+		<set-variable value="#[message.attributes.queryParams.first]" doc:name="first" doc:id="315fb4bd-7d98-4622-9d73-723b0cb4b92a" variableName="first" />
 		<set-variable value="#[message.attributes.queryParams.second]" doc:name="second" doc:id="f25bf29b-d3ff-40bb-a45b-045c919de5f6" variableName="second"/>
 		<set-variable value="#[message.attributes.queryParams.third]" doc:name="third" doc:id="b323ee18-afc6-40fc-8c27-9bf02957f907" variableName="third"/>
 		<choice doc:name="Choice" doc:id="ec6242ac-0c57-4a83-bca5-307d3a21d47a" >
@@ -173,6 +173,9 @@ output application/json
 payload]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+		<validation:is-null doc:name="Is null" doc:id="a010cbfb-c8f9-4b79-86d8-0db8b1e107ca" value="#[payload]" message="$(validation.selectIngredient)">
+			<error-mapping sourceType="VALIDATION:NOT_NULL" targetType="APP:SELECTSOMEINGREDIENT" />
+		</validation:is-null>
 		<logger level="INFO" doc:name="Logger" doc:id="593b0dd5-067a-432c-9346-79ca718ddfa9" />
 	</flow>
 	<flow name="dailyMenu" doc:id="dab40277-8c07-43b3-9fb5-8e1061424437" >

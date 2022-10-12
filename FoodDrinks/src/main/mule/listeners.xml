@@ -4,10 +4,6 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="theBestCocktailsListeners" doc:id="8505bf3a-de6c-4169-aed6-1e5628fcae94" >
-		<http:listener doc:name="GET /theBestCocktails" doc:id="341c15ca-e4ea-4878-9e6c-90953ea90979" config-ref="HTTP_Listener_config" path="/theBestCocktails"/>
-		<flow-ref doc:name="theBestCocktails" doc:id="ed93b276-cecf-4d6c-ba59-7089e5e9ae7b" name="theBestCocktails"/>
-	</flow>
 	<flow name="dailyMenuListener" doc:id="6f06b5ec-9d06-4a25-a1f6-9fbed31745cb" >
 		<http:listener doc:name="Listener" doc:id="98223fbd-cbbf-4d92-bf2c-cce39158da1f" config-ref="HTTP_Listener_config" path="/dailyMenu"/>
 		<flow-ref doc:name="dailyMenu" doc:id="0a57018e-d890-47de-b838-c4a1fe690137" name="dailyMenu"/>
