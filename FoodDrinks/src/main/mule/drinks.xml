@@ -240,7 +240,7 @@ payload]]></ee:set-payload>
 			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:PAYLOADNOTNULL" />
 		</validation:is-not-null>
 		<choice doc:name="Choice" doc:id="1294c767-b156-43ab-a5c4-eee8fd920d02" >
-			<when expression='#[vars.day == "monday"]'>
+			<when expression='#[vars.day == "Monday"]'>
 				<ee:transform doc:name="mondayMenu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -252,7 +252,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 			</when>
-			<when expression='#[vars.day == "tuesday"]'>
+			<when expression='#[vars.day == "Tuesday"]'>
 				<ee:transform doc:name="tuesdayMenu" doc:id="78941d61-8dcb-446f-977f-14bfb2296ba0">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -264,7 +264,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 			</when>
-			<when expression='#[vars.day == "wednesday"]'>
+			<when expression='#[vars.day == "Wednesday"]'>
 				<ee:transform doc:name="wednesdayMenu" doc:id="f8908115-1e7e-4f00-9a2f-fa72ddf15017" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -276,7 +276,7 @@ output application/json
 					</ee:message>
 				</ee:transform>
 			</when>
-			<when expression='#[vars.day == "thursday"]'>
+			<when expression='#[vars.day == "Thursday"]'>
 				<ee:transform doc:name="thursdayMenu" doc:id="24f50010-aad3-4b36-b838-a3dd856f6217" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -288,7 +288,7 @@ output application/json
 					</ee:message>
 				</ee:transform>
 			</when>
-			<when expression='vars.day == "friday"'>
+			<when expression='vars.day == "Friday"'>
 				<ee:transform doc:name="fridayMenu" doc:id="10d95ddf-2883-4f0d-960b-eefd27ded6c0" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -300,7 +300,7 @@ output application/json
 					</ee:message>
 				</ee:transform>
 			</when>
-			<when expression='#[vars.day == "weekend"]'>
+			<when expression='#[vars.day == "Weekend"]'>
 				<ee:transform doc:name="weekendMenu" doc:id="ad9c63b2-d4f0-4bb0-8c5d-ce7984fc75ad">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
