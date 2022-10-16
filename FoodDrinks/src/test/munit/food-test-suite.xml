@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="food-test-suite.xml" />
+	<munit:test name="food-test-suite-Filter_foodTest-foodType" doc:id="904d635c-1c00-46e3-96d0-378eb8135f3d" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to foodType" doc:id="a796906d-b8f1-4e30-9350-f30f3f592596" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="foodType" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/foodType.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock foodType" doc:id="aef8dfe9-8dab-41c0-805b-fc3aacb44eda" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET/ foodType" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a558eccf-16fa-4635-8c79-ca0e4ed44789" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_food_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.foodType]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to foodType" doc:id="62354de1-9704-4a76-8064-dbd5cedf78b3" >
+				<munit:attributes value='#["queryParams":{"foodType":"Seafood"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to Filter_food" doc:id="7a83b07e-fd71-426e-8771-8a06e289371d" name="Filter_food" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="de4158f8-576e-4847-8f7b-8ce95da23573">
+				<ee:message>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-foodType.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bf914a5e-4277-4235-adf6-4783c6154f04" is="#[MunitTools::equalTo(vars.expectedPayload)]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-ingredient" doc:id="e1b41177-cd67-4ca3-a323-a505b0a3f917">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to ingredient" doc:id="7eb827e6-ac67-462b-a1c9-a426ee11c4d1" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="ingredient" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/ingredients.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to ingredient" doc:id="11a6ff8d-6f6e-4a6b-9324-d1767d8efe4b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET/ ingredient" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="6d066f59-fea6-4b8d-a6dd-eeb8b7632f53" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_food_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.ingredient]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to ingredient" doc:id="533c9e85-0a7b-41a3-aa06-cbb32ea7f2be" >
+				<munit:attributes value='#["queryParams":{"ingredient":"Onion"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to filter_food" doc:id="6c1cec1c-7b6c-482e-86fb-d9a985446954" name="Filter_food"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="bb8d99dd-ef15-4316-a8c4-820a338b1383" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-ingredients.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1944b00c-6be5-4bd5-a5c5-d9302221019c" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-categories" doc:id="afc024e3-6978-466e-b865-a515b29401a0">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to categories" doc:id="bed2122f-a01f-4dd7-955f-0820f3f4582b" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="categories" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/categories.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to categories" doc:id="2fd4d4b1-9b3f-48d6-add8-bd3c6a2e7ba2" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET/ Categories" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="bafdded3-47c6-4247-b5c9-1a57be1627bd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_food_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/categories.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categories]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference to Filter_food" doc:id="e323e02d-b760-4bb3-afac-4bfe3947d72d" name="Filter_food"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="94ecee92-9726-4c9a-b998-11ea753b0a23">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="expectedPayload"><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-categories.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0d1e2cac-ea0c-489f-ab61-897abf41072d" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-chicken" doc:id="49e1a5a0-33cb-4320-b66e-835e0fc801f5">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to category chicken" doc:id="243060f2-3213-4298-8976-79d5eac141a7" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="categoryChicken" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/shake.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to shake" doc:id="a91c9779-a0f4-437e-a40c-f74315f3a939" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GEt /Shake" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="7e540fdd-6be4-4dd7-9f36-348a719f36d2" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_drinks_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categoryChicken]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to shake" doc:id="59ad417f-ed9e-403d-92b8-386acf7869d6" >
+				<munit:attributes value='#["queryParams":{"category":"Chicken"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="c3efc3c8-3834-4a79-80b0-50908f911a7e" name="MenuFood"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="119fe7f0-41e3-4a5b-ad3f-e1db5e61101e" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-shake.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a349514b-4039-413e-b58e-e84b8a5123ce" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-pasta" doc:id="36d6f851-e27c-400e-a429-6b38ef2c1bdc">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to category pasta" doc:id="ee6543fc-04fa-40ca-9e85-899736af8bcd" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="categoryPasta" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/softDrink.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to softDrink" doc:id="551d80c2-69b1-42f6-b5db-a78ed9ee6ab6" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Get /SoftDrink" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a9f8e529-28be-4a2d-9ae4-9ed80c842f45" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_drinks_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categoryPasta]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to softDrink" doc:id="5c34930a-c5c4-4805-9602-f96bf4caa5f1">
+				<munit:attributes value='#["queryParams":{"category":"Pasta"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="91793e6a-0d17-4646-bbce-f93e0620c8b4" name="MenuFood" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="5217c65a-686f-4a07-bc6f-80200b05fd34" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-softDrink.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b4222bc6-4a17-4b11-9df8-058223c6562b" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-breakfast" doc:id="1f91184b-8863-47f0-8e0a-bffd141825ff">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to category breakfast" doc:id="9e07350e-7d69-4b99-9af0-402f00cf4528" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="categoryBreakfast" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/cocoa.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to cocoa" doc:id="f33bd531-6d58-40ad-9ea5-8479e18b8e61" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GEt /Cocoa" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="998c04ab-5510-4851-a112-796fad85e0cc" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_drinks_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categoryBreakfast]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to cocoa" doc:id="ddb14217-ac6e-4273-a3e3-29ef4c18b9d0" >
+				<munit:attributes value='#["queryParams":{"category":"Breakfast"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="81dc447b-5fe4-4352-aa3f-f6aba2b46b02" name="MenuFood" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="5f79ece3-c5d9-4b47-a70a-407beb775105" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-cocoa.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1a51ee66-9e56-430c-8449-9525a91763c7" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-pork" doc:id="6d8ed7f0-5c0c-4de7-aaa7-b7f43b1e29c1">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to category pork" doc:id="abe9fbd1-6e27-4b7e-a87d-738cdecd4f15" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="categoryPork" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/homemadeliquer.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to homemadeliquer" doc:id="950c00b3-3b64-4f1c-8dd3-080c2b2b7e13" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Get /HomemadeLiqueur" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="971e3b30-9905-47ce-8217-9bb3230cf888" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_drinks_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categoryPork]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to homemadeliquer" doc:id="650ed764-f56e-4886-ba61-61d94f64d036" >
+				<munit:attributes value='#["queryParams":{"category":"Pork"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="3ffc36c0-97f9-4e00-be30-48b5671a5fa3" name="MenuFood" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="867ec999-dbce-4e2a-b242-121619c2264b" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-homemadeliquer.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4c7d7227-a28f-4f90-9d66-5b893022c59a" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-miscellaneous" doc:id="a27a8008-b096-4531-b23e-f912b479de41">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to category miscellaneous" doc:id="fbe4149b-50b7-4174-a73d-628bb4dac661" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="categoryMiscellaneous" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/punchPartyDrink.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to punchPartyDrink" doc:id="1308f367-3b35-48a2-a847-29f4f86f79f4" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Get /punchPartyDrink" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="f956bfca-ceea-4b4c-adec-a0d8d29486e3" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_drinks_configuration" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/filter.php" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.categoryMiscellaneous]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to punchPartyDrink" doc:id="c666a16f-46f8-479a-8717-f247734391a8">
+				<munit:attributes value='#["queryParams":{"category":"Miscellaneous"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="d9a62083-1a92-4172-9246-ce792ee6c237" name="MenuFood" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="35c6dbcf-5b3a-4988-a8d4-603d76137d17" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-punchPartyDrink.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a6ecfd97-078f-47da-8a90-491375c801ea" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

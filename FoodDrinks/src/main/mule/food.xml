@@ -278,7 +278,7 @@ payload]]></ee:set-payload>
 				</ee:transform>
 			</when>
 			<when expression='#[vars.category == "Miscellaneous"]'>
-				<logger level="INFO" doc:name="Logger" doc:id="6c010001-ded6-47bf-8ee1-db5fa0718ef0" />
+				<logger level="INFO" doc:name="Logger started to  category Miscellaneous" doc:id="6c010001-ded6-47bf-8ee1-db5fa0718ef0" message="Logger started to  category Miscellaneous"/>
 				<set-variable value='#["Punch / Party Drink"]' doc:name="punch/PartyDrink" doc:id="f6191a6c-9869-4066-9832-4bd6be318373" variableName="punchPartyDrink" />
 				<set-payload value="#[vars.punchPartyDrink]" doc:name="varsPunchPartyDrink" doc:id="2681c021-32e5-4e21-ae05-109ba28b9bef" />
 				<http:request method="GET" doc:name="Get /punchPartyDrink" doc:id="f956bfca-ceea-4b4c-adec-a0d8d29486e3" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
