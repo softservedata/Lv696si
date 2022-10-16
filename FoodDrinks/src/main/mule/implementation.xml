@@ -270,40 +270,4 @@ output application/json
 		</os:store>
 		<logger level="INFO" doc:name="payload" doc:id="b0490d39-0533-4900-8fb1-708e81279964" message="#[payload]" />
 	</sub-flow>
-	<flow name="implementationFlow1" doc:id="679390cf-950f-4b59-b0a1-76ff550c4302" >
-		<http:listener doc:name="Listener" doc:id="0cdc0d85-2623-4687-8fd8-7c46eb05c69e" config-ref="HTTP_Listener_config" path="/test1"/>
-		<file:read doc:name="Read" doc:id="f7dc02ce-94f6-48ea-b113-38d8d841e0e8" path="d:/AnypointStudio/1.jpg"/>
-		<ee:transform doc:name="Transform Message" doc:id="273dd91a-aa66-4302-886f-6f7a46f202ba" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output multipart/form-data
----
-{
-  parts: {
-    photo: {
-      headers: {
-        "Content-Disposition": {
-          name: "photo",
-          filename: "1.jpg",
-          subtype: "form-data"
-        },
-        "Content-Type": "image/jpeg"
-      },
-      content: payload    	
-    },
-    chat_id: {
-    	headers: {
-        "Content-Disposition": {
-          name: "chat_id",
-          subtype: "form-data"
-        }
-      },              
-      content : 798006120
-    }
-  }
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<http:request method="POST" doc:name="Request" doc:id="edbf457e-0728-42b7-8b48-dc95e1aeaba4" url="https://api.telegram.org/bot5563335015:AAHEZ49NA1faZXK8awvppOYKP_oYaT_tTgc/sendPhoto"/>
-	</flow>
 </mule>
