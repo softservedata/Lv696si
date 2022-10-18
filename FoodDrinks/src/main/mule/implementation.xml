@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 http://www.mulesoft.org/schema/mule/telegram http://www.mulesoft.org/schema/mule/telegram/current/mule-telegram.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
-	<flow name="implementationFlow" doc:id="62f7a9aa-b497-4414-8b07-8d7bfe3106b3" initialState="stopped">
+	<flow name="implementationFlow" doc:id="62f7a9aa-b497-4414-8b07-8d7bfe3106b3" initialState="started">
 		<scheduler doc:name="Scheduler" doc:id="a7c7f22b-b3cb-4933-b919-3904dddfd464" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
@@ -27,6 +27,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 				<flow-ref doc:name="answerFlow" doc:id="3bd7e655-5714-4bdf-8445-8343846bdc35" name="answerFlow"/>
 				<logger level="INFO" doc:name="payload" doc:id="83112316-383e-4b15-832e-45ff55f1ff0f" message="#[payload]"/>
 			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="No Message Logger" doc:id="8f1be4da-950e-447d-a3e3-f2afec3fbc2f" message='"There is no messages"'/>
+			</otherwise>
 		</choice>
 	</flow>
 	<sub-flow name="answerFlow" doc:id="47d8a535-99df-484b-8e9f-3a55a8268d18" >
@@ -84,7 +87,6 @@ output application/json
 				</ee:transform>
 				<telegram:send-message doc:name="input food name" doc:id="cd72664a-1c66-49ae-8157-400037b04e59" config-ref="Telegram_Connector_Config"/>
 				<logger level="INFO" doc:name="payload" doc:id="70345850-01fb-4eea-a756-44dccf40c8f7" message="#[payload]" />
-				<logger level="INFO" doc:name="payload" doc:id="6d3bc43e-c441-4fea-973f-6340f012c5be" message="#[payload]" />
 			</when>
 			<otherwise>
 				<os:retrieve doc:name="lastMessage" doc:id="852f6e06-09ee-4ca9-882c-7fe206e312f4" key="#[payload.result[0].message.from.id]" target="lastMessage"/>
@@ -110,7 +112,8 @@ output application/json
 }]]></ee:set-payload>
 							</ee:message>
 						</ee:transform>
-						<telegram:send-message doc:name="Send bed request message" doc:id="b9833390-8064-499b-bf72-974a8462c7e8" config-ref="Telegram_Connector_Config"/>
+						<telegram:send-message doc:name="Send bed request message" doc:id="b9833390-8064-499b-bf72-974a8462c7e8" config-ref="Telegram_Connector_Config">
+						</telegram:send-message>
 					</otherwise>
 				</choice>
 			</otherwise>
@@ -152,6 +155,9 @@ output application/json
 }]]]></telegram:send-photo-message-request-content>
 					</telegram:send-photo>
 						</when>
+						<otherwise >
+							<logger level="INFO" doc:name="No Picture Logger" doc:id="f7670b54-87b2-4f77-a49c-12a5947bf4f2" message='"There is no pictures"' />
+						</otherwise>
 					</choice>
 					<telegram:send-message doc:name="Send coctail Instructions" doc:id="d66cd538-b5dd-4340-bcd2-541060a35d43" config-ref="Telegram_Connector_Config">
 						<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
@@ -229,6 +235,9 @@ output application/json
 }]]]></telegram:send-photo-message-request-content>
 					</telegram:send-photo>
 				</when>
+						<otherwise >
+							<logger level="INFO" doc:name="No Picture Logger" doc:id="9420f452-b497-4979-acc2-8d38256c3d9d" message='"There is no pictures"' />
+						</otherwise>
 			</choice>
 			<telegram:send-message doc:name="Send coctail Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config">
 				<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
