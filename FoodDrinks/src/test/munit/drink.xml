@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="drink.xml" />
+	<munit:test name="drink-searchCocktailsByNameTest" doc:id="088f4ec4-5f3e-4549-bbe9-422b386f3287" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="cocktailByName" doc:id="f2f76894-a599-4317-8a74-676b744b3670" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/cocktailByName.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCocktailByName" doc:id="c2cdd3f1-d1a9-472d-a8a4-29cebea8943e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /cocktailsByName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.cocktailByName]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="92389a00-f2ca-4e32-88ee-306bf86ee8b4" >
+				<munit:attributes value='#["queryParams":{"cocktailByName": "Jewel Of The Nile"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to searchCocktailsByName" doc:id="022b1827-40cd-4334-b13f-e75a51f85134" name="searchCocktailsByName"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Rezult" doc:id="23de85a4-b0aa-4628-9094-9111189145bd" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-theBestCocktailsFirst" doc:id="bbb3f636-b763-43c7-8d6c-38d68f17a204" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="first" doc:id="6ba1c467-d0f3-4fa5-b099-cb7618e106c0" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="first" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/bestCocktailFirst.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="afc0d2c1-a997-46a6-bacc-f5972fe323e9" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /cocktailsByName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.first]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="7815c837-64da-441e-b6b3-97973148bcba">
+				<munit:attributes value='#["queryParams":{"first": "coffee"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to theBestCocktails" doc:id="23c42700-aa4f-40ef-a30d-a92bd41cbea5" name="theBestCocktails"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="payload" doc:id="ef5e3a00-fb49-4835-98a4-bcdd5956ee15">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="first"><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Result" doc:id="38e24bf4-c02b-46ae-986e-9814d26a051d" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-dailyMenuTestMonday" doc:id="7ea69524-7bef-494f-8d2c-417275b0d8e4" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform Message" doc:id="4e5a584b-40d7-4401-aeac-d37c2edb22ae" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/mondayMenu.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c9cca6a8-cf4d-44da-b677-4395a9936048" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /drinkForMenu" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.monday]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b991df08-2eee-4a78-be4a-740f3347ef96" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /drinkForMenu" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.monday]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c1a6d6da-acfb-4c19-b822-a328c0b53d40" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /drinkForMenu" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.monday]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f0919db7-d006-4dc2-8712-6daa883c69c4" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /starterForMenu" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.monday]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="7cc610d5-2d65-4e1c-9d87-d9a6806bab61" >
+				<munit:attributes value='#["queryParams":{"day":"Monday"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to dailyMenu" doc:id="219850af-9a50-4de3-a2e1-b244982dd5eb" name="dailyMenu"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="payload" doc:id="0d496e80-97a6-4fa6-a581-71704dd9a456" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a793dac1-314f-4087-a1ed-68bc822de7fa" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-fiveCategoryCocktailsBeer" doc:id="5ccf356a-8147-45ff-b51a-88b3cd3270c9" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="categoryOgCocktail" doc:id="a7938694-1801-4071-b95d-1de628978a9f" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="starter" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/fiveCategoryBeer.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCategory" doc:id="d3ad2fbd-5666-4122-872f-f620466449f1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /Starter" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d5ca6f58-54c0-45ab-b175-9103e4ba94ef" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_food_configuration" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.starter]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="f984081f-0d16-4ad8-b21e-680b2fd8c049" >
+				<munit:attributes value='#["queryParams":{"category":"Beer"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to fiveCategoryCocktails" doc:id="f9983282-7ef7-4763-b300-85fbaff9c1d5" name="fiveCategoryCocktails"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="resultBeer" doc:id="69304fec-6333-4194-818f-395fa1923472">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="starter"><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/fiveCategoryBeerRez.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Rezult" doc:id="bf953e97-d6aa-4c07-bcca-8dcf8222377e" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-listOfAllCocktailsTest" doc:id="136b3a49-8e3c-4141-b27e-3b30c7187d28" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="listCocktails" doc:id="4c372319-839d-4d7f-9c9c-4e530af71677" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/listCocktails.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestByAlfabet" doc:id="534acc71-df85-49cb-868f-6077779c481f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /listCocktails" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="f0882197-2646-45db-9dfe-7fc85e00cb5e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.listCocktails]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="5c9f29d3-c19a-41b7-bb19-5221e6317e04" >
+				<munit:attributes value='#["queryParams":{"firstLetter":" y"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to listOfAllCocktails" doc:id="34e896aa-28ac-4c24-8d9e-c1006c33ea66" name="listOfAllCocktails"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Result" doc:id="416d7d04-61fa-4fe1-b5d1-a04f36959da1" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-listOfCategoryTest" doc:id="3c09d7e0-46da-4761-9c3b-7ea65a5e32c1" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="listOfCategory" doc:id="c4eb1a62-f4a7-4010-ae1e-1780c83f4be1" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/listOfCategory.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestListOfCategory" doc:id="a0215d0e-11df-4d97-83f2-38029996943e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /listOfCategory" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.list]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e8600a4b-a7cb-41b7-9a52-93d57846d72f" >
+				<munit:attributes value='#["queryParams":{"list":" list"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to listOfCategory" doc:id="9777ed75-c8df-4891-be1d-4a27f872b3c1" name="listOfCategory"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9973a6e7-4d5e-4caa-b489-888debcb5a41" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-randomDrinkArrayTest" doc:id="5be35f0d-ced7-4aa8-8199-fa65155fb508" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="threeRandomCocktails" doc:id="80c744a2-9027-4e73-bf45-27eab6da8cdf" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/randomThree.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestRandomCocktails" doc:id="8d18f3e7-51c7-4684-8d04-482b5252aeef" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /randomCocktail" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="012534d9-24b3-4852-8fa8-d093d21f87c2" processor="choice">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Choice" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1620339a-896b-4688-a9cd-f4911f30bf30" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="99b55208-2e8e-454d-9335-b15e6dec2976" >
+				<munit:attributes value='#["queryParams":{"payload.drinks[0].Category ":" payload.drinks[1].Category"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to randomDrinkArray" doc:id="d8c5263a-7839-482f-9fbc-c77b5bb59794" name="randomDrinkArray"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Result" doc:id="7f89d107-db48-4949-983e-53bdf9ea56bd" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-listOfIngredientTest" doc:id="69858d3b-62cc-418a-aaf6-f9aa989e9753" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="listOfIngredient" doc:id="1605d2b3-7a16-4c42-8790-e76c40706333" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/listIngredient.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2a99f9ea-5a9e-43fe-aa98-00c4b9f73dc4" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /listOfIngredient" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.listIngred]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="83130f7c-cfd5-422d-b30a-c7b2f4efc1f9" >
+				<munit:attributes value='#["queryParams":{"listIngred":" list"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to listOfIngredient" doc:id="bbef1381-3a85-4d26-a340-ea5faaf2c883" name="listOfIngredient"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9bb6d9d8-05df-4366-936f-eb1a1e9f6c71" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-searchByIngredientTest" doc:id="4b3f2893-ff6d-4f7b-bc89-29ee1004410d" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="ingredient" doc:id="766044a1-5636-4ac8-ba87-4353f8efc5fc" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/ingredient.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestSearchByIngridient" doc:id="28db42bb-f853-4fab-9b4d-72d042a64c89" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /ingredient" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="59cd0483-9411-41b5-82ce-c7665ae39018" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.ingredient]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d63b8f9f-12c7-4129-9580-4f3e8dee360f" >
+				<munit:attributes value='#["queryParams":{"ingredient":" gin"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to searchByIngredient" doc:id="4bfcd1fd-bc57-43eb-89e3-bac0d11e4457" name="searchByIngredient"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="7feabb31-d671-41b2-afed-9397143585a0" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-recipeTest" doc:id="3cd991d7-b069-4154-809c-0d2a8c4b1edf" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="recipeBycocktailName" doc:id="077cdc12-3ca6-4d7b-ad13-367a5e90cfe8" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/recipe.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestRecipeBycocktailName" doc:id="31fbf856-e00c-4e94-a596-5f0a75a2521e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /recipeCocktail" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="c7cb7beb-a04c-452b-9f39-8da21fff704d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.cocktailName]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="0bab06ef-d123-45bb-92ff-e22dae151f60" >
+				<munit:attributes value='#["queryParams":{"cocktailName":"margarita"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to recipe" doc:id="6c3584e7-cc39-491d-87bb-76c50ea45809" name="recipe"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="24eb3fa7-773b-4cd6-88f4-29d5341b2c78" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-fiveCategoryCocktailsShot" doc:id="a657064f-f06c-4f20-9bb8-21dc7c7af2d5" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="categoryOfCocktail" doc:id="d9ddd37a-c1dd-46f6-91fe-9885ed82fddd" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="beef" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/fiveCategoryShot.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCategory" doc:id="f5cedd1a-a81b-47f2-b95c-cde594a5f67f" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /Beef" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e143a29a-0c66-4363-937b-b26661c0a5b8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.beef]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="ff8a9377-22b9-40c3-af5e-d8fbf205e4a4" >
+				<munit:attributes value='#["queryParams":{"category":"Shot"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="fiveCategoryCocktails" doc:id="739f02d3-bc42-4127-b327-84cff77b24a7" name="fiveCategoryCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="resultShot" doc:id="6591b430-9dae-4588-a68b-fc67551a379b">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/fiveCategoryShotRez.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Rezult" doc:id="5e17e8d7-a1f2-405e-a8ba-b6e0f066e7c6" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-fiveCategoryCocktailsCocktail" doc:id="f90f2c8e-1b22-427a-a5b1-cc7ebd9cf420" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="categoryOfCocktail" doc:id="a3067296-ed05-4858-b0a7-1a809792ae5e" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="beef" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/fiveCategoryCocktail.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCategory" doc:id="97d3260f-46e1-4858-adae-6e0871c54fbf" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /Seafood" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a1949be7-9ce2-422f-b157-65800abe758e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.seafood]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="dfbd4de0-63cc-40f4-ac8b-cbbb14a9ef74" >
+				<munit:attributes value='#["queryParams":{"category":"Cocktail"}]' />
+			</munit:set-event>
+			<flow-ref doc:name=" fiveCategoryCocktails" doc:id="f05a2a96-7199-4510-8932-088ea7195e12" name="fiveCategoryCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="resultCocktail" doc:id="1a9477df-6e14-4256-b4cf-420d604052fd">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/fiveCategoryCocktailRez.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Rezult" doc:id="082cc6b0-93f1-4f8e-92f5-28dfaf733bf7" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-fiveCategoryCocktailsCoffeeAndTea" doc:id="2971c168-d9b1-4c5c-ba03-447e8c689963" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="categoryOfCocktail" doc:id="e67d874c-cdfb-4d8d-ba59-3b9a9322f00c" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="dessert" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/fiveCategoryCoffeeTea.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCategory" doc:id="806c1671-a342-49b6-bb6a-0e078ade1ff2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /Dessert" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.dessert]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="fe82327d-24f7-4a63-8f3e-e392e449db62" >
+				<munit:attributes value='#["queryParams":{"category":"Coffee / Tea"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="fiveCategoryCocktails" doc:id="3dbac31a-ccb7-4838-9747-1422b6df99b3" name="fiveCategoryCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="resultCoffeTea" doc:id="9ea52b50-34d1-4c00-9a5b-18603bf697c4">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/fiveCategoryCoffeTeaRez.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Rezult" doc:id="7d272fca-5beb-41f6-9af8-f25ae0907f1c" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-fiveCategoryCocktailsOrdinaryDrink" doc:id="8b8146b5-2279-4f9a-87b0-40e6f810d8da" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="categoryOfCocktail" doc:id="ecac7f16-bdcf-4046-a5c8-4c1cc52601f0" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="vegetarian" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/fiveCategoryOrdinaryDrink.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCategory" doc:id="190fd474-fee1-4b3b-ab0e-dfe2f55f792b" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /Vegetarian" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="7e0c9be4-7f31-4d68-bffc-608baf743d09" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.vegetarian]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="12cc86ea-0d97-465d-be9c-555047d86d7c" >
+				<munit:attributes value='#["queryParams":{"category":"Ordinary Drink"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="fiveCategoryCocktails" doc:id="d9a578c3-be7e-43a0-9c22-32f249a28bb0" name="fiveCategoryCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="resultOrdinariDrink" doc:id="d66a02a2-132a-41fe-a711-f010b109c4a9">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/fiveCategoryOrdinaryDrinkRez.json", "application/json")]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Rezult" doc:id="c60d490f-69d7-4ae3-82d0-ac608ac0e685" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-theBestCocktailsFirstAndSecond" doc:id="8567d689-0466-417e-8626-918bbc3df97e" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="FirstAndSecond" doc:id="2a945042-e97c-430a-b189-6ce09941f1c6" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="firstSecond" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/bestCocktailFirstSecond.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="5c3d7b7a-4ae4-4a3a-af88-34886f466740" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /coctailByIngredient" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.firstSecond]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="e376d822-2757-4684-b366-946a50cddca1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /coctailByIngredient" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1ef13719-718c-4ac7-a126-a61a72d78810" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value="#[vars.firstSecond]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="c34cb3fa-92c4-44ef-9c45-840cba58bab5" >
+				<munit:attributes value='#["queryParams":{"first": "coffee", "second":"gin"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to theBestCocktails" doc:id="d3043aaf-5406-41f2-812c-f08e99e880c6" name="theBestCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Result" doc:id="d2e8f744-a9c3-4d80-b309-362dfebc7485" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="drink-theBestCocktailsFirstAndSecondThirde" doc:id="a7d80a4b-b018-40f6-be94-6a458ae1f34c" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="FirstAndSecondThird" doc:id="9c654e7c-d14d-469b-9181-a083d8988422" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="firstSecondThird" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://Mock/bestCocktailFirstSecondThird.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="f11da1f3-be3d-483d-a2ab-53545b44064e" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /coctailByIngredient" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.firstSecondThird]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="51c0cedc-633c-432f-b13f-eb6bac3c183b" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /coctailByIngredient" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.firstSecondThird]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="8bd446dc-4361-42a0-8a21-445d2df4019a" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET /coctailByIngredient" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="696b0074-e4dd-46d6-bb65-77debdba2bb0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.firstSecondThird]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="variable" doc:id="653f8f68-cfbd-42e5-ace0-c4b794cf345d" >
+				<munit:attributes value='#["queryParams":{"first": "coffee", "second":"gin","third": "orange"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to theBestCocktails" doc:id="a842bd1e-e09d-4196-8a77-59411d84729d" name="theBestCocktails" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Result" doc:id="ff79580d-b08f-4c8f-888d-13d3d1457374" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
