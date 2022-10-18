@@ -1,10 +1,12 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--<html>-->
 <Head>
     <title>A Sample Form Using GET</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-    <h2>A Sample Form Using GET</h2>
+    <h2>A Sample Form Using GET2</h2>
+    <p th:text="#{messages.hello}">Welcome to our site!</p> <br>
     <div class="myform">
         <form action="https://www.google.com.ua">
                 First name:
