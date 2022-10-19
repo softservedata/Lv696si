@@ -239,7 +239,7 @@ output application/json
 							<logger level="INFO" doc:name="No Picture Logger" doc:id="9420f452-b497-4979-acc2-8d38256c3d9d" message='"There is no pictures"' />
 						</otherwise>
 			</choice>
-			<telegram:send-message doc:name="Send coctail Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config">
+			<telegram:send-message doc:name="Send food Instructions" doc:id="cc02c3fd-891f-40c5-8da4-f3f111a2a011" config-ref="Telegram_Connector_Config">
 				<telegram:send-text-message-request-content><![CDATA[#[%dw 2.0
 output application/json
 ---

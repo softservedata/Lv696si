@@ -167,7 +167,7 @@ readUrl("classpath://mock/shake.json", "application/json")]]></ee:set-variable>
 			<munit:set-event doc:name="Set to shake" doc:id="59ad417f-ed9e-403d-92b8-386acf7869d6" >
 				<munit:attributes value='#["queryParams":{"category":"Chicken"}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow Reference to menuFood" doc:id="c3efc3c8-3834-4a79-80b0-50908f911a7e" name="MenuFood"/>
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="c3efc3c8-3834-4a79-80b0-50908f911a7e" name="MenuByCategories"/>
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="Transform to results" doc:id="119fe7f0-41e3-4a5b-ad3f-e1db5e61101e" >
@@ -210,7 +210,7 @@ readUrl("classpath://mock/softDrink.json", "application/json")]]></ee:set-variab
 			<munit:set-event doc:name="Set to softDrink" doc:id="5c34930a-c5c4-4805-9602-f96bf4caa5f1">
 				<munit:attributes value='#["queryParams":{"category":"Pasta"}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow Reference to menuFood" doc:id="91793e6a-0d17-4646-bbce-f93e0620c8b4" name="MenuFood" />
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="91793e6a-0d17-4646-bbce-f93e0620c8b4" name="MenuByCategories" />
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="Transform to results" doc:id="5217c65a-686f-4a07-bc6f-80200b05fd34" >
@@ -253,7 +253,7 @@ readUrl("classpath://mock/cocoa.json", "application/json")]]></ee:set-variable>
 			<munit:set-event doc:name="Set to cocoa" doc:id="ddb14217-ac6e-4273-a3e3-29ef4c18b9d0" >
 				<munit:attributes value='#["queryParams":{"category":"Breakfast"}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow Reference to menuFood" doc:id="81dc447b-5fe4-4352-aa3f-f6aba2b46b02" name="MenuFood" />
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="81dc447b-5fe4-4352-aa3f-f6aba2b46b02" name="MenuByCategories" />
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="Transform to results" doc:id="5f79ece3-c5d9-4b47-a70a-407beb775105" >
@@ -296,7 +296,7 @@ readUrl("classpath://mock/homemadeliquer.json", "application/json")]]></ee:set-v
 			<munit:set-event doc:name="Set to homemadeliquer" doc:id="650ed764-f56e-4886-ba61-61d94f64d036" >
 				<munit:attributes value='#["queryParams":{"category":"Pork"}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow Reference to menuFood" doc:id="3ffc36c0-97f9-4e00-be30-48b5671a5fa3" name="MenuFood" />
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="3ffc36c0-97f9-4e00-be30-48b5671a5fa3" name="MenuByCategories" />
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="Transform to results" doc:id="867ec999-dbce-4e2a-b242-121619c2264b" >
@@ -339,7 +339,7 @@ readUrl("classpath://mock/punchPartyDrink.json", "application/json")]]></ee:set-
 			<munit:set-event doc:name="Set to punchPartyDrink" doc:id="c666a16f-46f8-479a-8717-f247734391a8">
 				<munit:attributes value='#["queryParams":{"category":"Miscellaneous"}]' />
 			</munit:set-event>
-			<flow-ref doc:name="Flow Reference to menuFood" doc:id="d9a62083-1a92-4172-9246-ce792ee6c237" name="MenuFood" />
+			<flow-ref doc:name="Flow Reference to menuFood" doc:id="d9a62083-1a92-4172-9246-ce792ee6c237" name="MenuByCategories" />
 		</munit:execution>
 		<munit:validation >
 			<ee:transform doc:name="Transform to results" doc:id="35c6dbcf-5b3a-4988-a8d4-603d76137d17" >

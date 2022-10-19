@@ -9,7 +9,7 @@
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<munit:config name="new-test-suite.xml" />
-	<munit:test name="new-test-suite-implementationFlowTest" doc:id="78e29dc7-ebf5-4271-9a1a-6b0b2d1a8f65" description="Test" ignore="true">
+	<munit:test name="new-test-suite-implementationFlowTest" doc:id="78e29dc7-ebf5-4271-9a1a-6b0b2d1a8f65" description="Test">
 		<munit:behavior >
 			<ee:transform doc:name="emptyGetUpdates" doc:id="116b7123-af1c-4fdd-a67e-be7d65cd5d4b" >
 				<ee:message >
@@ -51,7 +51,7 @@ output application/json
 			<munit-tools:assert-that doc:name="Assert that" doc:id="bdb48add-4f31-4f07-8c2b-db16c3050ad8" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-answerFlowTestStart" doc:id="5abd98e5-8db9-4df5-ae30-310f124a4e81" description="Test" ignore="true">
+	<munit:test name="new-test-suite-answerFlowTestStart" doc:id="5abd98e5-8db9-4df5-ae30-310f124a4e81" description="Test">
 		<munit:behavior >
 			<ee:transform doc:name="startGetUpdates" doc:id="da07fb8d-116a-4f48-9df7-1bc65d502c50">
 				<ee:message />
@@ -119,7 +119,7 @@ output application/json
 			<munit-tools:assert-that doc:name="Assert that" doc:id="781f56ad-bc29-4c63-94b5-9b47ae877921" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-answerFlowTestDrinksByName" doc:id="b49733f6-d2c1-4494-9613-ab75abdfc4c1" description="Test" ignore="true">
+	<munit:test name="new-test-suite-answerFlowTestDrinksByName" doc:id="b49733f6-d2c1-4494-9613-ab75abdfc4c1" description="Test">
 		<munit:behavior >
 			<ee:transform doc:name="drinksByNameGetUpdates" doc:id="7bb7d99c-7896-4334-8c74-da098f1f086c" >
 				<ee:message />
@@ -186,7 +186,7 @@ output application/json
 			<munit-tools:assert-that doc:name="Assert that" doc:id="0931247a-7cc8-420e-bf01-3893799da8a7" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-answerFlowTestFoodByName" doc:id="4997044b-56d9-4196-a2c6-efe3b413361f" description="Test" ignore="true">
+	<munit:test name="new-test-suite-answerFlowTestFoodByName" doc:id="4997044b-56d9-4196-a2c6-efe3b413361f" description="Test">
 		<munit:behavior >
 			<ee:transform doc:name="foodByNameGetUpdates" doc:id="298a2bed-ff61-41e8-ba34-297cce71bb72" >
 				<ee:message />
@@ -265,7 +265,7 @@ output application/json
 			<munit-tools:assert-that doc:name="Assert that" doc:id="6d53b72b-bc2c-4261-bf03-1a34109363e9" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="new-test-suite-answerFlowTestBadRequest" doc:id="6eccb536-e63d-4bb6-86e0-ca95861eae63" description="Test" ignore="true">
+	<munit:test name="new-test-suite-answerFlowTestBadRequest" doc:id="6eccb536-e63d-4bb6-86e0-ca95861eae63" description="Test">
 		<munit:behavior >
 			<ee:transform doc:name="badRequestGetUpdates" doc:id="a82ffbd6-8a80-445d-ae3f-13b35238670d" >
 				<ee:message />
@@ -316,13 +316,13 @@ output application/json
 					<munit-tools:payload value="#[vars.sendBadRequest]" mediaType="application/json" />
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
-			<munit-tools:mock-when doc:name="Mock when" doc:id="a11f4ec3-c2a6-4ae9-85b6-19abe7449a99" processor="os:retrieve">
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="a11f4ec3-c2a6-4ae9-85b6-19abe7449a99" processor="os:retrieve">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
 					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:payload value="#[payload]" mediaType="application/json" />
+					<munit-tools:payload value='#[output application/json&#10;---&#10;{"ok":true,&#10; "result":[{"update_id":137238470,&#10; "message":{"message_id":1682, &#10;    "from":{"id":798006120&#10;           },&#10;    "chat":{"id":798006120&#10;	   },&#10;        &#10;    "text":"bad request"    &#10;           }&#10;        }]&#10;}]' />
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
 		</munit:behavior>
@@ -342,6 +342,749 @@ output application/json
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:assert-that doc:name="Assert that" doc:id="8692fb65-e76a-4169-ba2a-f25fc26edf0e" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestDrinkName" doc:id="35e715ba-ab08-4853-8442-c66add11beec" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="drinkNameGetUpdates" doc:id="aa41507a-ac37-483b-8e17-340090e817fc" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="drinkNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"drink"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="5accb12a-d471-47ce-a318-6d31bb8c2caa" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.drinkNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="6d3848b9-ec27-4ba1-967e-23a55a7ad21e" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json&#10;---&#10;{"ok":true,&#10; "result":[{"update_id":137238470,&#10; "message":{"message_id":1682, &#10;    "from":{"id":798006120&#10;           },&#10;    "chat":{"id":798006120&#10;	   },&#10;        &#10;    "text":"bad request"    &#10;           }&#10;        }]&#10;}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getCocktails" doc:id="db0b3cc7-0311-4cbc-a6f7-339e4bed39e5" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="getCocktails" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "drinks": [
+    {      
+      "name": "Whiskey Sour",      
+      "Instructions": "Shake with ice",
+      "ImageSource": "image.jpg"      
+    }
+  ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="44513eea-934e-4791-83fe-5031cdeb5e0b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /cocktailsName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getCocktails]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="f688a86b-06c1-4e88-ad9b-ebf25375cac5" processor="telegram:send-message">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send cocktail name" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="37e69f7e-b326-4761-8b07-df66655d6912" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-photo" doc:id="d5fdd88c-fcb8-4059-bf68-0d0cf1adc2e2" processor="telegram:send-photo">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send cocktail photo" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e98805ef-dd83-4805-8fd4-89fd85cb8bb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="fd116026-10c3-4668-b5e1-cd3499c0decb" processor="telegram:send-message">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send coctail Instructions" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d66cd538-b5dd-4340-bcd2-541060a35d43" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="telegram:send-message" doc:id="e388d464-4a76-4dd7-b13c-9abc1ce13227" processor="telegram:send-message">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json&#10;---&#10;{&#10;	message: "select"&#10;}&#10;]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="51ca33cf-d5c3-4334-bc2e-c935e5242a8e" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/drinksbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="ac94211a-b90f-4690-83b8-bca796fe2a13" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="d5795580-a76d-41b4-8ae0-ce011a05b391" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bf575b28-95eb-4fd2-afb6-c8c921690175" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestDrinkNameNoPhoto" doc:id="2a7fe097-6a28-457a-b524-dd4d0ac3d55c" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="drinkNameGetUpdates" doc:id="1ca5a574-2fde-4cd5-affd-c3e83ee22ef8" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="drinkNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"drink"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="c4d20b13-4edf-45ee-98ac-db0b4665913e" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.drinkNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="26dd5d51-bfdd-4a16-a362-ee2617aa7724" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"bad request"    
+           }
+        }]
+}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getCocktails" doc:id="41d77243-af6d-43b1-9d56-325a20c49b66" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="getCocktails" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "drinks": [
+    {      
+      "name": "Whiskey Sour",      
+      "Instructions": "Shake with ice",
+      "ImageSource": null      
+    }
+  ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="ff237c33-1084-4e17-b963-1da463bc04a2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /cocktailsName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getCocktails]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="6bd59956-b692-4cc9-92ed-f0db67494f0b" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send cocktail name" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="37e69f7e-b326-4761-8b07-df66655d6912" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="20fbfd12-b19b-43d5-9ee6-88ad4c3c673e" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send coctail Instructions" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d66cd538-b5dd-4340-bcd2-541060a35d43" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="telegram:send-message" doc:id="c3c6536b-6287-4200-9ba3-2ecf08d59dee" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json&#10;---&#10;{&#10;	message: "select"&#10;}&#10;]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="b21d25b4-039f-4618-88c2-140c68ff6d9c" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/drinksbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="acbb9d4d-4a61-4701-b15d-25330891b3b8" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="f48f33e3-ecd7-427e-a66e-62d322473356" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="481505fa-1c80-423b-9933-77b1cd25c20a" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestDrinkNameBadCocktailName" doc:id="2e14bb8f-0eb6-4bd5-8f9c-d1ae75502699" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="drinkNameGetUpdates" doc:id="36ead344-858d-4d4c-924c-a536af5aeadf" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="drinkNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"drink"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="d5b9f928-8bd7-4bb6-8bfd-4f914f1a091d" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.drinkNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="c340a8df-ace8-4f4d-8460-757c9cc4df47" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"bad request"    
+           }
+        }]
+}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getCocktails" doc:id="2a06031b-9eb6-4665-bd3e-4526bcdea3f5" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="getCocktails" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="8da686b4-2162-4b77-80b7-b0361a2dbcfc" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /cocktailsName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getCocktails]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="ffb8cdad-8957-4952-9b32-cd2750082d9f" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send bad coaktailName message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="fd90602d-b868-46b8-81e7-c228d14fa4ee" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Send bad coaktailName message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="fd90602d-b868-46b8-81e7-c228d14fa4ee" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="36ff53c8-b48d-4bc7-b34b-8f5472756029" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="35e88dcc-8841-40ae-92c4-4bd8ae6ea543" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{
+	message: "select"
+}
+]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="bb87b9e5-7fb1-4463-afdf-37618ec16c3c" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/drinksbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="cf645530-fa2f-4e9c-8e6c-4130ff9486b2" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="1c2f1fdf-995d-4b96-8dd8-dd10070715b7" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a80c6b5-be35-487a-9b22-602b2d3bf7e5" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestFoodName" doc:id="ed00acb5-5e0d-43a4-a568-8e812b8e1b4f" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="foodNameGetUpdates" doc:id="a953f034-6d65-44a2-a991-b9ea04e95a75" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="foodNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"food"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="6160ee50-6e1f-4518-a124-559ace7f9cee" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.foodNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="568582b5-9cac-4f55-bfb1-657fc324b7df" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"bad request"    
+           }
+        }]
+}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getFood" doc:id="e7bd03de-8c2b-4801-809c-12e54106261d" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="getFood" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "meals": [
+    {      
+      "Meal": "Pasta",      
+      "Instructions": "Instruction",
+      "ImageSource": "image.jpg"      
+    }
+  ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="fbb7279e-a665-492b-9b3a-c6b320401e53" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /foodName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getFood]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="7b1667fe-e7f3-4860-924c-69073fbf1301" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send food name" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="60ddfaf1-9ea3-4d2b-a072-670c872b7994" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-photo" doc:id="041654e2-dc50-41f4-adbe-10fdfd620572" processor="telegram:send-photo" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send food photo" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="bbbb8f65-e4a3-4771-bf3f-4701ce4993fd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="0abc2cf3-35ae-410a-a5f2-a6c13f07c328" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send food Instructions" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="cc02c3fd-891f-40c5-8da4-f3f111a2a011" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="telegram:send-message" doc:id="8d448cc2-298d-4f39-8830-8655f781312b" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d028bbe6-6756-414e-bceb-0c6330f31848" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{
+	message: "select"
+}
+]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="be7835b3-52bd-4e54-a252-43ff0803c2c3" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/foodbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="fc72699b-8dda-4544-be1d-740d39c218a1" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="e68c897c-ba96-4ee0-af26-a0aae6442a0d" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d1459c39-6477-45a8-ad21-f4afeac7b28a" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestFoodNameNoPhoto" doc:id="fdc28a37-5ba9-4f04-90a5-9156954a7907" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="foodNameGetUpdates" doc:id="35ecfd9a-18c4-43c1-b3c0-602f7f0a6b20" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="foodNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"food"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="1992524c-e1a1-4978-9267-e6ae037c483c" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.foodNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="5b4a609a-ed50-4666-8db3-44ec0acf0739" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"bad request"    
+           }
+        }]
+}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getFood" doc:id="1b87c28c-7d05-4edf-b3ca-56a372985848" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="getFood" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "meals": [
+    {      
+      "Meal": "Pasta",      
+      "Instructions": "Instruction",
+      "ImageSource": null      
+    }
+  ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="48f28ac0-8cfa-4e97-95f0-e0124e539ec7" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /foodName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getFood]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="536e88b0-22cd-4fc2-abd0-97ccd8ff8239" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send food name" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="60ddfaf1-9ea3-4d2b-a072-670c872b7994" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="c3bbafdb-9a70-4358-b325-03db80d67740" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send food Instructions" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="cc02c3fd-891f-40c5-8da4-f3f111a2a011" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="telegram:send-message" doc:id="c321a30f-dbfb-4241-8fec-d53391c4211c" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d028bbe6-6756-414e-bceb-0c6330f31848" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{
+	message: "select"
+}
+]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e1493fd6-7555-40f4-9014-5e7bf1de6550" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/foodbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="057164da-31a2-40f2-91af-75f29c4d26d6" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="8e3465d6-ea55-41c3-ad0e-4022c3f04e4a" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c2751613-ca98-4f45-a3cc-f3b6d153ee87" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite-answerFlowTestFoodNameBadFoodName" doc:id="0830cfdc-8ac0-4838-b157-1538a0888a18" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="foodNameGetUpdates" doc:id="09710fe6-3c95-4695-a3b8-00304cc2794c" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="foodNameGetUpdates" ><![CDATA[%dw 2.0
+output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"food"    
+           }
+        }]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock telegram:get-updates" doc:id="7fc801ab-1392-46ba-bc2a-7fe7e686c7bf" processor="telegram:get-updates" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fromChat" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="41503d10-a5e0-4dd1-a5e7-e3f4bdbadab2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.foodNameGetUpdates]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock os:retrieve" doc:id="84cd5e20-223f-4091-ab46-af9beee1ca39" processor="os:retrieve" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="lastMessage" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852f6e06-09ee-4ca9-882c-7fe206e312f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{"ok":true,
+ "result":[{"update_id":137238470,
+ "message":{"message_id":1682, 
+    "from":{"id":798006120
+           },
+    "chat":{"id":798006120
+	   },
+        
+    "text":"bad request"    
+           }
+        }]
+}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<ee:transform doc:name="getFood" doc:id="d5887f80-2de2-40b1-910a-4414d6201c04" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="getFood" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+ 
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock http:request" doc:id="90e58a35-a134-4abb-b9b3-634a479c4500" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /foodName" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.getFood]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock telegram:send-message" doc:id="59a1cc01-6592-42fb-a088-669a4070dd16" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send bad foodName  message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e7d3c2cc-d61b-427a-a70a-e9e694e6d4cb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="telegram:send-message" doc:id="17278ff0-52bb-4f96-94b6-0b193e8ed896" processor="telegram:send-message" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Message select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d028bbe6-6756-414e-bceb-0c6330f31848" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json
+---
+{
+	message: "select"
+}
+]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5f253194-fa76-4d42-b7f3-401182adda72" >
+				<munit:variables >
+					<munit:variable key="lastMessage" value="/foodbyname" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to implementationFlow" doc:id="6058df44-21e0-4a6d-bcb8-2027469e2f94" name="implementationFlow" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="4df41329-8c74-475a-bab1-b537315881ab" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "select"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="27f46a06-ac6d-4159-abb6-89b82231f281" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
 
