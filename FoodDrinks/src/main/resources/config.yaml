@@ -7,9 +7,9 @@ drinksapi:
 foodapi:
   host: "www.themealdb.com"
   basepath: "/api/json/v1/1"
-  
-  
-
+telegram:
+  uri: "https://api.telegram.org"     
+  token: "![Y73kXhcZQjyF83xbr+bexRseiAxS03H5Eu3gzDb4qGl5AAkRjePAoTgHOmNHLcfv]" 
   
 validation:
     checkRecipe: " Hi , you forgot write cocktail name"
