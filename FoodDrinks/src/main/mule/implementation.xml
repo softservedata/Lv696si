@@ -178,7 +178,7 @@ output application/json
 ---
 {
 	chat_id: vars.telegramPayload.result[0].message.chat.id,
-	text: "There is no such cocktail, what you want to get /drinksbyname, /foodbyname"
+	text: "There is no such cocktail"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -258,7 +258,7 @@ output application/json
 ---
 {
 	chat_id: vars.telegramPayload.result[0].message.chat.id,
-	text: "There is no such meal, what you want to get /drinksbyname, /foodbyname"
+	text: "There is no such meal"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
