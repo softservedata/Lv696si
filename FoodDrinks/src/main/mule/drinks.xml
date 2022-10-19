@@ -125,17 +125,10 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 			</when>
 			<otherwise >
 				<logger level="INFO" doc:name="Logger" doc:id="f59412e8-9b8c-4689-8af9-138da9281691" />
+				<http:request method="GET" doc:name="GET /randomCocktail" doc:id="51b862b2-3f35-420e-b8a9-d56d8b4ba45a" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
 			</otherwise>
 		</choice>
 		<set-variable value="#[payload]" doc:name="sizeOfpayload" doc:id="d5fdf3d6-2453-4b96-b40f-b5e389f19870" variableName="sizeOfpayload"/>
-		<ee:transform doc:name="Transform Message" doc:id="6063ef37-afa7-43fc-9f3e-0e2e094dec5f">
-							<ee:message>
-								<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-							</ee:message>
-						</ee:transform>
 		<choice doc:name="Choice" doc:id="57163bcc-5621-4003-beb0-d583037c782a" >
 			<when expression="#[sizeOf(payload) == 2]">
 				<ee:transform doc:name="twoBestCocktails" doc:id="861491b8-c3c7-4c9f-8a9e-012df0992a89" >
