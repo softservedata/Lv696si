@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<error-handler name="VALIDATION_RECIPE" doc:id="1dc8ecae-8952-4996-acd4-e4606c03f844" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a289c578-46f8-4dbc-b332-41357987a186" type="APP:COCTAILNAMENOTNULL" >
-			<ee:transform doc:name="Transform Message" doc:id="02f691fd-a386-4d63-9f77-56b75447aaba" >
+			<ee:transform doc:name="nameCocktail" doc:id="02f691fd-a386-4d63-9f77-56b75447aaba" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
