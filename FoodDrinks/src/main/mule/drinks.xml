@@ -60,6 +60,7 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 		<set-variable value="#[message.attributes.queryParams.third]" doc:name="third" doc:id="b323ee18-afc6-40fc-8c27-9bf02957f907" variableName="third"/>
 		<choice doc:name="Choice" doc:id="ec6242ac-0c57-4a83-bca5-307d3a21d47a" >
 			<when expression="#[(not isEmpty(vars.first)) and (not isEmpty(vars.second)) and(isEmpty(vars.third))]">
+				<logger level="INFO" doc:name="Logger" doc:id="925f8a14-cbd2-469b-9b17-f4e50878dbf8" />
 				<scatter-gather doc:name="Scatter-Gather" doc:id="f6086a89-05e5-4011-9d24-0c58ed5d1271" >
 					<route >
 						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="e6be9a7b-db2d-4619-ade1-3c7f4da22614" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
@@ -82,6 +83,7 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 				</scatter-gather>
 			</when>
 			<when expression="#[(not isEmpty(vars.first)) and (not isEmpty(vars.second)) and(not isEmpty(vars.third))]">
+				<logger level="INFO" doc:name="Logger" doc:id="6f2299a7-5cb0-4bc0-80b1-69e243d660ee" />
 				<scatter-gather doc:name="Scatter-Gather" doc:id="6d45c477-3e9c-44b7-be8b-a354ae4d90b0" >
 					<route >
 						<http:request method="GET" doc:name="GET /coctailByIngredient" doc:id="ee423581-6842-4fb9-9f2f-21a11c242a19" config-ref="HTTP_Request_drinks_configuration" path="/filter.php">
@@ -126,16 +128,25 @@ drinks: payload.drinks map ( drink , indexOfDrink ) -> {
 			</otherwise>
 		</choice>
 		<set-variable value="#[payload]" doc:name="sizeOfpayload" doc:id="d5fdf3d6-2453-4b96-b40f-b5e389f19870" variableName="sizeOfpayload"/>
+		<ee:transform doc:name="Transform Message" doc:id="6063ef37-afa7-43fc-9f3e-0e2e094dec5f">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
 		<choice doc:name="Choice" doc:id="57163bcc-5621-4003-beb0-d583037c782a" >
 			<when expression="#[sizeOf(payload) == 2]">
 				<ee:transform doc:name="twoBestCocktails" doc:id="861491b8-c3c7-4c9f-8a9e-012df0992a89" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[3].strDrink ]
+var array2 = [payload[1].payload.drinks[8].strDrink ]
+var arrayOfArrays = [array1, array2]
 ---
-"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++ " - " ++ " It`s deliciousness" ++
- "," ++ " 2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ " - " ++ " Good choice"
- ]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
@@ -144,10 +155,14 @@ output application/json
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[3].strDrink ]
+var array2 = [payload[1].payload.drinks[8].strDrink ]
+var array3 = [payload[2].payload.drinks[3].strDrink]
+var arrayOfArrays = [array1, array2,array3]
 ---
-"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++ " - " ++ " It`s deliciousness" ++
- "," ++ " 2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ " - " ++ " Good choice"
- ++ ", " ++ " 3.drink - " ++ payload."2".payload.drinks[3].strDrink ++ " - " ++ " Enjoy"]]></ee:set-payload>
+flatten(arrayOfArrays)
+
+]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
@@ -246,7 +261,7 @@ payload]]></ee:set-payload>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-"1.drink - " ++ payload."0".payload.drinks[1].strDrink ++
+"1.drink - "  ++ payload."0".payload.drinks[1].strDrink ++
  ", " ++ "2.drink - " ++ payload."1".payload.drinks[1].strDrink ++ 
  ", " ++ "3.drink - " ++ payload."2".payload.drinks[1].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[1].strMeal]]></ee:set-payload>
 			</ee:message>

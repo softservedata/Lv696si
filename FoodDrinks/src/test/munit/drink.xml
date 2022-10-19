@@ -81,7 +81,7 @@ payload]]></ee:set-variable>
 			<munit-tools:assert-that doc:name="Result" doc:id="38e24bf4-c02b-46ae-986e-9814d26a051d" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
 		</munit:validation>
 	</munit:test>
-	<munit:test name="drink-dailyMenuTestMonday" doc:id="7ea69524-7bef-494f-8d2c-417275b0d8e4" description="Test">
+	<munit:test name="drink-dailyMenuTestMonday" doc:id="7ea69524-7bef-494f-8d2c-417275b0d8e4" description="Test" ignore="true">
 		<munit:behavior >
 			<ee:transform doc:name="Transform Message" doc:id="4e5a584b-40d7-4401-aeac-d37c2edb22ae" >
 				<ee:message >
@@ -567,8 +567,18 @@ readUrl("classpath://Mock/bestCocktailFirstSecond.json", "application/json")]]><
 			<flow-ref doc:name="Flow-ref to theBestCocktails" doc:id="d3043aaf-5406-41f2-812c-f08e99e880c6" name="theBestCocktails" />
 		</munit:execution>
 		<munit:validation >
+			<ee:transform doc:name="payload" doc:id="db50b52e-309d-4f30-ae67-cabf30ae6187">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="first"><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
 			<munit-tools:assert-that doc:name="Result" doc:id="d2e8f744-a9c3-4d80-b309-362dfebc7485" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
-		</munit:validation>
+		
+</munit:validation>
 	</munit:test>
 	<munit:test name="drink-theBestCocktailsFirstAndSecondThirde" doc:id="a7d80a4b-b018-40f6-be94-6a458ae1f34c" description="Test">
 		<munit:behavior >
@@ -616,6 +626,14 @@ readUrl("classpath://Mock/bestCocktailFirstSecondThird.json", "application/json"
 			<flow-ref doc:name="Flow-ref to theBestCocktails" doc:id="a842bd1e-e09d-4196-8a77-59411d84729d" name="theBestCocktails" />
 		</munit:execution>
 		<munit:validation >
+			<ee:transform doc:name="payload" doc:id="8db8db61-1d21-4971-a13e-4e70dfe2e38d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
 			<munit-tools:assert-that doc:name="Result" doc:id="ff79580d-b08f-4c8f-888d-13d3d1457374" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
 		</munit:validation>
 	</munit:test>
