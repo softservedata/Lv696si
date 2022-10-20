@@ -244,79 +244,97 @@ payload]]></ee:set-payload>
 			</route>
 		</scatter-gather>
 		<logger level="INFO" doc:name="Logger" doc:id="133208cf-bb10-4269-8f82-01d8a2b1d132" />
-		<validation:is-not-null doc:name="Is not null payload" doc:id="4433add5-fe12-41d4-a374-64128fa742f6" value="#[payload]" message="${validation.payloadDailyMenu}">
+		<validation:is-not-null doc:name="Is not null payload" doc:id="4433add5-fe12-41d4-a374-64128fa742f6" message="${validation.payloadDailyMenu}" value="#[payload]">
 			<error-mapping sourceType="VALIDATION:NULL" targetType="APP:PAYLOADNOTNULL" />
 		</validation:is-not-null>
 		<choice doc:name="Choice" doc:id="1294c767-b156-43ab-a5c4-eee8fd920d02" >
 			<when expression='#[vars.day == "Monday"]'>
 				<ee:transform doc:name="mondayMenu" doc:id="1c7077e4-dd65-47b6-ad61-3e38e3adb895">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+				<ee:set-payload><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[1].strDrink ]
+var array2 = [payload[1].payload.drinks[1].strDrink ]
+var array3 = [payload[2].payload.drinks[1].strDrink ]
+var array4 = [payload[3].payload.meals[1].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - "  ++ payload."0".payload.drinks[1].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[1].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[1].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[1].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 			</when>
 			<when expression='#[vars.day == "Tuesday"]'>
 				<ee:transform doc:name="tuesdayMenu" doc:id="78941d61-8dcb-446f-977f-14bfb2296ba0">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+				<ee:set-payload><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[2].strDrink ]
+var array2 = [payload[1].payload.drinks[2].strDrink ]
+var array3 = [payload[2].payload.drinks[2].strDrink ]
+var array4 = [payload[3].payload.meals[2].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[2].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[2].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[2].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 			</when>
 			<when expression='#[vars.day == "Wednesday"]'>
 				<ee:transform doc:name="wednesdayMenu" doc:id="f8908115-1e7e-4f00-9a2f-fa72ddf15017" >
 					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:set-payload ><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[3].strDrink ]
+var array2 = [payload[1].payload.drinks[3].strDrink ]
+var array3 = [payload[2].payload.drinks[3].strDrink ]
+var array4 = [payload[3].payload.meals[3].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - " ++ payload."0".payload.drinks[3].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[3].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[5].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
 			<when expression='#[vars.day == "Thursday"]'>
 				<ee:transform doc:name="thursdayMenu" doc:id="24f50010-aad3-4b36-b838-a3dd856f6217" >
 					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:set-payload ><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[4].strDrink ]
+var array2 = [payload[1].payload.drinks[4].strDrink ]
+var array3 = [payload[2].payload.drinks[4].strDrink ]
+var array4 = [payload[3].payload.meals[4].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - " ++ payload."0".payload.drinks[4].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[4].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[4].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[9].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
 			<when expression='vars.day == "Friday"'>
 				<ee:transform doc:name="fridayMenu" doc:id="10d95ddf-2883-4f0d-960b-eefd27ded6c0" >
 					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:set-payload ><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[5].strDrink ]
+var array2 = [payload[1].payload.drinks[5].strDrink ]
+var array3 = [payload[2].payload.drinks[5].strDrink ]
+var array4 = [payload[3].payload.meals[5].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - " ++ payload."0".payload.drinks[5].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[5].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[12].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</when>
 			<when expression='#[vars.day == "Weekend"]'>
 				<ee:transform doc:name="weekendMenu" doc:id="ad9c63b2-d4f0-4bb0-8c5d-ce7984fc75ad">
 					<ee:message>
-						<ee:set-payload><![CDATA[%dw 2.0
+						<ee:set-payload><![CDATA[ %dw 2.0
 output application/json
+var array1 = [payload[0].payload.drinks[2].strDrink ]
+var array2 = [payload[1].payload.drinks[3].strDrink ]
+var array3 = [payload[2].payload.drinks[5].strDrink ]
+var array4 = [payload[3].payload.meals[7].strMeal]
+var arrayOfArrays = [array1, array2, array3, array4]
 ---
-"1.drink - " ++ payload."0".payload.drinks[2].strDrink ++
- ", " ++ "2.drink - " ++ payload."1".payload.drinks[3].strDrink ++ 
- ", " ++ "3.drink - " ++ payload."2".payload.drinks[5].strDrink ++ ", " ++ " Treats today - " ++ payload."3".payload.meals[7].strMeal]]></ee:set-payload>
+flatten(arrayOfArrays)]]></ee:set-payload>
 					</ee:message>
 					<ee:variables>
 					</ee:variables>
@@ -324,6 +342,7 @@ output application/json
 			</when>
 			<otherwise>
 				<logger level="INFO" doc:name="Logger" doc:id="ba302ba3-8929-49be-a33d-e59434059e92" />
+				<http:request method="GET" doc:name="GET /randomCocktail" doc:id="5cfd299a-0126-4968-ba12-ebe6d6cfcf8d" config-ref="HTTP_Request_drinks_configuration" path="/random.php"/>
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="1ab95b3a-4f35-40a1-9a8b-43b2ecc369da" />
@@ -458,6 +477,7 @@ payload]]></ee:set-payload>
 				</http:request>
 			</otherwise>
 		</choice>
+		<flow-ref doc:name="endLogging" doc:id="cb39834b-61c1-4134-8020-1270f352c3c5" name="listOfAllCocktails"/>
 	</sub-flow>
 	<sub-flow name="listOfAllCocktails" doc:id="8b8a26e7-e204-4782-b08a-edcbb40a4c32" >
 		<logger level="INFO" doc:name="Logger" doc:id="ef72f982-c5c2-4397-b1a4-767c361417b5" />
@@ -595,33 +615,33 @@ vars.array]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="4269c2de-33a5-4bb3-ac0a-58e9c806e0ba" />
-		<choice doc:name="Choice" doc:id="1620339a-896b-4688-a9cd-f4911f30bf30" >
+		<choice doc:name="Choice" doc:id="1620339a-896b-4688-a9cd-f4911f30bf30">
 			<when expression="#[sizeOf(payload) &lt; 3]">
-				<validation:is-true doc:name="If size of payload less then three" doc:id="1b2010fc-225d-4709-a0ae-cd4a084f73cd" expression="#[sizeOf(payload) &lt; 3]" message='${validation.ifTrueSizeOfVars}'>
+				<validation:is-true doc:name="If size of payload less then three" doc:id="1b2010fc-225d-4709-a0ae-cd4a084f73cd" expression="#[sizeOf(payload) &lt; 3]" message="${validation.ifTrueSizeOfVars}">
 					<error-mapping sourceType="STREAM_MAXIMUM_SIZE_EXCEEDED" targetType="APP:PAYLOADSIZE" />
 				</validation:is-true>
-				<flow-ref doc:name="randomDrinkArray" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="randomDrinkArray"/>
+				<flow-ref doc:name="randomDrinkArray" doc:id="0497b2b3-498e-4b57-bde4-e7d8671643c3" name="randomDrinkArray" />
 			</when>
 			<when expression="#[sizeOf(payload) == 3]">
 				<logger level="INFO" doc:name="Logger" doc:id="c14f322d-3df5-44bf-adbe-170ef4241bfa" />
-				<choice doc:name="Choice" doc:id="21075ae8-30a4-4d5c-aea6-859e22437bb5" >
+				<choice doc:name="Choice" doc:id="21075ae8-30a4-4d5c-aea6-859e22437bb5">
 					<when expression="#[payload.drinks[0].Category == payload.drinks[1].Category]">
 						<logger level="INFO" doc:name="Logger" doc:id="a93ffca8-1018-46f0-85aa-e34d6126a6e0" />
-						<ee:transform doc:name="emptyPayload" doc:id="7e666561-85ff-40d4-999e-f3fd957f40b9" >
-							<ee:message >
-								<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:transform doc:name="emptyPayload" doc:id="7e666561-85ff-40d4-999e-f3fd957f40b9">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
 vars.emptyPayload]]></ee:set-payload>
 							</ee:message>
 						</ee:transform>
-						<flow-ref doc:name="randomDrinkArray" doc:id="eaf23059-361f-4fbd-a297-7e1b456fca47" name="randomDrinkArray"/>
+						<flow-ref doc:name="randomDrinkArray" doc:id="eaf23059-361f-4fbd-a297-7e1b456fca47" name="randomDrinkArray" />
 					</when>
 					<when expression="#[payload.drinks[0].Category == payload.drinks[2].Category]">
 						<logger level="INFO" doc:name="Logger" doc:id="87f6de56-99ee-4d0e-a224-c242e6e07d3b" />
-						<ee:transform doc:name="emptyPayload" doc:id="f766e524-28b6-4831-a8f6-bb79f3129d6f" >
-							<ee:message >
-								<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:transform doc:name="emptyPayload" doc:id="f766e524-28b6-4831-a8f6-bb79f3129d6f">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
 vars.emptyPayload]]></ee:set-payload>
@@ -631,9 +651,9 @@ vars.emptyPayload]]></ee:set-payload>
 					</when>
 					<when expression="#[payload.drinks[1].Category == payload.drinks[2].Category]">
 						<logger level="INFO" doc:name="Logger" doc:id="be684a28-6f6a-4500-a616-048557034332" />
-						<ee:transform doc:name="emptyPayload" doc:id="1e978dfb-d6b2-4195-a037-5d51aabca2d2" >
-							<ee:message >
-								<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:transform doc:name="emptyPayload" doc:id="1e978dfb-d6b2-4195-a037-5d51aabca2d2">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
 vars.emptyPayload]]></ee:set-payload>
@@ -641,11 +661,11 @@ vars.emptyPayload]]></ee:set-payload>
 						</ee:transform>
 						<flow-ref doc:name="randomDrinkArray" doc:id="9076dea7-4d34-4edb-ad08-ee070a3ec5d2" name="randomDrinkArray" />
 					</when>
-					<otherwise >
+					<otherwise>
 						<logger level="INFO" doc:name="Logger" doc:id="95435599-8cce-46a3-9fde-4a7618aa46f4" />
-						<ee:transform doc:name="payload" doc:id="589e57ff-9695-4656-8c4d-f8c24374e961" >
-							<ee:message >
-								<ee:set-payload ><![CDATA[%dw 2.0
+						<ee:transform doc:name="payload" doc:id="589e57ff-9695-4656-8c4d-f8c24374e961">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload	]]></ee:set-payload>
@@ -654,7 +674,7 @@ payload	]]></ee:set-payload>
 					</otherwise>
 				</choice>
 			</when>
-			<otherwise >
+			<otherwise>
 				<logger level="INFO" doc:name="Logger" doc:id="a104bab5-e58f-451f-a5d6-6a77bee8ef8d" />
 			</otherwise>
 		</choice>
