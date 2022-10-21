@@ -66,6 +66,6 @@
         <error-handler ref="VALIDATION_DAYLIMENU" />
     </flow>
     <flow name="get:\theBestCoctail:cocktailsandfood-api-config">
-		<flow-ref doc:name="Flow Reference" doc:id="d529413f-f8dd-48ec-ae1e-757e6b3b68e5" name="theBestCocktails"/>
+		<flow-ref doc:name="theBestCocktail" doc:id="d529413f-f8dd-48ec-ae1e-757e6b3b68e5" name="theBestCocktails"/>
     </flow>
 </mule>

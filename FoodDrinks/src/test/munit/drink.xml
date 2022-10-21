@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/cocktailByName.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/cocktailByName.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCocktailByName" doc:id="c2cdd3f1-d1a9-472d-a8a4-29cebea8943e" processor="http:request">
@@ -50,7 +50,7 @@ readUrl("classpath://Mock/cocktailByName.json", "application/json")]]></ee:set-p
 					<ee:set-variable variableName="first" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/bestCocktailFirst.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/bestCocktailFirst.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="afc0d2c1-a997-46a6-bacc-f5972fe323e9" processor="http:request" >
@@ -91,7 +91,7 @@ payload]]></ee:set-variable>
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/mondayMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/mondayMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="c9cca6a8-cf4d-44da-b677-4395a9936048" processor="http:request">
@@ -162,7 +162,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="starter" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fiveCategoryBeer.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fiveCategoryBeer.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCategory" doc:id="d3ad2fbd-5666-4122-872f-f620466449f1" processor="http:request">
@@ -202,7 +202,7 @@ readUrl("classpath://results/fiveCategoryBeerRez.json", "application/json")]]></
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/listCocktails.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/listCocktails.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestByAlfabet" doc:id="534acc71-df85-49cb-868f-6077779c481f" processor="http:request">
@@ -229,7 +229,7 @@ readUrl("classpath://Mock/listCocktails.json", "application/json")]]></ee:set-pa
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/listOfCategory.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/listOfCategory.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestListOfCategory" doc:id="a0215d0e-11df-4d97-83f2-38029996943e" processor="http:request">
@@ -259,7 +259,7 @@ readUrl("classpath://Mock/listOfCategory.json", "application/json")]]></ee:set-p
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/randomThree.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/randomThree.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestRandomCocktails" doc:id="8d18f3e7-51c7-4684-8d04-482b5252aeef" processor="http:request">
@@ -286,7 +286,7 @@ readUrl("classpath://Mock/randomThree.json", "application/json")]]></ee:set-payl
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/listIngredient.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/listIngredient.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestList" doc:id="2a99f9ea-5a9e-43fe-aa98-00c4b9f73dc4" processor="http:request">
@@ -316,7 +316,7 @@ readUrl("classpath://Mock/listIngredient.json", "application/json")]]></ee:set-p
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/ingredient.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/ingredient.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestSearchByIngridient" doc:id="28db42bb-f853-4fab-9b4d-72d042a64c89" processor="http:request">
@@ -346,7 +346,7 @@ readUrl("classpath://Mock/ingredient.json", "application/json")]]></ee:set-paylo
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/recipe.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/recipe.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestRecipeBycocktailName" doc:id="31fbf856-e00c-4e94-a596-5f0a75a2521e" processor="http:request">
@@ -377,7 +377,7 @@ readUrl("classpath://Mock/recipe.json", "application/json")]]></ee:set-payload>
 					<ee:set-variable variableName="beef" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fiveCategoryShot.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fiveCategoryShot.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCategory" doc:id="f5cedd1a-a81b-47f2-b95c-cde594a5f67f" processor="http:request" >
@@ -416,7 +416,7 @@ readUrl("classpath://results/fiveCategoryShotRez.json", "application/json")]]></
 					<ee:set-variable variableName="beef" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fiveCategoryCocktail.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fiveCategoryCocktail.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCategory" doc:id="97d3260f-46e1-4858-adae-6e0871c54fbf" processor="http:request" >
@@ -456,7 +456,7 @@ readUrl("classpath://results/fiveCategoryCocktailRez.json", "application/json")]
 					<ee:set-variable variableName="dessert" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fiveCategoryCoffeeTea.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fiveCategoryCoffeeTea.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCategory" doc:id="806c1671-a342-49b6-bb6a-0e078ade1ff2" processor="http:request" >
@@ -495,7 +495,7 @@ readUrl("classpath://results/fiveCategoryCoffeTeaRez.json", "application/json")]
 					<ee:set-variable variableName="vegetarian" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fiveCategoryOrdinaryDrink.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fiveCategoryOrdinaryDrink.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCategory" doc:id="190fd474-fee1-4b3b-ab0e-dfe2f55f792b" processor="http:request" >
@@ -534,7 +534,7 @@ readUrl("classpath://results/fiveCategoryOrdinaryDrinkRez.json", "application/js
 					<ee:set-variable variableName="firstSecond" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/bestCocktailFirstSecond.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/bestCocktailFirstSecond.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="5c3d7b7a-4ae4-4a3a-af88-34886f466740" processor="http:request" >
@@ -584,7 +584,7 @@ payload]]></ee:set-variable>
 					<ee:set-variable variableName="firstSecondThird" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/bestCocktailFirstSecondThird.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/bestCocktailFirstSecondThird.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestCocktailByIngredient" doc:id="f11da1f3-be3d-483d-a2ab-53545b44064e" processor="http:request" >
@@ -641,7 +641,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="firstSecond" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/bestCocktailRandom.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/bestCocktailRandom.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestRandomCocktail" doc:id="4e8cfb17-d754-4c4f-855a-53f85ff94f30" processor="http:request">
@@ -666,7 +666,7 @@ readUrl("classpath://Mock/bestCocktailRandom.json", "application/json")]]></ee:s
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/tuesdayMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/tuesdayMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="2b76b614-a3d6-4dce-a036-3e16eaac718b" processor="http:request" >
@@ -732,7 +732,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/wednesdayMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/wednesdayMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="34189fcf-9fb4-4527-a903-19b4bc65db13" processor="http:request" >
@@ -798,7 +798,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/thursdayMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/thursdayMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="bf34e736-1623-4afe-bfc1-8a44cd7ff364" processor="http:request" >
@@ -864,7 +864,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/fridayMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/fridayMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="e338f160-65cd-430b-8314-a1eaf9e14307" processor="http:request" >
@@ -930,7 +930,7 @@ payload]]></ee:set-payload>
 					<ee:set-variable variableName="monday" ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/weekendMenu.json", "application/json")]]></ee:set-variable>
+readUrl("classpath://mock/weekendMenu.json", "application/json")]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestDrink" doc:id="9b403581-2527-48f8-a51c-4936e0bdd966" processor="http:request" >
@@ -995,7 +995,7 @@ payload]]></ee:set-payload>
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-readUrl("classpath://Mock/randomThree.json", "application/json")]]></ee:set-payload>
+readUrl("classpath://mock/randomThree.json", "application/json")]]></ee:set-payload>
 				</ee:message>
 			</ee:transform>
 			<munit-tools:mock-when doc:name="requestRandomCocktails" doc:id="2d4ca4e7-bab6-4457-b3d9-668cc836f13b" processor="http:request" >
