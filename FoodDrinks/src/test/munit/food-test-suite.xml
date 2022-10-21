@@ -354,6 +354,92 @@ readUrl("classpath://results/results-punchPartyDrink.json", "application/json")]
 			<munit-tools:assert-that doc:name="Assert that" doc:id="a6ecfd97-078f-47da-8a90-491375c801ea" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
 		</munit:validation>
 	</munit:test>
+	<munit:test name="food-test-suiteTest-categoryList" doc:id="cfaa474e-6b95-428d-8d6b-a6638a6ffc9e">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to meals" doc:id="feb95523-1404-44a5-ab39-9c7db655dab8">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="meals" ><![CDATA[%dw 2.0
+output application/json
+---
+{"meals":[{"idMeal":"52977",
+	   "strMeal":"Corba"
+	  	  },
+          {"idMeal":"53026",
+           "strMeal":"Tamiya"
+          }
+         ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to foodList" doc:id="aa7ff46a-f3a7-4fd9-94cb-9df925d6e422" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /FoodList" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="0cc6acdb-5b5a-4fe3-b6c4-b7993f80a6aa" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.meals]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference to CategoryList" doc:id="1b0a3d69-fb37-4b1f-84ce-cfe6ed284971" name="CategoryList" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="85096fb0-9c6e-441d-98cd-f4a0e3896fca" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-categoryList.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="196e1374-12f9-41ab-aab2-ac1892516372" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="food-test-suiteTest-searchFoodByName" doc:id="80c3385a-fae4-427c-b75e-0c75e8d6e4da">
+		<munit:behavior >
+			<ee:transform doc:name="Transform to meals" doc:id="7a6509ea-8b08-4b1f-bb28-1dd651c1f048" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="meals" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://mock/meals.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:mock-when doc:name="Mock to foodByName" doc:id="462a2ecf-00db-4e32-a046-166033296dba" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="GET /foodByName" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="7defbf0c-5d37-409a-a6eb-c6709a43f372" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[vars.meals]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set to foodByName" doc:id="366d8545-676b-4fa9-b023-05b84372f842">
+				<munit:attributes value='#["queryParams":{"foodByName":"Pizza"}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference to searchFoodByName" doc:id="e91e9885-0c3a-4a7e-a1ee-a00d3b99e517" name="searchFoodByName" />
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Transform to results" doc:id="224589ae-bcc2-4b98-9898-a18d944bb69c" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://results/results-searchFoodByName.json", "application/json")]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="00d695f6-2cb3-4832-9f9d-bf0955f32072" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
 
 
 </mule>
