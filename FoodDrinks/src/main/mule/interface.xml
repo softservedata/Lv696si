@@ -12,7 +12,7 @@
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="cocktailsandfood-api-config" />
-		<error-handler ref="globalErrorHandler" />
+        <error-handler ref="globalErrorHandler" />
     </flow>
     <flow name="cocktailsandfood-api-console">
         <http:listener config-ref="HTTP_Listener_config" path="/console/*">
@@ -25,7 +25,7 @@
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="cocktailsandfood-api-config" />
-		<error-handler ref="globalErrorHandler" />
+        <error-handler ref="globalErrorHandler" />
     </flow>
     <flow name="get:\allMeals:cocktailsandfood-api-config">
         <flow-ref doc:name="categoryList" doc:id="de9f3245-454e-47dd-8100-2a1b4361424e" name="CategoryList" />
@@ -42,7 +42,7 @@
     </flow>
     <flow name="get:\foodByCategory:cocktailsandfood-api-config">
         <flow-ref doc:name="MenuByCategories" doc:id="185df988-8b35-4c8a-9de9-f9dfdb4564c1" name="MenuByCategories" />
-		<error-handler ref="addFoodCategory" />
+        <error-handler ref="addFoodCategory" />
     </flow>
     <flow name="get:\foodName:cocktailsandfood-api-config">
         <flow-ref doc:name="searchFoodByName" doc:id="8b9a2584-cbd0-4752-b272-cdd360c02ae4" name="searchFoodByName" />
@@ -66,6 +66,13 @@
         <error-handler ref="VALIDATION_DAYLIMENU" />
     </flow>
     <flow name="get:\theBestCoctail:cocktailsandfood-api-config">
-		<flow-ref doc:name="theBestCocktail" doc:id="d529413f-f8dd-48ec-ae1e-757e6b3b68e5" name="theBestCocktails"/>
+        <flow-ref doc:name="theBestCocktail" doc:id="d529413f-f8dd-48ec-ae1e-757e6b3b68e5" name="theBestCocktails" />
+    </flow>
+    <flow name="get:\listOfIngredient:cocktailsandfood-api-config">
+		<flow-ref doc:name="listOfCocktails" doc:id="3e9f8d69-490f-4425-b079-0a45b562ace9" name="listOfIngredient"/>
+    </flow>
+    <flow name="get:\searchByIngred:cocktailsandfood-api-config">
+		<flow-ref doc:name="searchByIngredient" doc:id="ddcb6c19-48fe-4235-ab1e-2c94263f4caa" name="searchByIngredient"/>
+		<error-handler ref="VALIDATION_SEARCH_INGRIDIENT" />
     </flow>
 </mule>

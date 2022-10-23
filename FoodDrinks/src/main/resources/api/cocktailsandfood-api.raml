@@ -4,7 +4,7 @@ baseUri: https://www.thecocktaildb.com/api.php ,https://www.themealdb.com/api.ph
 mediaType: 
 - application/json
 
-description: 
+description: Find many recipe by food and cocktail. Enjoy.
 
 types:
   Drink: !include/DataTypes/DrinkApi.raml
@@ -31,6 +31,53 @@ types:
           application/json:
             examples:
               message: Invalid request
+
+
+
+/listOfIngredient:
+  get:
+    description: Give cocltail by his name.
+    queryParameters:
+      listIngred:
+        description: Filter cocktails by name
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Drink[]
+            examples:
+              output: !include/Examples/listOfIngredient.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request
+
+/searchByIngred:
+  get:
+    description: Give cocltail by his name.
+    queryParameters:
+      ingredient:
+        description: Filter cocktails by name
+        required: false
+        type: string
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: Drink[]
+            examples:
+              output: !include/Examples/searchIngredient.raml
+      400:
+        body:
+          application/json:
+            examples:
+              message: Invalid request              
+
 
 /theBestCoctail:
   get:

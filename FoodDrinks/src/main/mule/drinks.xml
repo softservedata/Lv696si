@@ -478,7 +478,7 @@ payload]]></ee:set-payload>
 				</http:request>
 			</otherwise>
 		</choice>
-		<flow-ref doc:name="endLog" doc:id="cb39834b-61c1-4134-8020-1270f352c3c5" name="listOfAllCocktails"/>
+		<logger level="INFO" doc:name="endLog" doc:id="1b7ba699-c7c0-4c26-a14d-6fc6f5446f52" />
 	</sub-flow>
 	<sub-flow name="listOfAllCocktails" doc:id="8b8a26e7-e204-4782-b08a-edcbb40a4c32" >
 		<logger level="INFO" doc:name="startLog" doc:id="ef72f982-c5c2-4397-b1a4-767c361417b5" />
